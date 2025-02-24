@@ -1,0 +1,2 @@
+# Only ignore files specific to the parent directory
+.DS_Store
