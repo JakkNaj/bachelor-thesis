@@ -4,6 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "setup-db": "npx prisma generate && npx prisma migrate reset --force",
+    "seed-db": "ts-node scripts/seed-db.ts",
+    "init-db": "npm run setup-db && npm run seed-db",
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
@@ -14,6 +17,7 @@
   "license": "ISC",
   "description": "Backend for my bachelor's thesis",
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
   },
@@ -21,6 +25,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.5",
+    "prisma": "^6.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }

@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  trips     Trip[]
+}
+
+model Trip {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      Int
+  user        User       @relation(fields: [userId], references: [id])
+  activities  Activity[]
+}
+
+model Activity {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  type        ActivityType
+  startTime   DateTime
+  endTime     DateTime?
+  isRecurring Boolean     @default(false)
+  recurrence  ERecurrence?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  tripId      Int
+  trip        Trip        @relation(fields: [tripId], references: [id])
+  
+  // Relations to specific activity types
+  flight        Flight?
+  transport     Transport?
+  accommodation Accommodation?
+  food          Food?
+  reminder      Reminder?
+}
+
+model Flight {
+  id                Int      @id @default(autoincrement())
+  flightNumber     String
+  airline          String
+  departureAirport String
+  arrivalAirport   String
+  departureTime    DateTime
+  arrivalTime      DateTime
+  terminal         String?
+  gate             String?
+  seatNumber       String?
+  bookingReference String?
+  activity         Activity  @relation(fields: [activityId], references: [id])
+  activityId       Int      @unique // one-to-one relation
+}
+
+model Transport {
+  id           Int           @id @default(autoincrement())
+  type         ETransportType
+  fromLocation String
+  toLocation   String
+  provider     String?       // company name
+  bookingRef   String?
+  activity     Activity      @relation(fields: [activityId], references: [id])
+  activityId   Int          @unique
+}
+
+model Accommodation {
+  id          Int      @id @default(autoincrement())
+  address     String
+  checkIn     DateTime
+  checkOut    DateTime
+  bookingRef  String?
+  provider    String?  // hotel name or platform (Airbnb, etc.)
+  roomNumber  String?
+  activity    Activity @relation(fields: [activityId], references: [id])
+  activityId  Int      @unique
+}
+
+model Food {
+  id          Int      @id @default(autoincrement())
+  address     String
+  restaurant  String?
+  cuisine     String?
+  bookingRef  String?
+  activity    Activity @relation(fields: [activityId], references: [id])
+  activityId  Int      @unique
+}
+
+model Reminder {
+  id          Int         @id @default(autoincrement())
+  recurrence  ERecurrence?
+  notes       String?
+  activity    Activity    @relation(fields: [activityId], references: [id])
+  activityId  Int         @unique
+}
+
+enum ActivityType {
+  FLIGHT
+  TRANSPORT
+  REMINDER
+  ACCOMMODATION
+  FOOD
+  OTHER
+}
+
+enum ETransportType {
+  TAXI
+  BUS
+  TRAIN
+  SUBWAY
+  CAR
+  WALK
+  BOAT
+  OTHER
+}
+
+enum ERecurrence {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
