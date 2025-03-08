@@ -1,18 +1,20 @@
 import { PrismaClient, ActivityType, ETransportType } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function seedDatabase(): Promise<void> {
   try {
-    // Create a test user
+    const hashedPassword = await bcrypt.hash('testpassword', 10);
+    
     const user = await prisma.user.create({
       data: {
         email: 'test@example.com',
         name: 'Test User',
+        password: hashedPassword,
       },
     });
 
-    // Create first trip
     const parisTrip = await prisma.trip.create({
       data: {
         title: 'Paris Weekend',
@@ -23,7 +25,6 @@ async function seedDatabase(): Promise<void> {
       },
     });
 
-    // Add activities to Paris trip
     await prisma.activity.create({
       data: {
         title: 'Flight to Paris',
@@ -64,7 +65,6 @@ async function seedDatabase(): Promise<void> {
       },
     });
 
-    // Create second trip
     const pragueTrip = await prisma.trip.create({
       data: {
         title: 'Prague Business Trip',
@@ -75,7 +75,6 @@ async function seedDatabase(): Promise<void> {
       },
     });
 
-    // Add activities to Prague trip
     await prisma.activity.create({
       data: {
         title: 'Transport to Conference',

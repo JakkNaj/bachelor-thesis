@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { execSync } from 'child_process';
+import bcrypt from 'bcrypt';
 
 async function setupDatabase(): Promise<void> {
   try {
@@ -10,11 +11,14 @@ async function setupDatabase(): Promise<void> {
     execSync('npx prisma migrate dev --name init', { stdio: 'inherit' });
     
     const prisma = new PrismaClient();
+
+    const hashedPassword = await bcrypt.hash('password', 10);
     
     await prisma.user.create({
       data: {
         email: 'test@example.com',
         name: 'Test User',
+        password: hashedPassword,
       },
     });
 
