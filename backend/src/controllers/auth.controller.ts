@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -8,16 +8,17 @@ import type { TCreateUserArgs, TLoginUserArgs } from '../types/auth.types';
 import type { User } from '@prisma/client';
 
 export const authController = {
-  async signup(req: Request<{}, {}, TCreateUserArgs>, res: Response) {
+  signup: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { email, name, password } = req.body;
+      const { email, name, password } = req.body as TCreateUserArgs;
 
       const existingUser = await prisma.user.findUnique({
         where: { email }
       });
 
       if (existingUser) {
-        return res.status(400).json({ message: 'Email already exists' });
+        res.status(400).json({ message: 'Email already exists' });
+        return;
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,7 +32,7 @@ export const authController = {
 
       const token = jwt.sign({ id: user.id }, JWT_SECRET);
       
-      return res.status(201).json({
+      res.status(201).json({
         token,
         user: {
           id: user.id,
@@ -40,19 +41,23 @@ export const authController = {
         }
       });
     } catch (error) {
-      return res.status(500).json({ message: 'Error creating user' });
+      next(error);
     }
   },
 
-  async login(req: Request<{}, {}, TLoginUserArgs>, res: Response) {
+  login: (req: Request, res: Response, next: NextFunction): void => {
     passport.authenticate('local', { session: false }, (err: Error | null, user: User | false) => {
-      if (err || !user) {
+      if (err) {
+        return next(err);
+      }
+      
+      if (!user) {
         return res.status(401).json({ message: 'Authentication failed' });
       }
 
       const token = jwt.sign({ id: user.id }, JWT_SECRET);
       
-      return res.json({
+      res.json({
         token,
         user: {
           id: user.id,
@@ -60,6 +65,16 @@ export const authController = {
           name: user.name
         }
       });
-    })(req, res);
+    })(req, res, next);
+  },
+    
+  async logout(req: Request, res: Response): Promise<void> {
+    try {
+      // Clear the JWT cookie
+      res.clearCookie('token');
+      res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error during logout' });
+    }
   }
 };

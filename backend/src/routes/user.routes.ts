@@ -1,14 +1,31 @@
 import { Router } from 'express';
-import { authenticateJwt } from '../middleware/auth.middleware';
 import { userController } from '../controllers/user.controller';
+import { authenticateJwt } from '../middleware/auth.middleware';
 
-export const userRouter = Router();
+const router = Router();
+    
+/**
+ * @swagger
+ * /api/users/profile:
+ *   get:
+ *     summary: Get user profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/UserResponse'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.get('/profile', authenticateJwt, userController.getProfile);
 
-// Get user profile with basic info
-userRouter.get('/profile', authenticateJwt, userController.getProfile);
-
-// Get all trips for the authenticated user
-userRouter.get('/trips', authenticateJwt, userController.getTrips);
-
-// Get a specific trip by ID (with authorization check)
-userRouter.get('/trips/:id', authenticateJwt, userController.getTripById); 
+export const userRoutes = router; 
