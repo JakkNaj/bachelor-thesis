@@ -1,70 +1,52 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
-import { EAuthStatus } from '../store/authStore';
+import { useGetApiTrips } from '../api/generated/trips/trips';
+import { Button } from '../components/Button';
+import { TripFilters } from '../components/TripFilters';
+import { useState } from 'react';
+import { ETripFilter } from '../components/Navigation';
 
-export const Home = () => {
-  const { status } = useAuthStore();
-  
+type THomeProps = {
+  className?: string;
+};
+
+export const Home = ({ className }: THomeProps) => {
+  const { data: trips } = useGetApiTrips();
+  const [activeFilter, setActiveFilter] = useState<ETripFilter>('all'); // Default to 'all'
+
   return (
-    <div className="home-container">
-      <section className="hero">
-        <h1>Plan Your Next Adventure</h1>
-        <p>
-          Organize your trips, add activities, and keep track of your travel plans
-          all in one place.
+    <div className={className}>
+      <section className="mx-auto flex max-w-[1536px] flex-col items-start gap-[4px] py-[20px] border-b-2 border-dotted border-slate-200">
+        <h1 className="text-center text-[36px] font-[700] leading-[40px] text-[rgb(9,9,11)]">
+          Build your travel plans with ease!
+        </h1>
+        <p className="max-w-[750px] text-start text-[18px] leading-[28px] font-[300] text-[rgb(9,9,11)]">
+          Accessible and customizable trip planning system. Free.
+          <br />
+          Made by travelers, for travelers.
         </p>
-        
-        {status === EAuthStatus.AUTHENTICATED ? (
-          <div className="cta-buttons">
-            <Link to="/trips" className="btn btn-primary">
-              View My Trips
-            </Link>
-            <Link to="/trips/new" className="btn btn-secondary">
-              Plan a New Trip
-            </Link>
-          </div>
-        ) : (
-          <div className="cta-buttons">
-            <Link to="/login" className="btn btn-primary">
-              Login
-            </Link>
-            <Link to="/register" className="btn btn-secondary">
-              Register
-            </Link>
-          </div>
-        )}
+        <div className="flex w-full items-center justify-start space-x-4 pt-[8px]">
+          <Button variant="primary" onClick={() => console.log('create trip form')}>
+            Get Started
+          </Button>
+        </div>
       </section>
-      
-      <section className="features">
-        <h2>Features</h2>
-        
-        <div className="feature-grid">
-          <div className="feature-card">
-            <h3>Trip Planning</h3>
-            <p>
-              Create detailed trip plans with dates, destinations, and descriptions.
-            </p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Activity Management</h3>
-            <p>
-              Add activities to your trips with times, locations, and cost estimates.
-            </p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Organized Itinerary</h3>
-            <p>
-              View your trip activities in a clear, chronological order.
-            </p>
-          </div>
-          
-          <div className="feature-card">
-            <h3>Secure Access</h3>
-            <p>
-              Your trip plans are private and secure with user authentication.
-            </p>
+
+      <section className="mx-auto flex max-w-[1536px] flex-col justify-center items-center gap-[4px] py-[10px] border-b-2 border-dotted border-slate-200">
+        <h2 className="text-2xl font-bold leading-tight tracking-tighter md:text-4xl">
+          Your Trips
+        </h2>
+        <TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+      </section>
+
+      <section className="container py-8">
+        <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
+
+          <div className="w-full">
+            {trips?.map((trip) => (
+              <div key={trip.id} className="border p-4 mb-4 rounded-lg">
+                <h3>{trip.title}</h3>
+                {trip.description && <p>{trip.description}</p>}
+              </div>
+            ))}
           </div>
         </div>
       </section>

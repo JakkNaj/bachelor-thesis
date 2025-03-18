@@ -72,10 +72,11 @@ export const useAuthStore = create<TAuthStore>((set) => ({
   
   checkAuth: () => {
     const token = Cookies.get('auth_token');
+    const currentPath = window.location.pathname;
+    const isAuthRoute = currentPath === '/login' || currentPath === '/register';
     
     if (token) {
-      // In a real app, you might want to validate the token here
-      // by calling the profile endpoint
+      // Set initial authenticated state
       set({ 
         status: EAuthStatus.AUTHENTICATED,
         token
@@ -90,13 +91,16 @@ export const useAuthStore = create<TAuthStore>((set) => ({
           set({ user });
         })
         .catch(() => {
-          // If profile fetch fails, clear auth
+          // If profile fetch fails, clear auth and redirect
           Cookies.remove('auth_token');
           set({ 
             status: EAuthStatus.UNAUTHENTICATED,
             token: null,
             user: null
           });
+          if (!isAuthRoute) {
+            window.location.href = `/login?redirect=${currentPath}`;
+          }
         });
     } else {
       set({ 
@@ -104,6 +108,9 @@ export const useAuthStore = create<TAuthStore>((set) => ({
         token: null,
         user: null
       });
+      if (!isAuthRoute) {
+        window.location.href = `/login?redirect=${currentPath}`;
+      }
     }
   }
 })); 

@@ -1,10 +1,12 @@
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { usePostApiAuthLogin } from '../api/generated/auth/auth';
 import { AuthResponse } from '../api/generated/schemas';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
 
 type TLoginFormData = {
   email: string;
@@ -21,15 +23,15 @@ export const Login = () => {
   const location = useLocation();
   const { setAuth } = useAuthStore();
   
-  // Get the page they were trying to access before being redirected to login
-  const from = location.state?.from?.pathname || '/';
+  const searchParams = new URLSearchParams(window.location.search);
+  const redirectPath = searchParams.get('redirect') || location.state?.from?.pathname || '/';
   
   const { mutate: login, isPending, error } = usePostApiAuthLogin({
     mutation: {
       onSuccess: (data: AuthResponse) => {
         if (data.token && data.user) {
           setAuth(data.token, data.user);
-          navigate(from, { replace: true });
+          navigate(redirectPath, { replace: true });
         }
       },
     }
@@ -46,46 +48,66 @@ export const Login = () => {
   const onSubmit = (data: TLoginFormData) => {
     login({ data });
   };
-  
+
   return (
-    <div className="login-container">
-      <h1>Login</h1>
-      
-      {error && (
-        <div className="error-message">
-          {error instanceof Error ? error.message : 'An error occurred during login'}
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-sm">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900 text-center">Welcome back</h1>
+          <p className="mt-2 text-sm text-slate-600 text-center">
+            Please sign in to your account
+          </p>
         </div>
-      )}
-      
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email')}
-          />
-          {errors.email && <p className="error">{errors.email.message}</p>}
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            {...register('password')}
-          />
-          {errors.password && <p className="error">{errors.password.message}</p>}
-        </div>
-        
-        <button type="submit" disabled={isPending}>
-          {isPending ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-      
-      <p>
-        Don't have an account? <Link to="/register">Register</Link>
-      </p>
+
+        {error && (
+          <div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg">
+            {error instanceof Error ? error.message : 'An error occurred during login'}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+              Email
+            </label>
+            <Input
+              id="email"
+              type="email"
+              {...register('email')}
+              error={errors.email?.message}
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+              Password
+            </label>
+            <Input
+              id="password"
+              type="password"
+              {...register('password')}
+              error={errors.password?.message}
+              placeholder="Enter your password"
+            />
+          </div>
+
+          <Button
+            type="submit"
+            isLoading={isPending}
+            loadingText="Signing in..."
+          >
+            Sign in
+          </Button>
+        </form>
+
+        <p className="text-sm text-slate-600 text-center">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-medium text-slate-900 hover:text-slate-800">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }; 
