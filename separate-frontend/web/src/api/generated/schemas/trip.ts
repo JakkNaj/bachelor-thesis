@@ -5,6 +5,7 @@
  * API documentation for the Travel Planner application
  * OpenAPI spec version: 1.0.0
  */
+import type { Activity } from './activity';
 
 export interface Trip {
   /** Trip ID */
@@ -23,4 +24,5 @@ export interface Trip {
   createdAt?: string;
   /** Update timestamp */
   updatedAt?: string;
+  activities?: Activity[];
 }

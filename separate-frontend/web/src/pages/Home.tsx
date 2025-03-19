@@ -3,6 +3,7 @@ import { Button } from '../components/Button';
 import { TripFilters } from '../components/TripFilters';
 import { useState } from 'react';
 import { ETripFilter } from '../components/Navigation';
+import { TripCard } from '../components/TripCard';
 
 type THomeProps = {
   className?: string;
@@ -10,7 +11,8 @@ type THomeProps = {
 
 export const Home = ({ className }: THomeProps) => {
   const { data: trips } = useGetApiTrips();
-  const [activeFilter, setActiveFilter] = useState<ETripFilter>('all'); // Default to 'all'
+  console.log(trips);
+  const [activeFilter, setActiveFilter] = useState<ETripFilter>('all');
 
   return (
     <div className={className}>
@@ -30,22 +32,25 @@ export const Home = ({ className }: THomeProps) => {
         </div>
       </section>
 
-      <section className="mx-auto flex max-w-[1536px] flex-col justify-center items-center gap-[4px] py-[10px] border-b-2 border-dotted border-slate-200">
+      <section className="mx-auto flex max-w-[1536px] flex-col justify-center items-center gap-[4px] pb-[10px] pt-[16px]">
         <h2 className="text-2xl font-bold leading-tight tracking-tighter md:text-4xl">
           Your Trips
         </h2>
         <TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       </section>
 
-      <section className="container py-8">
+      <section className="container py-2">
         <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
-
           <div className="w-full">
             {trips?.map((trip) => (
-              <div key={trip.id} className="border p-4 mb-4 rounded-lg">
-                <h3>{trip.title}</h3>
-                {trip.description && <p>{trip.description}</p>}
-              </div>
+              <TripCard 
+                key={trip.id} 
+                title={trip.title} 
+                description={trip.description} 
+                startDate={trip.startDate} 
+                endDate={trip.endDate} 
+                activities={trip.activities || []}
+              />
             ))}
           </div>
         </div>

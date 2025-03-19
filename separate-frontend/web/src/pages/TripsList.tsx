@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useGetApiTrips } from '../api/generated/trips/trips';
 import { Trip } from '../api/generated/schemas';
-
-// Extended Trip type to include optional destination
-type ExtendedTrip = Trip & {
-  destination?: string;
-};
+import { TripCard } from '../components/TripCard';
 
 export const TripsList = () => {
   const { data: trips, isLoading, isError, error } = useGetApiTrips();
@@ -35,28 +31,14 @@ export const TripsList = () => {
       {trips && trips.length > 0 ? (
         <div className="trips-grid">
           {trips.map((trip: Trip) => (
-            <div key={trip.id} className="trip-card">
-              <h2>{trip.title}</h2>
-              <p className="trip-dates">
-                {trip.startDate && new Date(trip.startDate).toLocaleDateString()} - 
-                {trip.endDate && new Date(trip.endDate).toLocaleDateString()}
-              </p>
-              {(trip as ExtendedTrip).destination && (
-                <p className="trip-destination">
-                  <strong>Destination:</strong> {(trip as ExtendedTrip).destination}
-                </p>
-              )}
-              {trip.description && <p className="trip-description">{trip.description}</p>}
-              
-              <div className="trip-actions">
-                <Link to={`/trips/${trip.id}`} className="btn btn-secondary">
-                  View Details
-                </Link>
-                <Link to={`/trips/${trip.id}/edit`} className="btn btn-outline">
-                  Edit
-                </Link>
-              </div>
-            </div>
+            <TripCard 
+              key={trip.id} 
+              title={trip.title} 
+              description={trip.description} 
+              startDate={trip.startDate} 
+              endDate={trip.endDate} 
+              activities={trip.activities || []}
+            />
           ))}
         </div>
       ) : (

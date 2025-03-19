@@ -1,16 +1,12 @@
-import { UserControls, ETripFilter } from './Navigation';
+import { UserControls } from './Navigation';
 import { Link } from 'react-router-dom';
 
 type THeaderProps = {
-  activeFilter: ETripFilter;
-  onFilterChange: (filter: ETripFilter) => void;
   userName: string;
   onLogout: () => void;
 };
 
 export const Header = ({
-  activeFilter,
-  onFilterChange,
   userName,
   onLogout,
 }: THeaderProps) => {

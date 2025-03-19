@@ -31,8 +31,10 @@ import { customInstance } from '../../mutator/custom-instance';
  */
 export const postApiAuthLogin = (
     postApiAuthLoginBody: PostApiAuthLoginBody,
-  signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
+      
+      
       return customInstance<AuthResponse>(
       {url: `/api/auth/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
@@ -93,7 +95,7 @@ export const usePostApiAuthLogin = <TError = Error,
  */
 export const postApiAuthSignup = (
     postApiAuthSignupBody: PostApiAuthSignupBody,
-    signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
       
       
