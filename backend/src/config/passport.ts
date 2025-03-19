@@ -6,7 +6,7 @@ import { prisma } from '../app';
 
 export const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-// Local Strategy
+// Login - Email and Password Strategy
 passport.use(
   new LocalStrategy(
     {

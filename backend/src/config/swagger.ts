@@ -136,6 +136,12 @@ const options: swaggerJsdoc.Options = {
               format: 'date-time',
               description: 'Update timestamp',
             },
+            activities: {
+              type: 'array',
+              items: {
+                $ref: '#/components/schemas/Activity'
+              }
+            }
           },
         },
         Activity: {
