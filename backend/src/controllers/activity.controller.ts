@@ -16,6 +16,7 @@ export const activityController = {
         return;
       }
       
+      console.log("adding activity to trip", tripId);
       // Check if trip exists and belongs to user
       const trip = await prisma.trip.findUnique({
         where: { id: tripId }
@@ -31,16 +32,23 @@ export const activityController = {
         return;
       }
       
+      // Format the dates properly
+      const data = {
+        ...req.body,
+        startTime: new Date(req.body.startTime).toISOString(),
+        endTime: req.body.endTime ? new Date(req.body.endTime).toISOString() : null,
+        tripId
+      };
+
+      console.log("creating activity in db", data);
       // Create the activity
       const activity = await prisma.activity.create({
-        data: {
-          ...req.body,
-          tripId
-        }
+        data
       });
       
       res.status(201).json(activity);
     } catch (error) {
+      console.error('Error details:', error);
       res.status(500).json({ message: 'Error adding activity to trip' });
     }
   },

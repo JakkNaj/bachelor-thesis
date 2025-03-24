@@ -98,7 +98,7 @@ const options: swaggerJsdoc.Options = {
         },
         Trip: {
           type: 'object',
-          required: ['title', 'startDate', 'endDate'],
+          required: ['id','title', 'startDate', 'endDate'],
           properties: {
             id: {
               type: 'integer',
@@ -146,7 +146,7 @@ const options: swaggerJsdoc.Options = {
         },
         Activity: {
           type: 'object',
-          required: ['title', 'date', 'tripId'],
+          required: ['id','title', 'startTime', 'tripId', 'type'],
           properties: {
             id: {
               type: 'integer',
@@ -160,14 +160,19 @@ const options: swaggerJsdoc.Options = {
               type: 'string',
               description: 'Activity description',
             },
-            date: {
+            startTime: {
               type: 'string',
               format: 'date-time',
-              description: 'Activity date',
+              description: 'Activity start time',
             },
-            location: {
+            endTime: {
               type: 'string',
-              description: 'Activity location',
+              format: 'date-time',
+              description: 'Activity end time',
+            },
+            type: {
+              type: 'string',
+              description: 'Activity type',
             },
             tripId: {
               type: 'integer',

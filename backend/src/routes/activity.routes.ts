@@ -27,17 +27,22 @@ const router = Router();
  *             type: object
  *             required:
  *               - title
- *               - date
+ *               - type
+ *               - startTime
  *             properties:
  *               title:
  *                 type: string
  *               description:
  *                 type: string
- *               date:
+ *               type:
+ *                 type: string
+ *                 enum: [TRANSPORT, FLIGHT, ACCOMMODATION, FOOD, REMINDER, OTHER]
+ *               startTime:
  *                 type: string
  *                 format: date-time
- *               location:
+ *               endTime:
  *                 type: string
+ *                 format: date-time
  *     responses:
  *       201:
  *         description: Activity created successfully

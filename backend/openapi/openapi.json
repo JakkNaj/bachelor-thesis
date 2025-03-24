@@ -99,6 +99,7 @@
       "Trip": {
         "type": "object",
         "required": [
+          "id",
           "title",
           "startDate",
           "endDate"
@@ -139,15 +140,23 @@
             "type": "string",
             "format": "date-time",
             "description": "Update timestamp"
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Activity"
+            }
           }
         }
       },
       "Activity": {
         "type": "object",
         "required": [
+          "id",
           "title",
-          "date",
-          "tripId"
+          "startTime",
+          "tripId",
+          "type"
         ],
         "properties": {
           "id": {
@@ -162,14 +171,19 @@
             "type": "string",
             "description": "Activity description"
           },
-          "date": {
+          "startTime": {
             "type": "string",
             "format": "date-time",
-            "description": "Activity date"
+            "description": "Activity start time"
           },
-          "location": {
+          "endTime": {
             "type": "string",
-            "description": "Activity location"
+            "format": "date-time",
+            "description": "Activity end time"
+          },
+          "type": {
+            "type": "string",
+            "description": "Activity type"
           },
           "tripId": {
             "type": "integer",
@@ -234,7 +248,8 @@
                 "type": "object",
                 "required": [
                   "title",
-                  "date"
+                  "type",
+                  "startTime"
                 ],
                 "properties": {
                   "title": {
@@ -243,12 +258,24 @@
                   "description": {
                     "type": "string"
                   },
-                  "date": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "TRANSPORT",
+                      "FLIGHT",
+                      "ACCOMMODATION",
+                      "FOOD",
+                      "REMINDER",
+                      "OTHER"
+                    ]
+                  },
+                  "startTime": {
                     "type": "string",
                     "format": "date-time"
                   },
-                  "location": {
-                    "type": "string"
+                  "endTime": {
+                    "type": "string",
+                    "format": "date-time"
                   }
                 }
               }
