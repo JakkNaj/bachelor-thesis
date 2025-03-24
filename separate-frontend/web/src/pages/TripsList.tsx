@@ -32,7 +32,8 @@ export const TripsList = () => {
         <div className="trips-grid">
           {trips.map((trip: Trip) => (
             <TripCard 
-              key={trip.id} 
+              key={trip.id}
+              id={trip.id}
               title={trip.title} 
               description={trip.description} 
               startDate={trip.startDate} 

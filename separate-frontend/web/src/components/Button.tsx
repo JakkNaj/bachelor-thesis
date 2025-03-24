@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type TButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   isLoading?: boolean;
   loadingText?: string;
   fullWidth?: boolean;
@@ -27,6 +27,7 @@ export const Button = ({
   const variants = {
     primary: 'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-500',
     secondary: 'bg-white text-slate-900 hover:bg-slate-50 focus:ring-slate-200',
+    danger: 'bg-white text-red-600 hover:bg-red-50 focus:ring-red-500',
   };
 
   const outlinedStyles = 'border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 focus:ring-slate-200';

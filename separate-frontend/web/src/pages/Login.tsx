@@ -50,8 +50,8 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-sm">
+    <div className="h-full flex items-center justify-center bg-slate-50 px-4">
+      <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-sm">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900 text-center">Welcome back</h1>
           <p className="mt-2 text-sm text-slate-600 text-center">

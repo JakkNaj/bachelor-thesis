@@ -1,8 +1,8 @@
 import { useGetApiTrips } from '../api/generated/trips/trips';
 import { Button } from '../components/Button';
 import { TripFilters } from '../components/TripFilters';
-import { useState } from 'react';
-import { ETripFilter } from '../components/Navigation';
+import { useState, useMemo } from 'react';
+import { ETripFilter } from '../types/trips';
 import { TripCard } from '../components/TripCard';
 
 type THomeProps = {
@@ -11,8 +11,22 @@ type THomeProps = {
 
 export const Home = ({ className }: THomeProps) => {
   const { data: trips } = useGetApiTrips();
-  console.log(trips);
-  const [activeFilter, setActiveFilter] = useState<ETripFilter>('all');
+  const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
+
+  const filteredTrips = useMemo(() => {
+    if (!trips) return [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    switch (activeFilter) {
+      case ETripFilter.UPCOMING:
+        return trips.filter((trip) => new Date(trip.startDate) >= today);
+      case ETripFilter.PAST:
+        return trips.filter((trip) => new Date(trip.startDate) < today);
+      default:
+        return trips;
+    }
+  }, [trips, activeFilter]);
 
   return (
     <div className={className}>
@@ -42,16 +56,24 @@ export const Home = ({ className }: THomeProps) => {
       <section className="container py-2">
         <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
           <div className="w-full">
-            {trips?.map((trip) => (
-              <TripCard 
-                key={trip.id} 
-                title={trip.title} 
-                description={trip.description} 
-                startDate={trip.startDate} 
-                endDate={trip.endDate} 
-                activities={trip.activities || []}
-              />
-            ))}
+            {filteredTrips.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-slate-600 text-lg">No trips found for this filter.</p>
+                <p className="text-slate-600 text-sm mt-2">Try selecting a different filter or create a new trip.</p>
+              </div>
+            ) : (
+              filteredTrips.map((trip) => (
+                <TripCard 
+                  key={trip.id} 
+                  id={trip.id}
+                  title={trip.title} 
+                  description={trip.description} 
+                  startDate={trip.startDate} 
+                  endDate={trip.endDate} 
+                  activities={trip.activities || []}
+                />
+              ))
+            )}
           </div>
         </div>
       </section>

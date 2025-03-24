@@ -9,7 +9,7 @@ import type { Activity } from './activity';
 
 export interface Trip {
   /** Trip ID */
-  id?: number;
+  id: number;
   /** Trip title */
   title: string;
   /** Trip description */

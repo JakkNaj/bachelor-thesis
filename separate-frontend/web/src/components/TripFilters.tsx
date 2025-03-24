@@ -1,5 +1,5 @@
+import { ETripFilter } from '../types/trips';
 import { NavigationLink } from './NavigationLink';
-import { ETripFilter } from './Navigation';
 
 type TTripFiltersProps = {
   activeFilter: ETripFilter;
@@ -10,20 +10,20 @@ export const TripFilters = ({ activeFilter, onFilterChange }: TTripFiltersProps)
   return (
     <div className="flex justify-center space-x-4 py-4 bg-white">
       <NavigationLink
-        isActive={activeFilter === 'all'}
-        onClick={() => onFilterChange('all')}
+        isActive={activeFilter === ETripFilter.ALL}
+        onClick={() => onFilterChange(ETripFilter.ALL)}
       >
         All Trips
       </NavigationLink>
       <NavigationLink
-        isActive={activeFilter === 'upcoming'}
-        onClick={() => onFilterChange('upcoming')}
+        isActive={activeFilter === ETripFilter.UPCOMING}
+        onClick={() => onFilterChange(ETripFilter.UPCOMING)}
       >
         Upcoming Trips
       </NavigationLink>
       <NavigationLink
-        isActive={activeFilter === 'past'}
-        onClick={() => onFilterChange('past')}
+        isActive={activeFilter === ETripFilter.PAST}
+        onClick={() => onFilterChange(ETripFilter.PAST)}
       >
         Past Trips
       </NavigationLink>

@@ -13,6 +13,7 @@ export * from './error';
 export * from './loginRequest';
 export * from './loginResponse';
 export * from './postApiActivitiesTripTripIdBody';
+export * from './postApiActivitiesTripTripIdBodyType';
 export * from './postApiAuthLoginBody';
 export * from './postApiAuthSignupBody';
 export * from './postApiTripsBody';

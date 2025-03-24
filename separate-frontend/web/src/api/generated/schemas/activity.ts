@@ -8,15 +8,17 @@
 
 export interface Activity {
   /** Activity ID */
-  id?: number;
+  id: number;
   /** Activity title */
   title: string;
   /** Activity description */
   description?: string;
-  /** Activity date */
-  date: string;
-  /** Activity location */
-  location?: string;
+  /** Activity start time */
+  startTime: string;
+  /** Activity end time */
+  endTime?: string;
+  /** Activity type */
+  type: string;
   /** Trip ID this activity belongs to */
   tripId: number;
   /** Creation timestamp */

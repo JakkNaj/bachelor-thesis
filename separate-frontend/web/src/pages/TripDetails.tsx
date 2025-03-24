@@ -1,37 +1,26 @@
-import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useGetApiTripsId, useDeleteApiTripsId } from '../api/generated/trips/trips';
-import { Activity, Trip } from '../api/generated/schemas';
+import { Button } from '../components/Button';
+import { BackIcon } from '../assets/icons/BackIcon';
+import { formatDate } from '../utils/dateUtils';
+import { TripActivities } from '../components/TripActivities';
 
-// Extended Trip type to include optional destination
-type ExtendedTrip = Trip & {
-  destination?: string;
+type TTripDetailsProps = {
+  className?: string;
 };
 
-// Extended Activity type to include missing properties
-type ExtendedActivity = Activity & {
-  time?: string;
-  cost?: number;
-};
-
-export const TripDetails = () => {
+export const TripDetails = ({ className }: TTripDetailsProps) => {
   const { tripId } = useParams<{ tripId: string }>();
   const navigate = useNavigate();
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
   const { 
     data: trip, 
-    isLoading: tripLoading, 
-    isError: tripError,
-    error: tripErrorDetails
-  } = useGetApiTripsId(Number(tripId) || 0);
-  
-  // For now, we'll handle activities differently since the API structure has changed
-  // In a real app, you would implement the activities API calls
-  const activities: ExtendedActivity[] = [];
-  const activitiesLoading = false;
-  const activitiesError = false;
-  
+    isLoading, 
+    isError, 
+    error,
+    refetch
+  } = useGetApiTripsId(Number(tripId));
+
   const { mutate: deleteTrip, isPending: isDeleting } = useDeleteApiTripsId({
     mutation: {
       onSuccess: () => {
@@ -39,181 +28,76 @@ export const TripDetails = () => {
       }
     }
   });
-  
-  const handleDeleteClick = () => {
-    setShowDeleteConfirm(true);
-  };
-  
-  const handleDeleteConfirm = () => {
-    if (tripId) {
-      deleteTrip({ id: Number(tripId) });
-    }
-  };
-  
-  const handleDeleteCancel = () => {
-    setShowDeleteConfirm(false);
-  };
-  
-  // Group activities by date (empty for now)
-  const groupedActivities: Record<string, Activity[]> = {};
-  
-  if (tripLoading) {
-    return <div>Loading trip details...</div>;
+
+  if (isLoading) {
+    return <div className="text-center py-8">Loading trip details...</div>;
   }
-  
-  if (tripError || !trip) {
+
+  if (isError || !trip) {
     return (
-      <div className="error-container">
-        <h2>Error loading trip</h2>
-        <p>
-          {typeof tripErrorDetails === 'object' && tripErrorDetails !== null
-            ? String(tripErrorDetails)
-            : 'Trip not found or an error occurred'}
+      <div className="text-center py-8">
+        <h2 className="text-xl font-semibold text-red-600">Error loading trip</h2>
+        <p className="text-slate-600 mt-2">
+          {error instanceof Error ? error.message : 'Trip not found or an error occurred'}
         </p>
-        <Link to="/trips" className="btn btn-primary">
-          Back to Trips
+        <Link to="/trips" className="mt-4 inline-block">
+          <Button variant="primary">Back to Trips</Button>
         </Link>
       </div>
     );
   }
-  
+
+  const handleDelete = () => {
+    if (confirm('Are you sure you want to delete this trip? This action cannot be undone.')) {
+      deleteTrip({ id: trip.id });
+    }
+  };
+
   return (
-    <div className="trip-details-container">
-      <div className="trip-header">
-        <h1>{trip.title}</h1>
-        <div className="trip-actions">
-          <Link to={`/trips/${tripId}/edit`} className="btn btn-secondary">
-            Edit Trip
+    <div className={className}>
+      <div className="flex justify-between items-center mt-4 mb-2">
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900"
+        >
+          <BackIcon className="w-5 h-5" />
+          <span>Back to Home</span>
+        </Link>
+        <div className="flex gap-2">
+          <Link to={`/trips/${trip.id}/edit`}>
+            <Button variant="secondary" outlined>Edit Trip</Button>
           </Link>
-          <button onClick={handleDeleteClick} className="btn btn-danger">
-            Delete Trip
-          </button>
+          <Button 
+            variant="danger" 
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Trip'}
+          </Button>
         </div>
       </div>
-      
-      <div className="trip-info">
-        <div className="trip-dates">
-          <strong>Dates:</strong> 
-          {trip.startDate && new Date(trip.startDate).toLocaleDateString()} - 
-          {trip.endDate && new Date(trip.endDate).toLocaleDateString()}
-        </div>
-        
-        {(trip as ExtendedTrip).destination && (
-          <div className="trip-destination">
-            <strong>Destination:</strong> {(trip as ExtendedTrip).destination}
-          </div>
-        )}
-        
+
+      <section className="mx-auto flex max-w-[1536px] flex-col items-start gap-[4px] py-[20px] border-b-2 border-dotted border-slate-200">
+        <h1 className="text-[36px] font-[700] leading-[40px] text-[rgb(9,9,11)]">
+          {trip.title}
+        </h1>
+        <p className="text-[18px] leading-[28px] font-[300] text-[rgb(9,9,11)]">
+          {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
+        </p>
         {trip.description && (
-          <div className="trip-description">
-            <strong>Description:</strong>
-            <p>{trip.description}</p>
-          </div>
+          <p className="text-slate-600 mt-2">{trip.description}</p>
         )}
-      </div>
-      
-      <div className="activities-section">
-        <div className="activities-header">
-          <h2>Activities</h2>
-          <Link to={`/trips/${tripId}/activities/new`} className="btn btn-primary">
-            Add Activity
-          </Link>
-        </div>
-        
-        {activitiesLoading ? (
-          <div>Loading activities...</div>
-        ) : activitiesError ? (
-          <div className="error-message">Error loading activities</div>
-        ) : activities && activities.length > 0 ? (
-          <div className="activities-timeline">
-            {Object.entries(groupedActivities || {})
-              .sort(([dateA], [dateB]) => new Date(dateA).getTime() - new Date(dateB).getTime())
-              .map(([date, dayActivities]) => (
-                <div key={date} className="day-activities">
-                  <h3 className="activity-date">
-                    {new Date(date).toLocaleDateString(undefined, {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </h3>
-                  <div className="activities-list">
-                    {dayActivities
-                      .sort((a, b) => {
-                        const activityA = a as ExtendedActivity;
-                        const activityB = b as ExtendedActivity;
-                        if (!activityA.time || !activityB.time) return 0;
-                        return activityA.time.localeCompare(activityB.time);
-                      })
-                      .map((activity) => {
-                        const extActivity = activity as ExtendedActivity;
-                        return (
-                          <div key={activity.id} className="activity-card">
-                            <div className="activity-time">
-                              {extActivity.time || 'No time specified'}
-                            </div>
-                            <div className="activity-content">
-                              <h4>{activity.title}</h4>
-                              {activity.location && (
-                                <div className="activity-location">
-                                  <strong>Location:</strong> {activity.location}
-                                </div>
-                              )}
-                              {activity.description && (
-                                <p className="activity-description">{activity.description}</p>
-                              )}
-                              {extActivity.cost !== undefined && extActivity.cost !== null && (
-                                <div className="activity-cost">
-                                  <strong>Cost:</strong> ${extActivity.cost.toFixed(2)}
-                                </div>
-                              )}
-                            </div>
-                            <div className="activity-actions">
-                              <Link
-                                to={`/trips/${tripId}/activities/${activity.id}/edit`}
-                                className="btn btn-sm btn-outline"
-                              >
-                                Edit
-                              </Link>
-                            </div>
-                          </div>
-                        );
-                      })}
-                  </div>
-                </div>
-              ))}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <p>No activities added to this trip yet.</p>
-            <Link to={`/trips/${tripId}/activities/new`} className="btn btn-primary">
-              Add Your First Activity
-            </Link>
-          </div>
-        )}
-      </div>
-      
-      {showDeleteConfirm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Delete Trip</h3>
-            <p>Are you sure you want to delete this trip? This action cannot be undone.</p>
-            <div className="modal-actions">
-              <button
-                onClick={handleDeleteConfirm}
-                className="btn btn-danger"
-                disabled={isDeleting}
-              >
-                {isDeleting ? 'Deleting...' : 'Yes, Delete Trip'}
-              </button>
-              <button onClick={handleDeleteCancel} className="btn btn-secondary">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      </section>
+
+      <TripActivities 
+        tripId={trip.id} 
+        activities={trip.activities || []}
+        tripStartDate={trip.startDate}
+        tripEndDate={trip.endDate}
+        onActivityAdded={() => {
+          refetch();
+        }}
+      />
     </div>
   );
 }; 

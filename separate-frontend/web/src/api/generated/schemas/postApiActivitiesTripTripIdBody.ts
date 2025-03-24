@@ -5,10 +5,12 @@
  * API documentation for the Travel Planner application
  * OpenAPI spec version: 1.0.0
  */
+import type { PostApiActivitiesTripTripIdBodyType } from './postApiActivitiesTripTripIdBodyType';
 
 export type PostApiActivitiesTripTripIdBody = {
   title: string;
   description?: string;
-  date: string;
-  location?: string;
+  type: PostApiActivitiesTripTripIdBodyType;
+  startTime: string;
+  endTime?: string;
 };
