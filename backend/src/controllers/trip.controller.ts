@@ -88,17 +88,22 @@ export const tripController = {
         res.status(401).json({ message: 'Unauthorized' });
         return;
       }
+
+      const { startDate, endDate, ...restBody } = req.body;
       
       const trip = await prisma.trip.create({
         data: {
-          ...req.body,
+          ...restBody,
+          startDate: new Date(startDate).toISOString(),
+          endDate: new Date(endDate).toISOString(),
           userId: req.user.id
         }
       });
       
       res.status(201).json(trip);
     } catch (error) {
-      res.status(500).json({ message: 'Error creating trip' });
+      console.error('Trip creation error:', error);
+      res.status(500).json({ message: 'Error creating trip', error: error });
     }
   },
   
