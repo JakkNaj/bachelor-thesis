@@ -1,16 +1,16 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Activity, ActivityInput, PostApiActivitiesTripTripIdBody } from '../api/generated/schemas';
+import { PostApiActivitiesTripTripIdBody } from '../api/generated/schemas';
 import { Input } from './Input';
 import { Button } from './Button';
 import { createActivitySchema, TActivityFormData, transformFormDataToActivityInput } from '../types/activityFormSchema';
 import { SelectInputNative } from './SelectInputNative';
 import { ACTIVITY_TYPE_LABELS } from '../types/activity';
 import { EActivityTypes } from '../types/activity';
-import { formatDate, formatDateForInput } from '../utils/dateUtils';
+import { formatDate, formatDateForInput, formatTime } from '../utils/dateUtils';
 
 type TActivityFormProps = {
-  initialData?: Activity;
+  initialData?: TActivityFormData;
   onSubmit: (data: PostApiActivitiesTripTripIdBody) => void;
   isSubmitting: boolean;
   submitError?: Error | null;
@@ -32,6 +32,7 @@ export const ActivityForm = ({
     formState: { errors },
   } = useForm<TActivityFormData>({
     resolver: yupResolver(createActivitySchema(tripStartDate, tripEndDate)),
+    mode: 'onChange',
     defaultValues: initialData
       ? {
           title: initialData.title,
@@ -89,7 +90,7 @@ export const ActivityForm = ({
         </div>
 
         <div className="text-xs text-slate-500 mb-1">
-              Trip dates: {formatDate(tripStartDate)} - {formatDate(tripEndDate)}
+          Trip dates: {formatDate(tripStartDate) + ' ' + formatTime(tripStartDate)} - {formatDate(tripEndDate) + ' ' + formatTime(tripEndDate)}
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>

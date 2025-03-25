@@ -1,17 +1,32 @@
-import { useGetApiTrips } from '../api/generated/trips/trips';
+import { useGetApiTrips, usePostApiTrips } from '../api/generated/trips/trips';
 import { Button } from '../components/Button';
 import { TripFilters } from '../components/TripFilters';
 import { useState, useMemo } from 'react';
 import { ETripFilter } from '../types/trips';
 import { TripCard } from '../components/TripCard';
+import { TripForm } from '../components/TripForm';
+import { TripInput } from '../api/generated/schemas';
+import { useNavigate } from 'react-router-dom';
+import { SidePanel } from '../components/SidePanel';
 
 type THomeProps = {
   className?: string;
 };
 
 export const Home = ({ className }: THomeProps) => {
+  const navigate = useNavigate();
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const { data: trips } = useGetApiTrips();
   const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
+
+  const { mutate: createTrip, isPending, error } = usePostApiTrips({
+    mutation: {
+      onSuccess: (data) => {
+        setIsFormOpen(false);
+        navigate(`/trips/${data.id}`);
+      }
+    }
+  });
 
   const filteredTrips = useMemo(() => {
     if (!trips) return [];
@@ -40,7 +55,7 @@ export const Home = ({ className }: THomeProps) => {
           Made by travelers, for travelers.
         </p>
         <div className="flex w-full items-center justify-start space-x-4 pt-[8px]">
-          <Button variant="primary" onClick={() => console.log('create trip form')}>
+          <Button variant="primary" onClick={() => setIsFormOpen(true)}>
             Get Started
           </Button>
         </div>
@@ -77,6 +92,17 @@ export const Home = ({ className }: THomeProps) => {
           </div>
         </div>
       </section>
+
+      <SidePanel isOpen={isFormOpen} onClose={() => setIsFormOpen(false)}>
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold">New Trip</h2>
+        </div>
+        <TripForm
+          onSubmit={(data: TripInput) => createTrip({ data })}
+          isSubmitting={isPending}
+          submitError={error as Error}
+        />
+      </SidePanel>
     </div>
   );
 }; 

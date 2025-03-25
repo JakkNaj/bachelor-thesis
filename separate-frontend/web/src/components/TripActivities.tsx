@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Activity, ActivityInput } from '../api/generated/schemas';
+import { Activity } from '../api/generated/schemas';
 import { Button } from './Button';
 import { PlusIcon } from '../assets/icons/PlusIcon';
-import { formatDate, formatTime } from '../utils/dateUtils';
 import { SidePanel } from './SidePanel';
 import { ActivityForm } from './ActivityForm';
 import { usePostApiActivitiesTripTripId } from '../api/generated/activities/activities';
+import { TActivityFormData } from '../types/activityFormSchema';
+import { ActivityStepper } from './ActivityStepper';
 
 type TTripActivitiesProps = {
   tripId: number;
@@ -34,7 +34,7 @@ export const TripActivities = ({
     }
   });
 
-  const handleSubmit = (data: ActivityInput) => {
+  const handleSubmit = (data: TActivityFormData) => {
     createActivity({ tripId, data });
   };
 
@@ -54,54 +54,24 @@ export const TripActivities = ({
       </section>
 
       <section className="container py-2">
-        <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
-          <div className="w-full">
-            {activities && activities.length > 0 ? (
-              <div className="space-y-4">
-                {activities
-                  .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
-                  .map((activity) => (
-                    <div 
-                      key={activity.id} 
-                      className="border border-slate-200 p-4 rounded-lg"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-semibold text-lg">{activity.title}</h3>
-                          <p className="text-slate-600 text-sm">
-                            {formatTime(activity.startTime)}
-                            {activity.endTime && ` - ${formatTime(activity.endTime)}`}
-                            {"  " + formatDate(activity.startTime)}
-                          </p>
-                          {activity.description && (
-                            <p className="text-slate-700 mt-2">
-                              {activity.description}
-                            </p>
-                          )}
-                        </div>
-                        <Link to={`/trips/${tripId}/activities/${activity.id}/edit`}>
-                          <Button variant="secondary">Edit</Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-slate-600 text-lg">No activities planned yet.</p>
-                <p className="text-slate-600 text-sm mt-2">
-                  Start by adding your first activity to this trip.
-                </p>
-                <Button 
-                  variant="primary" 
-                  className="mt-4"
-                  onClick={() => setIsAddingActivity(true)}
-                >
-                  Add First Activity
-                </Button>
-              </div>
-            )}
-          </div>
+        <div className="mx-auto max-w-[980px]">
+          {activities && activities.length > 0 ? (
+            <ActivityStepper activities={activities} tripId={tripId} />
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-slate-600 text-lg">No activities planned yet.</p>
+              <p className="text-slate-600 text-sm mt-2">
+                Start by adding your first activity to this trip.
+              </p>
+              <Button 
+                variant="primary" 
+                className="mt-4"
+                onClick={() => setIsAddingActivity(true)}
+              >
+                Add First Activity
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 

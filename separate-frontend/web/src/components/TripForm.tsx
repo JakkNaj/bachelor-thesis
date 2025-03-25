@@ -1,7 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { Trip, TripInput } from '../api/generated/schemas';
+import { Input } from './Input';
+import { Button } from './Button';
+import { 
+  TTripFormData, 
+  tripFormSchema, 
+  transformFormDataToTripInput 
+} from '../types/tripFormSchema';
+import { formatDateForInput } from '../utils/dateUtils';
 
 type TTripFormProps = {
   initialData?: Trip;
@@ -9,25 +16,6 @@ type TTripFormProps = {
   isSubmitting: boolean;
   submitError?: Error | null;
 };
-
-const tripSchema = yup.object({
-  title: yup.string().required('Title is required'),
-  description: yup.string(),
-  startDate: yup.string().required('Start date is required'),
-  endDate: yup
-    .string()
-    .required('End date is required')
-    .test(
-      'is-after-start-date',
-      'End date must be after start date',
-      function (endDate) {
-        const { startDate } = this.parent;
-        if (!startDate || !endDate) return true;
-        return new Date(endDate) >= new Date(startDate);
-      }
-    ),
-  destination: yup.string(),
-});
 
 export const TripForm = ({
   initialData,
@@ -39,74 +27,103 @@ export const TripForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TripInput>({
-    resolver: yupResolver(tripSchema),
+  } = useForm<TTripFormData>({
+    resolver: yupResolver(tripFormSchema),
     defaultValues: initialData
       ? {
           title: initialData.title,
           description: initialData.description,
-          startDate: initialData.startDate,
-          endDate: initialData.endDate,
+          startDate: formatDateForInput(initialData.startDate),
+          endDate: formatDateForInput(initialData.endDate),
         }
       : undefined,
   });
 
+  const onSubmitForm = (data: TTripFormData) => {
+    onSubmit(transformFormDataToTripInput(data));
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="trip-form">
+    <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
       {submitError && (
-        <div className="error-message">
-          {submitError instanceof Error
-            ? submitError.message
-            : 'An error occurred'}
+        <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">
+          {submitError instanceof Error ? submitError.message : 'An error occurred'}
         </div>
       )}
 
-      <div className="form-group">
-        <label htmlFor="title">Trip Title*</label>
-        <input id="title" type="text" {...register('title')} />
-        {errors.title && <p className="error">{errors.title.message}</p>}
-      </div>
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium text-slate-700 mb-1">
+            Trip Title*
+          </label>
+          <Input
+            id="title"
+            type="text"
+            {...register('title')}
+            error={errors.title?.message}
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="destination">Destination</label>
-        <input id="destination" type="text" {...register('destination')} />
-        {errors.destination && (
-          <p className="error">{errors.destination.message}</p>
-        )}
-      </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="startDate" className="block text-sm font-medium text-slate-700 mb-1">
+              Start Date*
+            </label>
+            <input
+              id="startDate"
+              type="datetime-local"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+              {...register('startDate')}
+            />
+            {errors.startDate && (
+              <p className="mt-1 text-sm text-red-500">{errors.startDate.message}</p>
+            )}
+          </div>
 
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="startDate">Start Date*</label>
-          <input id="startDate" type="date" {...register('startDate')} />
-          {errors.startDate && (
-            <p className="error">{errors.startDate.message}</p>
+          <div>
+            <label htmlFor="endDate" className="block text-sm font-medium text-slate-700 mb-1">
+              End Date*
+            </label>
+            <input
+              id="endDate"
+              type="datetime-local"
+              className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+              {...register('endDate')}
+            />
+            {errors.endDate && (
+              <p className="mt-1 text-sm text-red-500">{errors.endDate.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-slate-700 mb-1">
+            Description
+          </label>
+          <textarea
+            id="description"
+            rows={4}
+            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+            {...register('description')}
+          />
+          {errors.description && (
+            <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
           )}
         </div>
-
-        <div className="form-group">
-          <label htmlFor="endDate">End Date*</label>
-          <input id="endDate" type="date" {...register('endDate')} />
-          {errors.endDate && <p className="error">{errors.endDate.message}</p>}
-        </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          rows={4}
-          {...register('description')}
-        ></textarea>
-        {errors.description && (
-          <p className="error">{errors.description.message}</p>
-        )}
-      </div>
-
-      <div className="form-actions">
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
-        </button>
+      <div className="flex justify-end pt-4">
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={isSubmitting}
+        >
+          {isSubmitting
+            ? 'Saving...'
+            : initialData
+            ? 'Update Trip'
+            : 'Create Trip'}
+        </Button>
       </div>
     </form>
   );

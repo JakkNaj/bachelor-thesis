@@ -1,12 +1,12 @@
 import * as yup from 'yup';
-import { ActivityInput, PostApiActivitiesTripTripIdBody } from '../api/generated/schemas';
+import { PostApiActivitiesTripTripIdBody, PostApiActivitiesTripTripIdBodyType } from '../api/generated/schemas';
 
 export type TActivityFormData = {
   title: string;
   description?: string;
   startTime: string;
   endTime?: string;
-  type: string;
+  type: PostApiActivitiesTripTripIdBodyType;
 };
 
 export const createActivitySchema = (tripStartDate: string, tripEndDate: string) => {
