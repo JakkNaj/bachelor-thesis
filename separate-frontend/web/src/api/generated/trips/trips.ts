@@ -5,534 +5,408 @@
  * API documentation for the Travel Planner application
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseInfiniteQueryResult,
-  DefinedUseQueryResult,
-  InfiniteData,
-  MutationFunction,
-  QueryFunction,
-  QueryKey,
-  UndefinedInitialDataOptions,
-  UseInfiniteQueryOptions,
-  UseInfiniteQueryResult,
-  UseMutationOptions,
-  UseMutationResult,
-  UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+	DataTag,
+	DefinedInitialDataOptions,
+	DefinedUseInfiniteQueryResult,
+	DefinedUseQueryResult,
+	InfiniteData,
+	MutationFunction,
+	QueryFunction,
+	QueryKey,
+	UndefinedInitialDataOptions,
+	UseInfiniteQueryOptions,
+	UseInfiniteQueryResult,
+	UseMutationOptions,
+	UseMutationResult,
+	UseQueryOptions,
+	UseQueryResult,
+} from "@tanstack/react-query";
 
-import type {
-  Error,
-  PostApiTripsBody,
-  PutApiTripsIdBody,
-  Trip
-} from '.././schemas';
+import type { Error, PostApiTripsBody, PutApiTripsIdBody, Trip } from ".././schemas";
 
-import { customInstance } from '../../mutator/custom-instance';
-
-
-
+import { customInstance } from "../../mutator/custom-instance";
 
 /**
  * @summary Get all trips for the authenticated user
  */
-export const getApiTrips = (
-    
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<Trip[]>(
-      {url: `/api/trips`, method: 'GET', signal
-    },
-      );
-    }
-  
+export const getApiTrips = (signal?: AbortSignal) => {
+	return customInstance<Trip[]>({ url: `/api/trips`, method: "GET", signal });
+};
 
 export const getGetApiTripsQueryKey = () => {
-    return [`/api/trips`] as const;
-    }
+	return [`/api/trips`] as const;
+};
 
-    
-export const getGetApiTripsInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>( options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
-) => {
+export const getGetApiTripsInfiniteQueryOptions = <
+	TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>,
+	TError = unknown,
+>(options?: {
+	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}) => {
+	const { query: queryOptions } = options ?? {};
 
-const {query: queryOptions} = options ?? {};
+	const queryKey = queryOptions?.queryKey ?? getGetApiTripsQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiTripsQueryKey();
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTrips>>> = ({ signal }) => getApiTrips(signal);
 
-  
+	return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseInfiniteQueryOptions<
+		Awaited<ReturnType<typeof getApiTrips>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTrips>>> = ({ signal }) => getApiTrips(signal);
+export type GetApiTripsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTrips>>>;
+export type GetApiTripsInfiniteQueryError = unknown;
 
-      
-
-      
-
-   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiTripsInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTrips>>>
-export type GetApiTripsInfiniteQueryError = unknown
-
-
-export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(
-  options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTrips>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTrips>>
-        > , 'initialData'
-      >, }
-
-  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(
-  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTrips>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTrips>>
-        > , 'initialData'
-      >, }
-
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(
-  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
-
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(options: {
+	query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> &
+		Pick<
+			DefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, Awaited<ReturnType<typeof getApiTrips>>>,
+			"initialData"
+		>;
+}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(options?: {
+	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> &
+		Pick<
+			UndefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, Awaited<ReturnType<typeof getApiTrips>>>,
+			"initialData"
+		>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(options?: {
+	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Get all trips for the authenticated user
  */
 
-export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(
-  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
+export function useGetApiTripsInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTrips>>>, TError = unknown>(options?: {
+	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetApiTripsInfiniteQueryOptions(options);
 
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const queryOptions = getGetApiTripsInfiniteQueryOptions(options)
+	query.queryKey = queryOptions.queryKey;
 
-  const query = useInfiniteQuery(queryOptions) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+	return query;
 }
 
+export const getGetApiTripsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(options?: {
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}) => {
+	const { query: queryOptions } = options ?? {};
 
+	const queryKey = queryOptions?.queryKey ?? getGetApiTripsQueryKey();
 
-export const getGetApiTripsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
-) => {
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTrips>>> = ({ signal }) => getApiTrips(signal);
 
-const {query: queryOptions} = options ?? {};
+	return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getApiTrips>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiTripsQueryKey();
+export type GetApiTripsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTrips>>>;
+export type GetApiTripsQueryError = unknown;
 
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTrips>>> = ({ signal }) => getApiTrips(signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiTripsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTrips>>>
-export type GetApiTripsQueryError = unknown
-
-
-export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTrips>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTrips>>
-        > , 'initialData'
-      >, }
-
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTrips>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTrips>>
-        > , 'initialData'
-      >, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(options: {
+	query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> &
+		Pick<
+			DefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, Awaited<ReturnType<typeof getApiTrips>>>,
+			"initialData"
+		>;
+}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(options?: {
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> &
+		Pick<
+			UndefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, Awaited<ReturnType<typeof getApiTrips>>>,
+			"initialData"
+		>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(options?: {
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Get all trips for the authenticated user
  */
 
-export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(options?: {
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>;
+}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetApiTripsQueryOptions(options);
 
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const queryOptions = getGetApiTripsQueryOptions(options)
+	query.queryKey = queryOptions.queryKey;
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+	return query;
 }
-
-
 
 /**
  * @summary Create a new trip
  */
-export const postApiTrips = (
-    postApiTripsBody: PostApiTripsBody,
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<Trip>(
-      {url: `/api/trips`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: postApiTripsBody, signal
-    },
-      );
-    }
-  
+export const postApiTrips = (postApiTripsBody: PostApiTripsBody, signal?: AbortSignal) => {
+	return customInstance<Trip>({
+		url: `/api/trips`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: postApiTripsBody,
+		signal,
+	});
+};
 
+export const getPostApiTripsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError, { data: PostApiTripsBody }, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError, { data: PostApiTripsBody }, TContext> => {
+	const mutationKey = ["postApiTrips"];
+	const { mutation: mutationOptions } = options
+		? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
 
-export const getPostApiTripsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext> => {
-    
-const mutationKey = ['postApiTrips'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, { data: PostApiTripsBody }> = (props) => {
+		const { data } = props ?? {};
 
-      
+		return postApiTrips(data);
+	};
 
+	return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, {data: PostApiTripsBody}> = (props) => {
-          const {data} = props ?? {};
+export type PostApiTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTrips>>>;
+export type PostApiTripsMutationBody = PostApiTripsBody;
+export type PostApiTripsMutationError = unknown;
 
-          return  postApiTrips(data,)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTrips>>>
-    export type PostApiTripsMutationBody = PostApiTripsBody
-    export type PostApiTripsMutationError = unknown
-
-    /**
+/**
  * @summary Create a new trip
  */
-export const usePostApiTrips = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
-): UseMutationResult<
-        Awaited<ReturnType<typeof postApiTrips>>,
-        TError,
-        {data: PostApiTripsBody},
-        TContext
-      > => {
+export const usePostApiTrips = <TError = unknown, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError, { data: PostApiTripsBody }, TContext>;
+}): UseMutationResult<Awaited<ReturnType<typeof postApiTrips>>, TError, { data: PostApiTripsBody }, TContext> => {
+	const mutationOptions = getPostApiTripsMutationOptions(options);
 
-      const mutationOptions = getPostApiTripsMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+	return useMutation(mutationOptions);
+};
+/**
  * @summary Get a trip by ID
  */
-export const getApiTripsId = (
-    id: number,
- signal?: AbortSignal
+export const getApiTripsId = (id: number, signal?: AbortSignal) => {
+	return customInstance<Trip>({ url: `/api/trips/${id}`, method: "GET", signal });
+};
+
+export const getGetApiTripsIdQueryKey = (id: number) => {
+	return [`/api/trips/${id}`] as const;
+};
+
+export const getGetApiTripsIdInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(
+	id: number,
+	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
 ) => {
-      
-      
-      return customInstance<Trip>(
-      {url: `/api/trips/${id}`, method: 'GET', signal
-    },
-      );
-    }
-  
+	const { query: queryOptions } = options ?? {};
 
-export const getGetApiTripsIdQueryKey = (id: number,) => {
-    return [`/api/trips/${id}`] as const;
-    }
+	const queryKey = queryOptions?.queryKey ?? getGetApiTripsIdQueryKey(id);
 
-    
-export const getGetApiTripsIdInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(id: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
-) => {
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTripsId>>> = ({ signal }) => getApiTripsId(id, signal);
 
-const {query: queryOptions} = options ?? {};
+	return { queryKey, queryFn, enabled: !!id, staleTime: 10000, ...queryOptions } as UseInfiniteQueryOptions<
+		Awaited<ReturnType<typeof getApiTripsId>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiTripsIdQueryKey(id);
-
-  
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTripsId>>> = ({ signal }) => getApiTripsId(id, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(id),  staleTime: 10000,  ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiTripsIdInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTripsId>>>
-export type GetApiTripsIdInfiniteQueryError = Error
-
+export type GetApiTripsIdInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTripsId>>>;
+export type GetApiTripsIdInfiniteQueryError = Error;
 
 export function useGetApiTripsIdInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(
- id: number, options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTripsId>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTripsId>>
-        > , 'initialData'
-      >, }
-
-  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options: {
+		query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> &
+			Pick<
+				DefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, Awaited<ReturnType<typeof getApiTripsId>>>,
+				"initialData"
+			>;
+	}
+): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetApiTripsIdInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(
- id: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTripsId>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTripsId>>
-        > , 'initialData'
-      >, }
-
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options?: {
+		query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> &
+			Pick<
+				UndefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, Awaited<ReturnType<typeof getApiTripsId>>>,
+				"initialData"
+			>;
+	}
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetApiTripsIdInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(
- id: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
-
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Get a trip by ID
  */
 
 export function useGetApiTripsIdInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiTripsId>>>, TError = Error>(
- id: number, options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
+	id: number,
+	options?: { query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
+): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetApiTripsIdInfiniteQueryOptions(id, options);
 
-  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const queryOptions = getGetApiTripsIdInfiniteQueryOptions(id,options)
+	query.queryKey = queryOptions.queryKey;
 
-  const query = useInfiniteQuery(queryOptions) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+	return query;
 }
 
-
-
-export const getGetApiTripsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
+export const getGetApiTripsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
+	id: number,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
 ) => {
+	const { query: queryOptions } = options ?? {};
 
-const {query: queryOptions} = options ?? {};
+	const queryKey = queryOptions?.queryKey ?? getGetApiTripsIdQueryKey(id);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiTripsIdQueryKey(id);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTripsId>>> = ({ signal }) => getApiTripsId(id, signal);
 
-  
+	return { queryKey, queryFn, enabled: !!id, staleTime: 10000, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getApiTripsId>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTripsId>>> = ({ signal }) => getApiTripsId(id, signal);
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(id),  staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiTripsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTripsId>>>
-export type GetApiTripsIdQueryError = Error
-
+export type GetApiTripsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTripsId>>>;
+export type GetApiTripsIdQueryError = Error;
 
 export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
- id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTripsId>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTripsId>>
-        > , 'initialData'
-      >, }
-
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options: {
+		query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> &
+			Pick<
+				DefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, Awaited<ReturnType<typeof getApiTripsId>>>,
+				"initialData"
+			>;
+	}
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getApiTripsId>>,
-          TError,
-          Awaited<ReturnType<typeof getApiTripsId>>
-        > , 'initialData'
-      >, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options?: {
+		query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> &
+			Pick<
+				UndefinedInitialDataOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, Awaited<ReturnType<typeof getApiTripsId>>>,
+				"initialData"
+			>;
+	}
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
-
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+	id: number,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
  * @summary Get a trip by ID
  */
 
 export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
+	id: number,
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> }
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getGetApiTripsIdQueryOptions(id, options);
 
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const queryOptions = getGetApiTripsIdQueryOptions(id,options)
+	query.queryKey = queryOptions.queryKey;
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
-
-  return query;
+	return query;
 }
-
-
 
 /**
  * @summary Update a trip
  */
-export const putApiTripsId = (
-    id: number,
-    putApiTripsIdBody: PutApiTripsIdBody,
- ) => {
-      
-      
-      return customInstance<Trip>(
-      {url: `/api/trips/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: putApiTripsIdBody
-    },
-      );
-    }
-  
+export const putApiTripsId = (id: number, putApiTripsIdBody: PutApiTripsIdBody) => {
+	return customInstance<Trip>({
+		url: `/api/trips/${id}`,
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		data: putApiTripsIdBody,
+	});
+};
 
+export const getPutApiTripsIdMutationOptions = <TError = Error, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError, { id: number; data: PutApiTripsIdBody }, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError, { id: number; data: PutApiTripsIdBody }, TContext> => {
+	const mutationKey = ["putApiTripsId"];
+	const { mutation: mutationOptions } = options
+		? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
 
-export const getPutApiTripsIdMutationOptions = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError,{id: number;data: PutApiTripsIdBody}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError,{id: number;data: PutApiTripsIdBody}, TContext> => {
-    
-const mutationKey = ['putApiTripsId'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTripsId>>, { id: number; data: PutApiTripsIdBody }> = (props) => {
+		const { id, data } = props ?? {};
 
-      
+		return putApiTripsId(id, data);
+	};
 
+	return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putApiTripsId>>, {id: number;data: PutApiTripsIdBody}> = (props) => {
-          const {id,data} = props ?? {};
+export type PutApiTripsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTripsId>>>;
+export type PutApiTripsIdMutationBody = PutApiTripsIdBody;
+export type PutApiTripsIdMutationError = Error;
 
-          return  putApiTripsId(id,data,)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutApiTripsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putApiTripsId>>>
-    export type PutApiTripsIdMutationBody = PutApiTripsIdBody
-    export type PutApiTripsIdMutationError = Error
-
-    /**
+/**
  * @summary Update a trip
  */
-export const usePutApiTripsId = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError,{id: number;data: PutApiTripsIdBody}, TContext>, }
-): UseMutationResult<
-        Awaited<ReturnType<typeof putApiTripsId>>,
-        TError,
-        {id: number;data: PutApiTripsIdBody},
-        TContext
-      > => {
+export const usePutApiTripsId = <TError = Error, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError, { id: number; data: PutApiTripsIdBody }, TContext>;
+}): UseMutationResult<Awaited<ReturnType<typeof putApiTripsId>>, TError, { id: number; data: PutApiTripsIdBody }, TContext> => {
+	const mutationOptions = getPutApiTripsIdMutationOptions(options);
 
-      const mutationOptions = getPutApiTripsIdMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+	return useMutation(mutationOptions);
+};
+/**
  * @summary Delete a trip
  */
-export const deleteApiTripsId = (
-    id: number,
- ) => {
-      
-      
-      return customInstance<void>(
-      {url: `/api/trips/${id}`, method: 'DELETE'
-    },
-      );
-    }
-  
+export const deleteApiTripsId = (id: number) => {
+	return customInstance<void>({ url: `/api/trips/${id}`, method: "DELETE" });
+};
 
+export const getDeleteApiTripsIdMutationOptions = <TError = Error, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError, { id: number }, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError, { id: number }, TContext> => {
+	const mutationKey = ["deleteApiTripsId"];
+	const { mutation: mutationOptions } = options
+		? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
 
-export const getDeleteApiTripsIdMutationOptions = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError,{id: number}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError,{id: number}, TContext> => {
-    
-const mutationKey = ['deleteApiTripsId'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiTripsId>>, { id: number }> = (props) => {
+		const { id } = props ?? {};
 
-      
+		return deleteApiTripsId(id);
+	};
 
+	return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiTripsId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
+export type DeleteApiTripsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiTripsId>>>;
 
-          return  deleteApiTripsId(id,)
-        }
+export type DeleteApiTripsIdMutationError = Error;
 
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteApiTripsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiTripsId>>>
-    
-    export type DeleteApiTripsIdMutationError = Error
-
-    /**
+/**
  * @summary Delete a trip
  */
-export const useDeleteApiTripsId = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError,{id: number}, TContext>, }
-): UseMutationResult<
-        Awaited<ReturnType<typeof deleteApiTripsId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
+export const useDeleteApiTripsId = <TError = Error, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError, { id: number }, TContext>;
+}): UseMutationResult<Awaited<ReturnType<typeof deleteApiTripsId>>, TError, { id: number }, TContext> => {
+	const mutationOptions = getDeleteApiTripsIdMutationOptions(options);
 
-      const mutationOptions = getDeleteApiTripsIdMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
+	return useMutation(mutationOptions);
+};
