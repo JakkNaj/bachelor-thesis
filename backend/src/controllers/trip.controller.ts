@@ -120,10 +120,27 @@ export const tripController = {
         res.status(400).json({ message: 'Invalid trip ID' });
         return;
       }
+
+      // Format dates if they are provided
+      const updateData = {
+        ...req.body,
+        ...(req.body.startDate && { startDate: new Date(req.body.startDate) }),
+        ...(req.body.endDate && { endDate: new Date(req.body.endDate) })
+      };
+
+      // Validate dates
+      if (updateData.startDate && updateData.endDate && 
+          new Date(updateData.startDate) > new Date(updateData.endDate)) {
+        res.status(400).json({ message: 'Start date cannot be after end date' });
+        return;
+      }
       
       // Check if trip exists and belongs to user
       const trip = await prisma.trip.findUnique({
-        where: { id: tripId }
+        where: { id: tripId },
+        include: {
+          activities: true
+        }
       });
       
       if (!trip) {
@@ -135,16 +152,44 @@ export const tripController = {
         res.status(403).json({ message: 'You do not have permission to update this trip' });
         return;
       }
+
+      // If dates are being updated, validate activities
+      if (updateData.startDate || updateData.endDate) {
+        const newStartDate = updateData.startDate ? new Date(updateData.startDate) : trip.startDate;
+        const newEndDate = updateData.endDate ? new Date(updateData.endDate) : trip.endDate;
+
+        const invalidActivities = trip.activities.filter(activity => {
+          const activityStart = new Date(activity.startTime);
+          const activityEnd = activity.endTime ? new Date(activity.endTime) : activityStart;
+          
+          return activityStart < newStartDate || activityEnd > newEndDate;
+        });
+
+        if (invalidActivities.length > 0) {
+          res.status(400).json({ 
+            message: 'Cannot update trip dates: Some activities would fall outside the new date range',
+            invalidActivities: invalidActivities.map(a => ({ id: a.id, title: a.title }))
+          });
+          return;
+        }
+      }
       
       // Update the trip
       const updatedTrip = await prisma.trip.update({
         where: { id: tripId },
-        data: req.body
+        data: updateData,
+        include: {
+          activities: true
+        }
       });
       
       res.json(updatedTrip);
     } catch (error) {
-      res.status(500).json({ message: 'Error updating trip' });
+      console.error('Error updating trip:', error);
+      res.status(500).json({ 
+        message: 'Error updating trip',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   },
   
@@ -184,7 +229,7 @@ export const tripController = {
       
       res.status(200).json({ message: 'Trip deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Error deleting trip' });
+      res.status(500).json({ message: 'Error deleting trip', error: error });
     }
   }
 }; 

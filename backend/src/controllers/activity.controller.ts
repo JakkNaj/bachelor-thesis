@@ -17,7 +17,6 @@ export const activityController = {
       }
       
       console.log("adding activity to trip", tripId);
-      // Check if trip exists and belongs to user
       const trip = await prisma.trip.findUnique({
         where: { id: tripId }
       });
@@ -32,7 +31,6 @@ export const activityController = {
         return;
       }
       
-      // Format the dates properly
       const data = {
         ...req.body,
         startTime: new Date(req.body.startTime).toISOString(),
@@ -41,7 +39,6 @@ export const activityController = {
       };
 
       console.log("creating activity in db", data);
-      // Create the activity
       const activity = await prisma.activity.create({
         data
       });
@@ -67,7 +64,6 @@ export const activityController = {
         return;
       }
       
-      // Find the activity and check if it belongs to a trip owned by the user
       const activity = await prisma.activity.findUnique({
         where: { id: activityId },
         include: { trip: true }
@@ -82,16 +78,60 @@ export const activityController = {
         res.status(403).json({ message: 'You do not have permission to update this activity' });
         return;
       }
+
+      const newStartTime = req.body.startTime ? new Date(req.body.startTime) : activity.startTime;
+      const newEndTime = req.body.endTime ? new Date(req.body.endTime) : activity.endTime;
+
+      const tripStartDate = new Date(activity.trip.startDate);
+      const tripEndDate = new Date(activity.trip.endDate);
+
+      if (newStartTime < tripStartDate || newStartTime > tripEndDate) {
+        res.status(400).json({ 
+          message: 'Activity start time must be within trip date range',
+          tripDateRange: {
+            start: tripStartDate.toISOString(),
+            end: tripEndDate.toISOString()
+          }
+        });
+        return;
+      }
+
+      if (newEndTime && (newEndTime < tripStartDate || newEndTime > tripEndDate)) {
+        res.status(400).json({ 
+          message: 'Activity end time must be within trip date range',
+          tripDateRange: {
+            start: tripStartDate.toISOString(),
+            end: tripEndDate.toISOString()
+          }
+        });
+        return;
+      }
+
+      if (newEndTime && newStartTime > newEndTime) {
+        res.status(400).json({ message: 'Activity end time must be after start time' });
+        return;
+      }
+
+      const updateData = {
+        ...req.body,
+        startTime: newStartTime.toISOString(),
+        endTime: newEndTime?.toISOString() || null
+      };
       
       // Update the activity
       const updatedActivity = await prisma.activity.update({
         where: { id: activityId },
-        data: req.body
+        data: updateData,
+        include: { trip: true }
       });
       
       res.json(updatedActivity);
     } catch (error) {
-      res.status(500).json({ message: 'Error updating activity' });
+      console.error('Error updating activity:', error);
+      res.status(500).json({ 
+        message: 'Error updating activity',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   },
   
