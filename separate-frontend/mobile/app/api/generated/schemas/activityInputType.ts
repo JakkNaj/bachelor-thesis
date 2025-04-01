@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostApiActivitiesTripTripIdBodyType = typeof PostApiActivitiesTripTripIdBodyType[keyof typeof PostApiActivitiesTripTripIdBodyType];
+export type ActivityInputType = typeof ActivityInputType[keyof typeof ActivityInputType];
 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PostApiActivitiesTripTripIdBodyType = {
+export const ActivityInputType = {
   TRANSPORT: 'TRANSPORT',
   FLIGHT: 'FLIGHT',
   ACCOMMODATION: 'ACCOMMODATION',

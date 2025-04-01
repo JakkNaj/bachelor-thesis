@@ -7,6 +7,6 @@
  */
 
 export interface Error {
-	/** Error message */
-	message?: string;
+  /** Error message */
+  message?: string;
 }

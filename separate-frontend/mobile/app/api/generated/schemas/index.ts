@@ -7,15 +7,15 @@
  */
 
 export * from './activity';
+export * from './activityInput';
+export * from './activityInputType';
 export * from './authResponse';
 export * from './error';
-export * from './postApiActivitiesTripTripIdBody';
-export * from './postApiActivitiesTripTripIdBodyType';
 export * from './postApiAuthLoginBody';
 export * from './postApiAuthSignupBody';
-export * from './postApiTripsBody';
 export * from './putApiActivitiesIdBody';
 export * from './putApiTripsIdBody';
 export * from './trip';
+export * from './tripInput';
 export * from './user';
 export * from './userResponse';

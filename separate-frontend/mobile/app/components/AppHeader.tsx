@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { authStorage } from "@/lib/auth/auth-storage";
 import { useGetApiUsersProfile } from "@/api/generated/users/users";
 import { Avatar } from "@/components/Avatar";
+import { LogoIcon } from "@/../assets/icons/LogoIcon";
 
 type TAppHeaderProps = {
 	onLogout?: () => void;
@@ -24,7 +25,10 @@ export const AppHeader = ({ onLogout }: TAppHeaderProps) => {
 	return (
 		<View style={{ paddingTop: insets.top }} className="bg-white border-b border-slate-200">
 			<View className="flex-row justify-between items-center px-4 py-3">
-				<Text className="text-xl font-bold">TripPlanner</Text>
+				<View className="flex-row items-center">
+					<LogoIcon size={24} />
+					<Text className="text-xl font-bold ml-2">TripPlanner</Text>
+				</View>
 				<TouchableOpacity onPress={handleLogout}>
 					<Avatar name={userProfile?.name || "Unknown"} size="sm" />
 				</TouchableOpacity>

@@ -1,14 +1,50 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useGetApiTrips } from "@/api/generated/trips/trips";
+import { useGetApiTrips, usePostApiTrips } from "@/api/generated/trips/trips";
 import { TripCard } from "@/components/TripCard";
 import { CrossIcon } from "@/../assets/icons/CrossIcon";
+import { PlusIcon } from "@/../assets/icons/PlusIcon";
+import { Button } from "@/components/Button";
+import { TripFilters } from "@/components/TripFilters";
+import { ETripFilter } from "@/types/trips";
+import { TripInput } from "@/api/generated/schemas";
+import { TripFormModal } from "@/components/TripFormModal";
+import { DateInput } from "@/components/DateInput";
 
 export const AppIndex = () => {
 	const router = useRouter();
 	const { data: trips, isLoading } = useGetApiTrips();
+	const { mutate: createTrip, isPending: isCreating, error: createError } = usePostApiTrips();
 	const [showHero, setShowHero] = useState(true);
+	const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+
+	const filteredTrips = useMemo(() => {
+		if (!trips) return [];
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		switch (activeFilter) {
+			case ETripFilter.UPCOMING:
+				return trips.filter((trip) => new Date(trip.startDate) >= today);
+			case ETripFilter.PAST:
+				return trips.filter((trip) => new Date(trip.startDate) < today);
+			default:
+				return trips;
+		}
+	}, [trips, activeFilter]);
+
+	const handleCreateTrip = (data: TripInput) => {
+		createTrip(
+			{ data },
+			{
+				onSuccess: () => {
+					setIsModalVisible(false);
+				},
+			}
+		);
+	};
 
 	return (
 		<View className="flex-1 bg-white">
@@ -21,14 +57,13 @@ export const AppIndex = () => {
 								<Text className="text-4xl font-bold mb-4">Build your travel plans with ease!</Text>
 								<Text className="text-lg text-slate-600 mb-2">Accessible and customizable trip planning system. Free.</Text>
 								<Text className="text-lg text-slate-600 mb-6">Made by travelers, for travelers.</Text>
-								<TouchableOpacity
-									className="bg-slate-900 py-3 px-6 rounded-lg self-start"
-									onPress={() => router.push("/(app)/trips/new" as any)}
-								>
-									<Text className="text-white font-medium text-base">Get Started</Text>
-								</TouchableOpacity>
+								<Button variant="primary" onPress={() => setIsModalVisible(true)}>
+									Get Started
+								</Button>
 							</View>
-							<CrossIcon size={20} color="#64748b" onPress={() => setShowHero(false)} />
+							<TouchableOpacity onPress={() => setShowHero(false)}>
+								<CrossIcon size={24} color="#64748b" />
+							</TouchableOpacity>
 						</View>
 					</View>
 				)}
@@ -36,30 +71,34 @@ export const AppIndex = () => {
 				{/* Your Trips Header */}
 				<View className={`px-4 mb-4 ${!showHero ? "mt-8" : ""}`}>
 					<View className="flex-row justify-between items-center">
-						<Text className="text-2xl font-bold">Your Trips</Text>
-						<TouchableOpacity
-							className="bg-slate-900 py-2 px-4 rounded-lg"
-							onPress={() => router.push("/(app)/trips/new" as any)}
-						>
-							<Text className="text-white font-medium">Create a new trip</Text>
-						</TouchableOpacity>
+						<Text className="text-3xl font-bold">Your Trips</Text>
+						<Button variant="primary" icon={<PlusIcon size={16} color="#ffffff" />} onPress={() => setIsModalVisible(true)}>
+							Create a new trip
+						</Button>
 					</View>
 				</View>
+
+				{/* Trip Filters */}
+				<TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 			</View>
 
 			{/* Scrollable Trips List */}
 			<ScrollView className="flex-1 px-4 pb-8">
-				<View className="space-y-4">
+				<View className="gap-4">
 					{isLoading ? (
 						<View className="h-32 bg-slate-50 rounded-lg border border-slate-200 p-4">
 							<Text className="text-slate-400">Loading trips...</Text>
 						</View>
-					) : !trips?.length ? (
-						<View className="h-32 bg-slate-50 rounded-lg border border-slate-200 p-4">
-							<Text className="text-slate-400">No trips yet</Text>
+					) : !filteredTrips?.length ? (
+						<View className="flex-1 items-center justify-center py-8">
+							<Text className="text-lg text-slate-700 mb-4">No trips found for this filter.</Text>
+							<Text className="text-base text-slate-600 mb-6">Try selecting a different filter or create a new trip.</Text>
+							<Button variant="secondary" outlined className="self-center" onPress={() => setIsModalVisible(true)}>
+								Create a new trip
+							</Button>
 						</View>
 					) : (
-						trips.map((trip) => (
+						filteredTrips.map((trip) => (
 							<TripCard
 								key={trip.id}
 								id={trip.id}
@@ -73,6 +112,15 @@ export const AppIndex = () => {
 					)}
 				</View>
 			</ScrollView>
+
+			{/* Trip Form Modal */}
+			<TripFormModal
+				isVisible={isModalVisible}
+				onClose={() => setIsModalVisible(false)}
+				onSubmit={handleCreateTrip}
+				isSubmitting={isCreating}
+				submitError={createError as Error | null}
+			/>
 		</View>
 	);
 };

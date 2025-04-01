@@ -5,168 +5,185 @@
  * API documentation for the Travel Planner application
  * OpenAPI spec version: 1.0.0
  */
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery
+} from '@tanstack/react-query';
 import type {
-	DataTag,
-	DefinedInitialDataOptions,
-	DefinedUseInfiniteQueryResult,
-	DefinedUseQueryResult,
-	InfiniteData,
-	QueryFunction,
-	QueryKey,
-	UndefinedInitialDataOptions,
-	UseInfiniteQueryOptions,
-	UseInfiniteQueryResult,
-	UseQueryOptions,
-	UseQueryResult,
-} from "@tanstack/react-query";
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseInfiniteQueryResult,
+  DefinedUseQueryResult,
+  InfiniteData,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import type { Error, UserResponse } from ".././schemas";
+import type {
+  Error,
+  UserResponse
+} from '.././schemas';
 
-import { customInstance } from "../../mutator/custom-instance";
+import { customInstance } from '../../mutator/custom-instance';
+
+
+
 
 /**
  * @summary Get user profile
  */
-export const getApiUsersProfile = (signal?: AbortSignal) => {
-	return customInstance<UserResponse>({ url: `/api/users/profile`, method: "GET", signal });
-};
+export const getApiUsersProfile = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<UserResponse>(
+      {url: `/api/users/profile`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetApiUsersProfileQueryKey = () => {
-	return [`/api/users/profile`] as const;
-};
+    return [`/api/users/profile`] as const;
+    }
 
-export const getGetApiUsersProfileInfiniteQueryOptions = <
-	TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>,
-	TError = Error,
->(options?: {
-	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
+    
+export const getGetApiUsersProfileInfiniteQueryOptions = <TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>, TError = Error>( options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
+) => {
 
-	const queryKey = queryOptions?.queryKey ?? getGetApiUsersProfileQueryKey();
+const {query: queryOptions} = options ?? {};
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiUsersProfile>>> = ({ signal }) => getApiUsersProfile(signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetApiUsersProfileQueryKey();
 
-	return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseInfiniteQueryOptions<
-		Awaited<ReturnType<typeof getApiUsersProfile>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetApiUsersProfileInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsersProfile>>>;
-export type GetApiUsersProfileInfiniteQueryError = Error;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiUsersProfile>>> = ({ signal }) => getApiUsersProfile(signal);
 
-export function useGetApiUsersProfileInfinite<
-	TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>,
-	TError = Error,
->(options: {
-	query: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<typeof getApiUsersProfile>>,
-				TError,
-				Awaited<ReturnType<typeof getApiUsersProfile>>
-			>,
-			"initialData"
-		>;
-}): DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetApiUsersProfileInfinite<
-	TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>,
-	TError = Error,
->(options?: {
-	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<typeof getApiUsersProfile>>,
-				TError,
-				Awaited<ReturnType<typeof getApiUsersProfile>>
-			>,
-			"initialData"
-		>;
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetApiUsersProfileInfinite<
-	TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>,
-	TError = Error,
->(options?: {
-	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiUsersProfileInfiniteQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsersProfile>>>
+export type GetApiUsersProfileInfiniteQueryError = Error
+
+
+export function useGetApiUsersProfileInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>, TError = Error>(
+  options: { query:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiUsersProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiUsersProfile>>
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiUsersProfileInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>, TError = Error>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiUsersProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiUsersProfile>>
+        > , 'initialData'
+      >, }
+
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiUsersProfileInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>, TError = Error>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
+
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get user profile
  */
 
-export function useGetApiUsersProfileInfinite<
-	TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>,
-	TError = Error,
->(options?: {
-	query?: Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}): UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetApiUsersProfileInfiniteQueryOptions(options);
+export function useGetApiUsersProfileInfinite<TData = InfiniteData<Awaited<ReturnType<typeof getApiUsersProfile>>>, TError = Error>(
+  options?: { query?:Partial<UseInfiniteQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
 
-	const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  ):  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-	query.queryKey = queryOptions.queryKey;
+  const queryOptions = getGetApiUsersProfileInfiniteQueryOptions(options)
 
-	return query;
+  const query = useInfiniteQuery(queryOptions) as  UseInfiniteQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
 
-export const getGetApiUsersProfileQueryOptions = <TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getGetApiUsersProfileQueryKey();
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiUsersProfile>>> = ({ signal }) => getApiUsersProfile(signal);
+export const getGetApiUsersProfileQueryOptions = <TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
+) => {
 
-	return { queryKey, queryFn, staleTime: 10000, ...queryOptions } as UseQueryOptions<
-		Awaited<ReturnType<typeof getApiUsersProfile>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+const {query: queryOptions} = options ?? {};
 
-export type GetApiUsersProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsersProfile>>>;
-export type GetApiUsersProfileQueryError = Error;
+  const queryKey =  queryOptions?.queryKey ?? getGetApiUsersProfileQueryKey();
 
-export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<typeof getApiUsersProfile>>,
-				TError,
-				Awaited<ReturnType<typeof getApiUsersProfile>>
-			>,
-			"initialData"
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<typeof getApiUsersProfile>>,
-				TError,
-				Awaited<ReturnType<typeof getApiUsersProfile>>
-			>,
-			"initialData"
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiUsersProfile>>> = ({ signal }) => getApiUsersProfile(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn,   staleTime: 10000,  ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiUsersProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getApiUsersProfile>>>
+export type GetApiUsersProfileQueryError = Error
+
+
+export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiUsersProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiUsersProfile>>
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiUsersProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getApiUsersProfile>>
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get user profile
  */
 
-export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getGetApiUsersProfileQueryOptions(options);
+export function useGetApiUsersProfile<TData = Awaited<ReturnType<typeof getApiUsersProfile>>, TError = Error>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiUsersProfile>>, TError, TData>>, }
 
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-	query.queryKey = queryOptions.queryKey;
+  const queryOptions = getGetApiUsersProfileQueryOptions(options)
 
-	return query;
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
 }
+
+
+

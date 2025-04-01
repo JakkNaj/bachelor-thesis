@@ -24,7 +24,7 @@ export const Button = ({
 	outlined = false,
 	...props
 }: TButtonProps) => {
-	const baseStyles = `py-3 px-4 rounded-lg items-center justify-center ${fullWidth ? "w-full" : ""}`;
+	const baseStyles = `py-2 px-4 rounded-lg items-center justify-center ${fullWidth ? "w-full" : "self-start"}`;
 
 	const variants = {
 		primary: "bg-slate-900 active:bg-slate-800",
@@ -48,11 +48,9 @@ export const Button = ({
 			{...props}
 		>
 			<View className="flex-row items-center">
-				{icon && <View className="mr-3">{icon}</View>}
+				{icon && <View className="mr-2">{icon}</View>}
 				<Text
-					className={`text-lg font-medium ${
-						outlined ? outlinedTextStyle : textVariants[variant]
-					} ${disabled ? "opacity-50" : ""}`}
+					className={`text-base font-medium ${outlined ? outlinedTextStyle : textVariants[variant]} ${disabled ? "opacity-50" : ""}`}
 				>
 					{isLoading ? loadingText || "Loading..." : children}
 				</Text>

@@ -47,3 +47,34 @@ export const formatDateRange = (startDate: string, endDate: string) => {
 		return "Invalid date range";
 	}
 };
+
+export const formatDateTimeRange = (startDate: string, endDate: string) => {
+	const start = new Date(startDate);
+	const end = new Date(endDate);
+
+	const startDay = start.toLocaleDateString("en-US", {
+		weekday: "long",
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+	const startTime = start.toLocaleTimeString("en-US", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	});
+
+	const endDay = end.toLocaleDateString("en-US", {
+		weekday: "long",
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+	const endTime = end.toLocaleTimeString("en-US", {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	});
+
+	return `${startDay} ${startTime} - ${endDay} ${endTime}`;
+};

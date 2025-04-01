@@ -24,7 +24,19 @@ export default function AppLayout() {
 				headerShadowVisible: false,
 			}}
 		>
-			<Stack.Screen name="index" />
+			<Stack.Screen
+				name="index"
+				options={{
+					title: "Home",
+				}}
+			/>
+			<Stack.Screen
+				name="trips/[id]"
+				options={{
+					title: "Trip Details",
+					headerBackTitle: "Back to Home",
+				}}
+			/>
 		</Stack>
 	);
 }
