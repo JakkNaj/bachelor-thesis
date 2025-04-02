@@ -40,7 +40,7 @@ export const Signup = () => {
 				}
 			},
 			onError: (error: Error) => {
-				setError("Error: " + error.message);
+				setError("Email is already taken");
 			},
 		},
 	});
@@ -71,7 +71,7 @@ export const Signup = () => {
 										onChangeText={onChange}
 										value={value}
 										autoCapitalize="words"
-										error={errors.name?.message || error}
+										error={errors.name?.message}
 									/>
 								)}
 							/>
@@ -114,6 +114,11 @@ export const Signup = () => {
 					</View>
 
 					<View className="mb-8">
+						{error && (
+							<View className="mb-4 p-3 bg-red-50 rounded-lg">
+								<Text className="text-lg text-red-500">{error}</Text>
+							</View>
+						)}
 						<Button
 							fullWidth
 							onPress={handleSubmit(onSubmit)}

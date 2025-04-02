@@ -22,6 +22,13 @@ module.exports = {
             staleTime: 10000,
           },
         },
+        schemas: {
+					input: {
+						prefix: "T",
+						suffix: "Input",
+						operations: ["post", "put"],
+					},
+				},
       },
     },
   },

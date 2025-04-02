@@ -11,9 +11,10 @@ type TSelectProps = {
 	}>;
 	placeholder?: string;
 	error?: string;
+	closeOnSelect?: boolean;
 };
 
-export const Select = ({ value, onValueChange, items, placeholder, error }: TSelectProps) => {
+export const Select = ({ value, onValueChange, items, placeholder, error, closeOnSelect = true }: TSelectProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const selectedItem = items.find((item) => item.value === value);
@@ -44,7 +45,9 @@ export const Select = ({ value, onValueChange, items, placeholder, error }: TSel
 						selectedValue={value}
 						onValueChange={(itemValue) => {
 							onValueChange(itemValue);
-							setIsOpen(false);
+							if (closeOnSelect) {
+								setIsOpen(false);
+							}
 						}}
 					>
 						{items.map((item) => (

@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { Activity } from "@/api/generated/schemas/activity";
 import { Button } from "@/components/Button";
 import { formatDateRange } from "@/lib/utils/dateUtils";
-import { EyeIcon } from "@/../assets/icons/EyeIcon";
+import { EyeIcon } from "@/assets/icons/EyeIcon";
 
 type TTripCardProps = {
 	id: number;

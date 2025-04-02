@@ -3,9 +3,9 @@ import { Activity, ActivityInput, ActivityInputType } from "@/api/generated/sche
 import { formatDateTimeForActivityCard } from "@/lib/utils/dateUtils";
 import { Button } from "./Button";
 import { useState } from "react";
-import { CrossIcon } from "@/../assets/icons/CrossIcon";
-import { PencilIcon } from "@/../assets/icons/PencilIcon";
-import { DotsIcon } from "@/../assets/icons/DotsIcon";
+import { CrossIcon } from "@/assets/icons/CrossIcon";
+import { PencilIcon } from "@/assets/icons/PencilIcon";
+import { DotsIcon } from "@/assets/icons/DotsIcon";
 import { ActivityFormModal } from "./ActivityFormModal";
 import { useActivityActions } from "@/hooks/useActivityActions";
 

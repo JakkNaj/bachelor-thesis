@@ -1,7 +1,7 @@
 import { Modal, View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { TripForm } from "./TripForm";
 import { Trip, TripInput } from "@/api/generated/schemas";
-import { CrossIcon } from "@/../assets/icons/CrossIcon";
+import { CrossIcon } from "@/assets/icons/CrossIcon";
 
 type TTripFormModalProps = {
 	isVisible: boolean;

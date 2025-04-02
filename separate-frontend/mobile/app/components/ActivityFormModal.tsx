@@ -1,7 +1,7 @@
 import { Modal, View, Text, Pressable, SafeAreaView } from "react-native";
 import { ActivityInput } from "@/api/generated/schemas";
 import { ActivityForm } from "./ActivityForm";
-import { CrossIcon } from "@/../assets/icons/CrossIcon";
+import { CrossIcon } from "@/assets/icons/CrossIcon";
 
 type TActivityFormModalProps = {
 	isVisible: boolean;

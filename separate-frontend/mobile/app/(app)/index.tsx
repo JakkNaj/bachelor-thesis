@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { getGetApiTripsQueryKey, useGetApiTrips } from "@/api/generated/trips/trips";
 import { TripCard } from "@/components/TripCard";
-import { CrossIcon } from "@/../assets/icons/CrossIcon";
-import { PlusIcon } from "@/../assets/icons/PlusIcon";
+import { CrossIcon } from "@/assets/icons/CrossIcon";
+import { PlusIcon } from "@/assets/icons/PlusIcon";
 import { Button } from "@/components/Button";
 import { TripFilters } from "@/components/TripFilters";
 import { ETripFilter } from "@/types/trips";
@@ -45,7 +45,7 @@ export const AppIndex = () => {
 				{showHero && (
 					<View className="px-4 py-4">
 						<View className="flex-row justify-between items-start">
-							<View className="flex-1 mr-4">
+							<View className="flex-1 mr-4 mb-2">
 								<Text className="text-4xl font-bold mb-4">Build your travel plans with ease!</Text>
 								<Text className="text-lg text-slate-600 mb-2">Accessible and customizable trip planning system. Free.</Text>
 								<Text className="text-lg text-slate-600 mb-6">Made by travelers, for travelers.</Text>

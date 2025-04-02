@@ -37,8 +37,8 @@ export const ActivityForm = ({ initialData, onSubmit, isSubmitting, submitError,
 		defaultValues: {
 			title: initialData?.title ?? "",
 			description: initialData?.description ?? "",
-			startTime: initialData?.startTime ? formatDateForInput(initialData.startTime) : "",
-			endTime: initialData?.endTime ? formatDateForInput(initialData.endTime) : "",
+			startTime: initialData?.startTime ? formatDateForInput(initialData.startTime) : formatDateForInput(tripStartDate),
+			endTime: initialData?.endTime ? formatDateForInput(initialData.endTime) : formatDateForInput(tripEndDate),
 			type: initialData?.type ?? ActivityInputType.OTHER,
 		},
 		context: {
@@ -103,6 +103,7 @@ export const ActivityForm = ({ initialData, onSubmit, isSubmitting, submitError,
 									items={activityTypeOptions}
 									placeholder="Select activity type"
 									error={errors.type?.message}
+									closeOnSelect={false}
 								/>
 							)}
 						/>

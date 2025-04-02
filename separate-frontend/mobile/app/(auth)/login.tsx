@@ -39,7 +39,7 @@ export const Login = () => {
 				}
 			},
 			onError: (error: Error) => {
-				setError("Error: " + error.message);
+				setError("Wrong email or password");
 			},
 		},
 	});
@@ -71,7 +71,7 @@ export const Login = () => {
 										value={value}
 										autoCapitalize="none"
 										keyboardType="email-address"
-										error={errors.email?.message || error}
+										error={errors.email?.message}
 									/>
 								)}
 							/>
@@ -96,6 +96,11 @@ export const Login = () => {
 					</View>
 
 					<View className="mb-8">
+						{error && (
+							<View className="mb-4 p-3 bg-red-50 rounded-lg">
+								<Text className="text-lg text-red-500">{error}</Text>
+							</View>
+						)}
 						<Button
 							fullWidth
 							onPress={handleSubmit(onSubmit)}

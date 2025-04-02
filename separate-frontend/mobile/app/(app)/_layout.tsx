@@ -4,7 +4,7 @@ import { authStorage } from "@/lib/auth/auth-storage";
 import { Avatar } from "@/components/Avatar";
 import { useGetApiUsersProfile } from "@/api/generated/users/users";
 import { TouchableOpacity, View, Text } from "react-native";
-import { LogoIcon } from "@/../assets/icons/LogoIcon";
+import { LogoIcon } from "@/assets/icons/LogoIcon";
 
 export default function AppLayout() {
 	const router = useRouter();
