@@ -1,4 +1,4 @@
-import { useGetApiTrips, usePostApiTrips } from "../api/generated/trips/trips";
+import { useGetApiTrips } from "../api/generated/trips/trips";
 import { Button } from "../components/Button";
 import { TripFilters } from "../components/TripFilters";
 import { useState, useMemo } from "react";
@@ -6,31 +6,24 @@ import { ETripFilter } from "../types/trips";
 import { TripCard } from "../components/TripCard";
 import { TripForm } from "../components/TripForm";
 import { TripInput } from "../api/generated/schemas";
-import { useNavigate } from "react-router-dom";
 import { SidePanel } from "../components/SidePanel";
+import { useTripActions } from "../hooks/useTripActions";
 
 type THomeProps = {
 	className?: string;
 };
 
 export const Home = ({ className }: THomeProps) => {
-	const navigate = useNavigate();
 	const [isFormOpen, setIsFormOpen] = useState(false);
 	const { data: trips } = useGetApiTrips();
 	const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
+	const { createTrip, isCreating, createError } = useTripActions();
 
-	const {
-		mutate: createTrip,
-		isPending,
-		error,
-	} = usePostApiTrips({
-		mutation: {
-			onSuccess: (data) => {
-				setIsFormOpen(false);
-				navigate(`/trips/${data.id}`);
-			},
-		},
-	});
+	const handleCreateTrip = (data: TripInput) => {
+		createTrip(data, () => {
+			setIsFormOpen(false);
+		});
+	};
 
 	const filteredTrips = useMemo(() => {
 		if (!trips) return [];
@@ -109,7 +102,7 @@ export const Home = ({ className }: THomeProps) => {
 				<div className="mb-6">
 					<h2 className="text-2xl font-semibold">New Trip</h2>
 				</div>
-				<TripForm onSubmit={(data: TripInput) => createTrip({ data })} isSubmitting={isPending} submitError={error as Error} />
+				<TripForm onSubmit={handleCreateTrip} isSubmitting={isCreating} submitError={createError as Error} />
 			</SidePanel>
 		</div>
 	);

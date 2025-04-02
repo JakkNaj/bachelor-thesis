@@ -2,11 +2,12 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore, EAuthStatus } from "../store/authStore";
 import { usePostApiAuthLogin } from "../api/generated/auth/auth";
 import { AuthResponse } from "../api/generated/schemas";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { useState, useEffect } from "react";
 
 type TLoginFormData = {
 	email: string;
@@ -21,22 +22,30 @@ const loginSchema = yup.object({
 export const Login = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { setAuth } = useAuthStore();
+	const { setAuth, status } = useAuthStore();
+	const [loginError, setLoginError] = useState<string | null>(null);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const searchParams = new URLSearchParams(window.location.search);
 	const redirectPath = searchParams.get("redirect") || location.state?.from?.pathname || "/";
 
-	const {
-		mutate: login,
-		isPending,
-		error,
-	} = usePostApiAuthLogin({
+	useEffect(() => {
+		if (status === EAuthStatus.AUTHENTICATED) {
+			navigate(redirectPath, { replace: true });
+		}
+	}, [status, navigate, redirectPath]);
+
+	const { mutate: login, isPending } = usePostApiAuthLogin({
 		mutation: {
 			onSuccess: (data: AuthResponse) => {
 				if (data.token && data.user) {
 					setAuth(data.token, data.user);
 					navigate(redirectPath, { replace: true });
 				}
+			},
+			onError: () => {
+				setLoginError("Invalid email or password. Please try again.");
+				setIsSubmitting(false);
 			},
 		},
 	});
@@ -50,6 +59,8 @@ export const Login = () => {
 	});
 
 	const onSubmit = (data: TLoginFormData) => {
+		setLoginError(null);
+		setIsSubmitting(true);
 		login({ data });
 	};
 
@@ -61,15 +72,15 @@ export const Login = () => {
 					<p className="mt-2 text-sm text-slate-600 text-center">Please sign in to your account</p>
 				</div>
 
-				{error && (
-					<div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg">
-						{error instanceof Error ? error.message : "An error occurred during login"}
-					</div>
-				)}
-
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6 flex flex-col">
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						handleSubmit(onSubmit)(e);
+					}}
+					className="space-y-2 flex flex-col"
+				>
 					<div>
-						<label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+						<label htmlFor="email" className="block text-sm font-medium text-slate-700 mt-1">
 							Email
 						</label>
 						<Input
@@ -94,7 +105,9 @@ export const Login = () => {
 						/>
 					</div>
 
-					<Button type="submit" isLoading={isPending} loadingText="Signing in...">
+					{loginError && <div className="bg-red-50 text-red-500 text-sm p-3 rounded-lg">{loginError}</div>}
+
+					<Button type="submit" isLoading={isPending || isSubmitting} loadingText="Signing in...">
 						Sign in
 					</Button>
 				</form>

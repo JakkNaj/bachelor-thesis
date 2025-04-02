@@ -8,6 +8,7 @@
 
 export * from './activity';
 export * from './activityInput';
+export * from './activityInputType';
 export * from './authResponse';
 export * from './error';
 export * from './loginRequest';

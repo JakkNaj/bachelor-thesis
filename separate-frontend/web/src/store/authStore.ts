@@ -60,7 +60,6 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 		} catch (error) {
 			console.error("Logout error:", error);
 		} finally {
-			// Always clear auth state, even if the API call fails
 			Cookies.remove("auth_token");
 			set({
 				status: EAuthStatus.UNAUTHENTICATED,
@@ -72,8 +71,6 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 
 	checkAuth: () => {
 		const token = Cookies.get("auth_token");
-		const currentPath = window.location.pathname;
-		const isAuthRoute = currentPath === "/login" || currentPath === "/register" || currentPath === "/404" || currentPath === "*";
 
 		if (token) {
 			// Set initial authenticated state
@@ -91,16 +88,13 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 					set({ user });
 				})
 				.catch(() => {
-					// If profile fetch fails, clear auth and redirect
+					// If profile fetch fails, clear auth
 					Cookies.remove("auth_token");
 					set({
 						status: EAuthStatus.UNAUTHENTICATED,
 						token: null,
 						user: null,
 					});
-					if (!isAuthRoute) {
-						window.location.href = `/login?redirect=${currentPath}`;
-					}
 				});
 		} else {
 			set({
@@ -108,9 +102,6 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 				token: null,
 				user: null,
 			});
-			if (!isAuthRoute) {
-				window.location.href = `/login?redirect=${currentPath}`;
-			}
 		}
 	},
 }));

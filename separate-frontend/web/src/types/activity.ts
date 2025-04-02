@@ -1,17 +1,10 @@
-export enum EActivityTypes {
-	FLIGHT = "FLIGHT",
-	TRANSPORT = "TRANSPORT",
-	REMINDER = "REMINDER",
-	ACCOMMODATION = "ACCOMMODATION",
-	FOOD = "FOOD",
-	OTHER = "OTHER",
-}
+import { ActivityInputType } from "../api/generated/schemas";
 
-export const ACTIVITY_TYPE_LABELS: Record<EActivityTypes, string> = {
-	[EActivityTypes.FLIGHT]: "Flight",
-	[EActivityTypes.TRANSPORT]: "Transport",
-	[EActivityTypes.REMINDER]: "Reminder",
-	[EActivityTypes.ACCOMMODATION]: "Accommodation",
-	[EActivityTypes.FOOD]: "Food & Dining",
-	[EActivityTypes.OTHER]: "Other",
+export const ACTIVITY_TYPE_LABELS: Record<ActivityInputType, string> = {
+	[ActivityInputType.FLIGHT]: "Flight",
+	[ActivityInputType.TRANSPORT]: "Transport",
+	[ActivityInputType.REMINDER]: "Reminder",
+	[ActivityInputType.ACCOMMODATION]: "Accommodation",
+	[ActivityInputType.FOOD]: "Food & Dining",
+	[ActivityInputType.OTHER]: "Other",
 };

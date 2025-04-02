@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useGetApiTripsId, useDeleteApiTripsId, usePutApiTripsId, getGetApiTripsQueryKey } from "../api/generated/trips/trips";
+import { useGetApiTripsId } from "../api/generated/trips/trips";
 import { Button } from "../components/Button";
 import { BackIcon } from "../assets/icons/BackIcon";
 import { formatDate } from "../utils/dateUtils";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import { SidePanel } from "../components/SidePanel";
 import { TripForm } from "../components/TripForm";
 import { TTripFormData } from "../types/tripFormSchema";
-import { useQueryClient } from "@tanstack/react-query";
+import { useTripActions } from "../hooks/useTripActions";
 
 type TTripDetailsProps = {
 	className?: string;
@@ -17,37 +17,24 @@ type TTripDetailsProps = {
 export const TripDetails = ({ className }: TTripDetailsProps) => {
 	const { tripId } = useParams<{ tripId: string }>();
 	const navigate = useNavigate();
-	const queryClient = useQueryClient();
 	const [isEditingTrip, setIsEditingTrip] = useState(false);
 
-	const { data: trip, isLoading, isError, error, refetch } = useGetApiTripsId(Number(tripId));
-
-	const {
-		mutate: updateTrip,
-		isPending: isUpdating,
-		error: updateError,
-	} = usePutApiTripsId({
-		mutation: {
-			onSuccess: () => {
-				setIsEditingTrip(false);
-				refetch();
-			},
-		},
-	});
+	const { data: trip, isLoading, isError, error } = useGetApiTripsId(Number(tripId));
+	const { updateTrip, deleteTrip, isUpdating, isDeleting, updateError } = useTripActions({ tripId: Number(tripId) });
 
 	const handleTripUpdateSubmit = (data: TTripFormData) => {
-		if (!trip) return;
-		updateTrip({ id: trip.id, data });
+		updateTrip(data, () => {
+			setIsEditingTrip(false);
+		});
 	};
 
-	const { mutate: deleteTrip, isPending: isDeleting } = useDeleteApiTripsId({
-		mutation: {
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: getGetApiTripsQueryKey() });
+	const handleDelete = () => {
+		if (confirm("Are you sure you want to delete this trip? This action cannot be undone.")) {
+			deleteTrip(() => {
 				navigate("/");
-			},
-		},
-	});
+			});
+		}
+	};
 
 	if (isLoading) {
 		return <div className="text-center py-8">Loading trip details...</div>;
@@ -64,12 +51,6 @@ export const TripDetails = ({ className }: TTripDetailsProps) => {
 			</div>
 		);
 	}
-
-	const handleDelete = () => {
-		if (confirm("Are you sure you want to delete this trip? This action cannot be undone.")) {
-			deleteTrip({ id: trip.id });
-		}
-	};
 
 	return (
 		<div className={className}>
@@ -101,12 +82,8 @@ export const TripDetails = ({ className }: TTripDetailsProps) => {
 				activities={trip.activities || []}
 				tripStartDate={trip.startDate}
 				tripEndDate={trip.endDate}
-				onActivityAdded={() => {
-					refetch();
-				}}
-				onActivityUpdated={() => {
-					refetch();
-				}}
+				onActivityAdded={() => {}}
+				onActivityUpdated={() => {}}
 			/>
 
 			<SidePanel isOpen={isEditingTrip} onClose={() => setIsEditingTrip(false)}>

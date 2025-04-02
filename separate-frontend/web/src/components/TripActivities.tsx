@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Activity } from "../api/generated/schemas";
+import { Activity, ActivityInput } from "../api/generated/schemas";
 import { Button } from "./Button";
 import { PlusIcon } from "../assets/icons/PlusIcon";
 import { SidePanel } from "./SidePanel";
 import { ActivityForm } from "./ActivityForm";
-import { usePostApiActivitiesTripTripId } from "../api/generated/activities/activities";
-import { TActivityFormData } from "../types/activityFormSchema";
 import { ActivityStepper } from "./ActivityStepper";
+import { useActivityActions } from "../hooks/useActivityActions";
 
 type TTripActivitiesProps = {
 	tripId: number;
@@ -26,18 +25,13 @@ export const TripActivities = ({
 	onActivityUpdated,
 }: TTripActivitiesProps) => {
 	const [isAddingActivity, setIsAddingActivity] = useState(false);
+	const { createActivity, isCreating, createError } = useActivityActions({ tripId });
 
-	const { mutate: createActivity, isPending } = usePostApiActivitiesTripTripId({
-		mutation: {
-			onSuccess: () => {
-				setIsAddingActivity(false);
-				onActivityAdded();
-			},
-		},
-	});
-
-	const handleSubmit = (data: TActivityFormData) => {
-		createActivity({ tripId, data });
+	const handleSubmit = (data: ActivityInput) => {
+		createActivity(data, () => {
+			setIsAddingActivity(false);
+			onActivityAdded();
+		});
 	};
 
 	return (
@@ -58,6 +52,7 @@ export const TripActivities = ({
 							activities={activities}
 							onActivityUpdated={onActivityUpdated}
 							tripDates={{ startDate: tripStartDate, endDate: tripEndDate }}
+							tripId={tripId}
 						/>
 					) : (
 						<div className="text-center py-8 flex flex-col items-center gap-1">
@@ -75,7 +70,13 @@ export const TripActivities = ({
 
 			<SidePanel isOpen={isAddingActivity} onClose={() => setIsAddingActivity(false)}>
 				<h2 className="text-2xl font-bold mb-6">Add New Activity</h2>
-				<ActivityForm onSubmit={handleSubmit} isSubmitting={isPending} tripStartDate={tripStartDate} tripEndDate={tripEndDate} />
+				<ActivityForm
+					onSubmit={handleSubmit}
+					isSubmitting={isCreating}
+					submitError={createError as Error}
+					tripStartDate={tripStartDate}
+					tripEndDate={tripEndDate}
+				/>
 			</SidePanel>
 		</>
 	);

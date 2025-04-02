@@ -4,9 +4,9 @@ import { Button } from "./Button";
 import { useState } from "react";
 import { SidePanel } from "./SidePanel";
 import { ActivityForm } from "./ActivityForm";
-import { usePutApiActivitiesId, useDeleteApiActivitiesId } from "../api/generated/activities/activities";
 import { CrossIcon } from "../assets/icons/CrossIcon";
 import { TActivityFormData } from "../types/activityFormSchema";
+import { useActivityActions } from "../hooks/useActivityActions";
 
 type TActivityStepperProps = {
 	activities: Activity[];
@@ -15,36 +15,40 @@ type TActivityStepperProps = {
 		startDate: string;
 		endDate: string;
 	};
+	tripId: number;
 };
 
-export const ActivityStepper = ({ activities, onActivityUpdated, tripDates }: TActivityStepperProps) => {
+export const ActivityStepper = ({ activities, onActivityUpdated, tripDates, tripId }: TActivityStepperProps) => {
 	const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
+	const [deletingActivityId, setDeletingActivityId] = useState<number | undefined>(undefined);
 
-	const {
-		mutate: updateActivity,
-		isPending: isUpdating,
-		error: updateError,
-	} = usePutApiActivitiesId({
-		mutation: {
-			onSuccess: () => {
-				setEditingActivity(null);
-				onActivityUpdated();
-			},
-		},
+	const { updateActivity, isUpdating, updateError } = useActivityActions({
+		tripId,
+		activityId: editingActivity?.id,
 	});
 
-	const { mutate: deleteActivity, isPending: isDeleting } = useDeleteApiActivitiesId({
-		mutation: {
-			onSuccess: () => {
-				onActivityUpdated();
-			},
-		},
+	const { deleteActivity, isDeleting } = useActivityActions({
+		tripId,
 	});
 
 	const handleDelete = (activity: Activity) => {
 		if (confirm("Are you sure you want to delete this activity? This action cannot be undone.")) {
-			deleteActivity({ id: activity.id });
+			// Set the deleting state for UI feedback
+			setDeletingActivityId(activity.id);
+
+			// Call the delete function with the activity ID directly
+			deleteActivity(activity.id, () => {
+				setDeletingActivityId(undefined);
+				onActivityUpdated();
+			});
 		}
+	};
+
+	const handleUpdateActivity = (data: TActivityFormData) => {
+		updateActivity(data, () => {
+			setEditingActivity(null);
+			onActivityUpdated();
+		});
 	};
 
 	const sortedActivities = activities.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
@@ -91,7 +95,7 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates }: TA
 									<Button
 										variant="danger"
 										onClick={() => handleDelete(activity)}
-										disabled={isDeleting}
+										disabled={isDeleting && deletingActivityId === activity.id}
 										className="p-2 text-red-600 hover:text-red-700 disabled:opacity-50"
 									>
 										<CrossIcon className="w-5 h-5" />
@@ -107,7 +111,7 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates }: TA
 				{editingActivity && (
 					<ActivityForm
 						initialData={editingActivity as TActivityFormData}
-						onSubmit={(data) => updateActivity({ id: editingActivity.id, data })}
+						onSubmit={handleUpdateActivity}
 						isSubmitting={isUpdating}
 						submitError={updateError as Error}
 						tripStartDate={tripDates.startDate}

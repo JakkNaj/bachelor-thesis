@@ -194,6 +194,50 @@
 						"description": "Error message"
 					}
 				}
+			},
+			"TripInput": {
+				"type": "object",
+				"required": ["title", "startDate", "endDate"],
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				}
+			},
+			"ActivityInput": {
+				"type": "object",
+				"required": ["title", "type", "startTime"],
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": ["TRANSPORT", "FLIGHT", "ACCOMMODATION", "FOOD", "REMINDER", "OTHER"]
+					},
+					"startTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"endTime": {
+						"type": "string",
+						"format": "date-time"
+					}
+				}
 			}
 		}
 	},
@@ -228,28 +272,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"required": ["title", "type", "startTime"],
-								"properties": {
-									"title": {
-										"type": "string"
-									},
-									"description": {
-										"type": "string"
-									},
-									"type": {
-										"type": "string",
-										"enum": ["TRANSPORT", "FLIGHT", "ACCOMMODATION", "FOOD", "REMINDER", "OTHER"]
-									},
-									"startTime": {
-										"type": "string",
-										"format": "date-time"
-									},
-									"endTime": {
-										"type": "string",
-										"format": "date-time"
-									}
-								}
+								"$ref": "#/components/schemas/ActivityInput"
 							}
 						}
 					}
@@ -554,24 +577,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"type": "object",
-								"required": ["title", "startDate", "endDate"],
-								"properties": {
-									"title": {
-										"type": "string"
-									},
-									"description": {
-										"type": "string"
-									},
-									"startDate": {
-										"type": "string",
-										"format": "date-time"
-									},
-									"endDate": {
-										"type": "string",
-										"format": "date-time"
-									}
-								}
+								"$ref": "#/components/schemas/TripInput"
 							}
 						}
 					}
