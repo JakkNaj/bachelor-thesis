@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useGetApiTrips, usePostApiTrips } from "@/api/generated/trips/trips";
+import { getGetApiTripsQueryKey, useGetApiTrips } from "@/api/generated/trips/trips";
 import { TripCard } from "@/components/TripCard";
 import { CrossIcon } from "@/../assets/icons/CrossIcon";
 import { PlusIcon } from "@/../assets/icons/PlusIcon";
@@ -10,12 +10,11 @@ import { TripFilters } from "@/components/TripFilters";
 import { ETripFilter } from "@/types/trips";
 import { TripInput } from "@/api/generated/schemas";
 import { TripFormModal } from "@/components/TripFormModal";
-import { DateInput } from "@/components/DateInput";
+import { useTripActions } from "@/hooks/useTripActions";
 
 export const AppIndex = () => {
-	const router = useRouter();
 	const { data: trips, isLoading } = useGetApiTrips();
-	const { mutate: createTrip, isPending: isCreating, error: createError } = usePostApiTrips();
+	const { createTrip, isCreating, createError } = useTripActions();
 	const [showHero, setShowHero] = useState(true);
 	const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,14 +35,7 @@ export const AppIndex = () => {
 	}, [trips, activeFilter]);
 
 	const handleCreateTrip = (data: TripInput) => {
-		createTrip(
-			{ data },
-			{
-				onSuccess: () => {
-					setIsModalVisible(false);
-				},
-			}
-		);
+		createTrip(data, () => setIsModalVisible(false));
 	};
 
 	return (
@@ -51,7 +43,7 @@ export const AppIndex = () => {
 			{/* Hero Section */}
 			<View className="bg-white">
 				{showHero && (
-					<View className="px-4 py-8">
+					<View className="px-4 py-4">
 						<View className="flex-row justify-between items-start">
 							<View className="flex-1 mr-4">
 								<Text className="text-4xl font-bold mb-4">Build your travel plans with ease!</Text>
@@ -69,9 +61,9 @@ export const AppIndex = () => {
 				)}
 
 				{/* Your Trips Header */}
-				<View className={`px-4 mb-4 ${!showHero ? "mt-8" : ""}`}>
+				<View className={`px-4 mb-4 ${!showHero ? "mt-6" : ""}`}>
 					<View className="flex-row justify-between items-center">
-						<Text className="text-3xl font-bold">Your Trips</Text>
+						<Text className="text-4xl font-bold">Your Trips</Text>
 						<Button variant="primary" icon={<PlusIcon size={16} color="#ffffff" />} onPress={() => setIsModalVisible(true)}>
 							Create a new trip
 						</Button>
@@ -83,7 +75,7 @@ export const AppIndex = () => {
 			</View>
 
 			{/* Scrollable Trips List */}
-			<ScrollView className="flex-1 px-4 pb-8">
+			<ScrollView className="flex-1 px-4 pb-8 pt-2 bg-slate-50">
 				<View className="gap-4">
 					{isLoading ? (
 						<View className="h-32 bg-slate-50 rounded-lg border border-slate-200 p-4">

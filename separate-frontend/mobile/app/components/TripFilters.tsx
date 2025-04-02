@@ -9,7 +9,7 @@ type TTripFiltersProps = {
 
 export const TripFilters = ({ activeFilter, onFilterChange }: TTripFiltersProps) => {
 	return (
-		<View className="flex-row justify-center gap-4 py-4 bg-white">
+		<View className="flex-row justify-center gap-4 pt-2 pb-4 bg-white">
 			<FilterLink isActive={activeFilter === ETripFilter.ALL} onPress={() => onFilterChange(ETripFilter.ALL)}>
 				All Trips
 			</FilterLink>

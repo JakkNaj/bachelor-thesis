@@ -1,12 +1,10 @@
 import { View, Text, ScrollView, TouchableOpacity, Modal, Pressable, Alert } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useGetApiTripsId, getGetApiTripsIdQueryKey } from "@/api/generated/trips/trips";
-import { usePostApiActivitiesTripTripId } from "@/api/generated/activities/activities";
+import { useGetApiTripsId } from "@/api/generated/trips/trips";
 import { Button } from "@/components/Button";
 import { formatDateRange } from "@/lib/utils/dateUtils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TripFormModal } from "@/components/TripFormModal";
-import { useDeleteApiTripsId, usePutApiTripsId } from "@/api/generated/trips/trips";
 import { TripInput, ActivityInput } from "@/api/generated/schemas";
 import { PencilIcon } from "@/../assets/icons/PencilIcon";
 import { PlusIcon } from "@/../assets/icons/PlusIcon";
@@ -14,8 +12,9 @@ import { BackIcon } from "@/../assets/icons/BackIcon";
 import { DotsIcon } from "@/../assets/icons/DotsIcon";
 import { CrossIcon } from "@/../assets/icons/CrossIcon";
 import { ActivityStepper } from "@/components/ActivityStepper";
-import { useQueryClient } from "@tanstack/react-query";
 import { ActivityFormModal } from "@/components/ActivityFormModal";
+import { useTripActions } from "@/hooks/useTripActions";
+import { useActivityActions } from "@/hooks/useActivityActions";
 
 type TMenuState = {
 	isVisible: boolean;
@@ -28,7 +27,8 @@ type TMenuState = {
 export const TripDetail = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const router = useRouter();
-	const queryClient = useQueryClient();
+	const tripId = parseInt(id);
+
 	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 	const [isAddActivityModalVisible, setIsAddActivityModalVisible] = useState(false);
 	const [menuState, setMenuState] = useState<TMenuState>({
@@ -36,10 +36,9 @@ export const TripDetail = () => {
 		position: { top: 0, right: 0 },
 	});
 
-	const { data: trip, isLoading } = useGetApiTripsId(parseInt(id));
-	const { mutate: updateTrip, isPending: isUpdating, error: updateError } = usePutApiTripsId();
-	const { mutate: deleteTrip, isPending: isDeleting } = useDeleteApiTripsId();
-	const { mutate: createActivity, isPending: isCreatingActivity, error: createActivityError } = usePostApiActivitiesTripTripId();
+	const { data: trip, isLoading } = useGetApiTripsId(tripId);
+	const { updateTrip, deleteTrip, isUpdating, isDeleting, updateError } = useTripActions({ tripId });
+	const { createActivity, isCreating: isCreatingActivity, createError: createActivityError } = useActivityActions({ tripId });
 
 	const handleBackPress = () => {
 		router.back();
@@ -54,14 +53,7 @@ export const TripDetail = () => {
 	};
 
 	const handleUpdateTrip = (data: TripInput) => {
-		updateTrip(
-			{ id: parseInt(id), data },
-			{
-				onSuccess: () => {
-					setIsEditModalVisible(false);
-				},
-			}
-		);
+		updateTrip(data, () => setIsEditModalVisible(false));
 	};
 
 	const handleDeleteTrip = () => {
@@ -77,34 +69,17 @@ export const TripDetail = () => {
 					text: "Delete",
 					style: "destructive",
 					onPress: () => {
-						deleteTrip(
-							{ id: parseInt(id) },
-							{
-								onSuccess: () => {
-									router.replace("/(app)");
-								},
-							}
-						);
+						deleteTrip(() => router.back());
 					},
 				},
 			]
 		);
 	};
 
-	const handleActivityUpdated = () => {
-		queryClient.invalidateQueries({ queryKey: getGetApiTripsIdQueryKey(parseInt(id)) });
-	};
-
 	const handleAddActivity = (data: ActivityInput) => {
-		createActivity(
-			{ tripId: parseInt(id), data },
-			{
-				onSuccess: () => {
-					setIsAddActivityModalVisible(false);
-					handleActivityUpdated();
-				},
-			}
-		);
+		createActivity(data, () => {
+			setIsAddActivityModalVisible(false);
+		});
 	};
 
 	if (isLoading) {
@@ -132,14 +107,8 @@ export const TripDetail = () => {
 	}
 
 	return (
-		<ScrollView className="flex-1 bg-white">
+		<ScrollView className="flex-1 bg-white pt-2">
 			<View className="p-4 flex flex-col gap-6">
-				{/* Header with Back Button */}
-				<TouchableOpacity onPress={handleBackPress} className="flex-row items-center gap-2">
-					<BackIcon size={24} color="#1e293b" />
-					<Text className="text-primary-600 text-lg">Back to Home</Text>
-				</TouchableOpacity>
-
 				{/* Trip Details */}
 				<View className="flex flex-col gap-2">
 					<View className="flex-row justify-between items-start">
@@ -170,7 +139,7 @@ export const TripDetail = () => {
 					{trip.activities?.length ? (
 						<ActivityStepper
 							activities={trip.activities}
-							onActivityUpdated={handleActivityUpdated}
+							tripId={tripId}
 							tripDates={{ startDate: trip.startDate, endDate: trip.endDate }}
 						/>
 					) : (

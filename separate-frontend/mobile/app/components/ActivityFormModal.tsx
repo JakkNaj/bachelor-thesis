@@ -1,4 +1,4 @@
-import { Modal, View, Pressable, SafeAreaView } from "react-native";
+import { Modal, View, Text, Pressable, SafeAreaView } from "react-native";
 import { ActivityInput } from "@/api/generated/schemas";
 import { ActivityForm } from "./ActivityForm";
 import { CrossIcon } from "@/../assets/icons/CrossIcon";
@@ -34,24 +34,24 @@ export const ActivityFormModal = ({
 	return (
 		<Modal visible={isVisible} animationType="slide" onRequestClose={onClose}>
 			<SafeAreaView className="flex-1 bg-white">
-				<View className="flex-1 px-4">
-					<View className="flex-row justify-between items-center h-14">
-						<View className="w-14" />
-						<View>
-							<Pressable onPress={onClose} className="p-2">
-								<CrossIcon size={24} color="#0f172a" />
-							</Pressable>
-						</View>
+				<View className="flex-1">
+					<View className="flex-row justify-between items-center p-4">
+						<Text className="text-2xl font-semibold">Create New Activity</Text>
+						<Pressable onPress={onClose}>
+							<CrossIcon size={24} color="#64748b" />
+						</Pressable>
 					</View>
 
-					<ActivityForm
-						initialData={initialData}
-						onSubmit={handleSubmit}
-						isSubmitting={isSubmitting}
-						submitError={submitError}
-						tripStartDate={tripStartDate}
-						tripEndDate={tripEndDate}
-					/>
+					<View className="flex-1 p-4">
+						<ActivityForm
+							initialData={initialData}
+							onSubmit={handleSubmit}
+							isSubmitting={isSubmitting}
+							submitError={submitError}
+							tripStartDate={tripStartDate}
+							tripEndDate={tripEndDate}
+						/>
+					</View>
 				</View>
 			</SafeAreaView>
 		</Modal>

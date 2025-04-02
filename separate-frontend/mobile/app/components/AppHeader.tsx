@@ -8,9 +8,10 @@ import { LogoIcon } from "@/../assets/icons/LogoIcon";
 
 type TAppHeaderProps = {
 	onLogout?: () => void;
+	title?: string;
 };
 
-export const AppHeader = ({ onLogout }: TAppHeaderProps) => {
+export const AppHeader = ({ onLogout, title }: TAppHeaderProps) => {
 	const router = useRouter();
 	const { data: userProfile } = useGetApiUsersProfile();
 	const insets = useSafeAreaInsets();
@@ -27,7 +28,7 @@ export const AppHeader = ({ onLogout }: TAppHeaderProps) => {
 			<View className="flex-row justify-between items-center px-4 py-3">
 				<View className="flex-row items-center">
 					<LogoIcon size={24} />
-					<Text className="text-xl font-bold ml-2">TripPlanner</Text>
+					<Text className="text-xl font-bold ml-2">{title || "TripPlanner"}</Text>
 				</View>
 				<TouchableOpacity onPress={handleLogout}>
 					<Avatar name={userProfile?.name || "Unknown"} size="sm" />

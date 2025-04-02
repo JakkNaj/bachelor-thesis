@@ -3,15 +3,15 @@ import { Activity, ActivityInput, ActivityInputType } from "@/api/generated/sche
 import { formatDateTimeForActivityCard } from "@/lib/utils/dateUtils";
 import { Button } from "./Button";
 import { useState } from "react";
-import { usePutApiActivitiesId, useDeleteApiActivitiesId } from "@/api/generated/activities/activities";
 import { CrossIcon } from "@/../assets/icons/CrossIcon";
 import { PencilIcon } from "@/../assets/icons/PencilIcon";
 import { DotsIcon } from "@/../assets/icons/DotsIcon";
 import { ActivityFormModal } from "./ActivityFormModal";
+import { useActivityActions } from "@/hooks/useActivityActions";
 
 type TActivityStepperProps = {
 	activities: Activity[];
-	onActivityUpdated: () => void;
+	tripId: number;
 	tripDates: {
 		startDate: string;
 		endDate: string;
@@ -37,51 +37,38 @@ const transformActivityToInput = (activity: Activity): ActivityInput => {
 	};
 };
 
-export const ActivityStepper = ({ activities, onActivityUpdated, tripDates }: TActivityStepperProps) => {
+export const ActivityStepper = ({ activities, tripId, tripDates }: TActivityStepperProps) => {
 	const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
+	const [deletingActivity, setDeletingActivity] = useState<Activity | null>(null);
 	const [menuState, setMenuState] = useState<TMenuState>({
 		isVisible: false,
 		activity: null,
 		position: { top: 0, right: 0 },
 	});
 
-	const {
-		mutate: updateActivity,
-		isPending: isUpdating,
-		error: updateError,
-	} = usePutApiActivitiesId({
-		mutation: {
-			onSuccess: () => {
-				onActivityUpdated();
-				setEditingActivity(null);
-			},
-		},
+	const { updateActivity, deleteActivity, isUpdating, isDeleting, updateError } = useActivityActions({
+		tripId,
+		activityId: editingActivity?.id || deletingActivity?.id,
 	});
 
 	const handleUpdateActivity = (data: ActivityInput) => {
 		if (!editingActivity) return;
-		updateActivity({ id: editingActivity.id, data });
+		updateActivity(data, () => setEditingActivity(null));
 	};
 
-	const { mutate: deleteActivity, isPending: isDeleting } = useDeleteApiActivitiesId({
-		mutation: {
-			onSuccess: () => {
-				onActivityUpdated();
-			},
-		},
-	});
-
 	const handleDelete = (activity: Activity) => {
-		setMenuState((prev) => ({ ...prev, isVisible: false }));
 		Alert.alert("Delete Activity", "Are you sure you want to delete this activity? This action cannot be undone.", [
 			{
 				text: "Cancel",
 				style: "cancel",
+				onPress: () => setDeletingActivity(null),
 			},
 			{
 				text: "Delete",
 				style: "destructive",
-				onPress: () => deleteActivity({ id: activity.id }),
+				onPress: () => {
+					deleteActivity(() => setDeletingActivity(null));
+				},
 			},
 		]);
 	};
@@ -179,7 +166,10 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates }: TA
 							onPress={() => {
 								setMenuState((prev) => ({ ...prev, isVisible: false }));
 								requestAnimationFrame(() => {
-									menuState.activity && handleDelete(menuState.activity);
+									if (menuState.activity) {
+										setDeletingActivity(menuState.activity);
+										handleDelete(menuState.activity);
+									}
 								});
 							}}
 						>
