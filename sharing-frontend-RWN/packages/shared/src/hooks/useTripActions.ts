@@ -1,63 +1,54 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { ActivityInput } from "../api/generated/schemas";
-import { usePostApiActivitiesTripTripId, usePutApiActivitiesId, useDeleteApiActivitiesId } from "../api/generated/activities/activities";
+import { useDeleteApiTripsId, usePostApiTrips, usePutApiTripsId } from "../api/generated/trips/trips";
 import { getGetApiTripsQueryKey, getGetApiTripsIdQueryKey } from "../api/generated/trips/trips";
+import { TripInput } from "../api/generated/schemas";
 
-type TUseActivityActionsArgs = {
-	tripId: number;
-	activityId?: number;
+type TUseTripActionsArgs = {
+	tripId?: number;
 };
 
-export const useActivityActions = ({ tripId, activityId }: TUseActivityActionsArgs) => {
+export const useTripActions = ({ tripId }: TUseTripActionsArgs = {}) => {
 	const queryClient = useQueryClient();
 
-	const { mutate: createActivity, isPending: isCreating, error: createError } = usePostApiActivitiesTripTripId();
-	const { mutate: updateActivity, isPending: isUpdating, error: updateError } = usePutApiActivitiesId();
-	const { mutate: deleteActivityMutation, isPending: isDeleting } = useDeleteApiActivitiesId();
+	const { mutate: createTrip, isPending: isCreating, error: createError } = usePostApiTrips();
+	const { mutate: updateTrip, isPending: isUpdating, error: updateError } = usePutApiTripsId();
+	const { mutate: deleteTrip, isPending: isDeleting } = useDeleteApiTripsId();
 
-	const invalidateQueries = () => {
-		queryClient.invalidateQueries({ queryKey: getGetApiTripsQueryKey() });
-		queryClient.invalidateQueries({ queryKey: getGetApiTripsIdQueryKey(tripId) });
-	};
-
-	const handleCreateActivity = (data: ActivityInput, onSuccess?: () => void) => {
-		createActivity(
-			{ tripId, data },
+	const handleCreateTrip = (data: TripInput, onSuccess?: () => void) => {
+		createTrip(
+			{ data },
 			{
 				onSuccess: () => {
-					invalidateQueries();
+					queryClient.invalidateQueries({ queryKey: getGetApiTripsQueryKey() });
 					onSuccess?.();
 				},
 			}
 		);
 	};
 
-	const handleUpdateActivity = (data: ActivityInput, onSuccess?: () => void) => {
-		if (!activityId) return;
+	const handleUpdateTrip = (data: TripInput, onSuccess?: () => void) => {
+		if (!tripId) return;
 
-		updateActivity(
-			{ id: activityId, data },
+		updateTrip(
+			{ id: tripId, data },
 			{
 				onSuccess: () => {
-					invalidateQueries();
+					queryClient.invalidateQueries({ queryKey: getGetApiTripsQueryKey() });
+					queryClient.invalidateQueries({ queryKey: getGetApiTripsIdQueryKey(tripId) });
 					onSuccess?.();
 				},
 			}
 		);
 	};
 
-	const handleDeleteActivity = (id?: number, onSuccess?: () => void) => {
-		const activityIdToDelete = id || activityId;
+	const handleDeleteTrip = (onSuccess?: () => void) => {
+		if (!tripId) return;
 
-		if (!activityIdToDelete) {
-			return;
-		}
-
-		deleteActivityMutation(
-			{ id: activityIdToDelete },
+		deleteTrip(
+			{ id: tripId },
 			{
 				onSuccess: () => {
-					invalidateQueries();
+					queryClient.invalidateQueries({ queryKey: getGetApiTripsQueryKey() });
 					onSuccess?.();
 				},
 			}
@@ -65,9 +56,9 @@ export const useActivityActions = ({ tripId, activityId }: TUseActivityActionsAr
 	};
 
 	return {
-		createActivity: handleCreateActivity,
-		updateActivity: handleUpdateActivity,
-		deleteActivity: handleDeleteActivity,
+		createTrip: handleCreateTrip,
+		updateTrip: handleUpdateTrip,
+		deleteTrip: handleDeleteTrip,
 		isCreating,
 		isUpdating,
 		isDeleting,
@@ -75,3 +66,5 @@ export const useActivityActions = ({ tripId, activityId }: TUseActivityActionsAr
 		updateError,
 	};
 };
+
+export default useTripActions;

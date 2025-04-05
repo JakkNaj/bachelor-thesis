@@ -16,12 +16,15 @@
 		"build:types": "tsc --emitDeclarationOnly",
 		"dev": "npm run build -- --watch",
 		"clean": "rm -rf dist",
-    "generate-api": "orval --config src/api/orval.config.ts"
+		"generate-api": "orval --config src/api/orval.config.ts"
 	},
 	"dependencies": {
+		"@react-native-community/datetimepicker": "react-native-community/datetimepicker",
+		"@react-native-picker/picker": "react-native-picker/picker",
 		"@types/yup": "^0.32.0",
 		"react": "^18.2.0",
 		"react-native": "0.76.9",
+		"react-native-svg": "^15.11.2",
 		"yup": "^1.6.1"
 	},
 	"devDependencies": {
@@ -32,15 +35,15 @@
 		"@babel/preset-typescript": "^7.24.1",
 		"@types/react": "^18.2.43",
 		"@types/react-native": "^0.73.0",
+		"axios": "^1.6.0",
 		"cross-env": "^7.0.3",
+		"expo-secure-store": "^14.0.1",
 		"orval": "^7.8.0",
-		"typescript": "^5.3.3",
-    "axios": "^1.6.0",
-    "expo-secure-store": "^14.0.1"
+		"typescript": "^5.3.3"
 	},
 	"peerDependencies": {
+		"js-cookie": "^3.0.5",
 		"react": "^18.2.0",
-		"react-native": "0.76.9",
-    "js-cookie": "^3.0.5"
+		"react-native": "0.76.9"
 	}
 }
