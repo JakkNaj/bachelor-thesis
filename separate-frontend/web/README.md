@@ -73,7 +73,7 @@ npm run dev
 
 ## API Documentation
 
-The API is documented using OpenAPI specification in `src/api/openapi.yaml`. The application uses Orval to generate TypeScript clients and types from this specification.
+The API is documented using OpenAPI specification in `src/api/openapi.json`. The application uses Orval to generate TypeScript clients and types from this specification.
 
 ## Authentication
 

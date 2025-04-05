@@ -1,54 +1,119 @@
-# React + TypeScript + Vite
+# Trip Planner App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for planning trips and managing activities built with React, TypeScript, React Query, and Orval.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User authentication with JWT tokens
+- Create, read, update, and delete trips
+- Add, edit, and remove activities for each trip
+- Secure API communication with bearer token authentication
+- Form validation using Yup
+- State management with Zustand
+- Routing with React Router
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React**: UI library
+- **TypeScript**: Type safety
+- **React Query**: Data fetching and caching
+- **Orval**: API client generation from OpenAPI spec
+- **React Router**: Routing
+- **Zustand**: State management
+- **Yup**: Form validation
+- **Axios**: HTTP client
+- **React Hook Form**: Form handling
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Project Structure
+
+```
+src/
+  ├── api/
+  │   ├── generated/       # Generated API clients and types
+  │   ├── mutator/         # Custom Axios instance
+  │   └── openapi.yaml     # OpenAPI specification
+  ├── components/          # Reusable components
+  ├── hooks/               # Custom hooks
+  ├── layouts/             # Layout components
+  ├── pages/               # Page components
+  ├── store/               # Zustand stores
+  ├── types/               # Type definitions
+  ├── utils/               # Utility functions
+  ├── App.tsx              # Main application component
+  └── main.tsx             # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Monorepo Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This application is part of a monorepo and uses code from the shared package:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
 ```
+monorepo/
+  ├── packages/
+  │   └── shared/          # Shared code, types, and API clients
+  └── apps/
+      └── web/             # This web application
+```
+
+The shared package contains:
+
+- API client generation
+- Type definitions
+- Common utilities
+- Authentication logic
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- Yarn
+- npm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+yarn install
+```
+
+3. Generate API clients:
+
+```bash
+yarn generate-api
+```
+
+4. Build the shared package:
+
+```bash
+yarn build:shared
+```
+
+5. Start the development server:
+
+```bash
+yarn web
+```
+
+## API Communication
+
+The application uses a custom Axios instance configured in `src/api/axios-config.ts` for API communication. This instance:
+
+- Sets the base URL for all API requests
+- Adds authentication tokens to requests
+- Handles 401 unauthorized responses by redirecting to the login page
+- Manages token storage in cookies
+
+## API Documentation
+
+The API is documented using OpenAPI specification in `src/api/openapi.json`. The shared package uses Orval to generate TypeScript clients and types from this specification and then are shared to this web app
+
+## Authentication
+
+The application uses JWT tokens for authentication. Tokens are stored in cookies for security and automatically added to API requests via the Axios interceptor.
+
+## License
+
+MIT

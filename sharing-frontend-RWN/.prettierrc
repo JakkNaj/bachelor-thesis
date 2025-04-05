@@ -1,0 +1,15 @@
+{
+	"arrowParens": "avoid",
+	"bracketSpacing": true,
+	"endOfLine": "lf",
+	"jsxBracketSameLine": false,
+	"jsxSingleQuote": false,
+	"trailingComma": "es5",
+	"printWidth": 100,
+	"singleQuote": true,
+	"semi": true,
+	"tabWidth": 2,
+	"useTabs": true,
+	"importOrder": ["^react$", "^@?\\w", "^", "^\\u0000"],
+	"plugins": ["prettier-plugin-organize-imports"]
+}
