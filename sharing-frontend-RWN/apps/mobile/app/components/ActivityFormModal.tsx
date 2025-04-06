@@ -88,3 +88,5 @@ const useStyles = () => {
 		},
 	}));
 };
+
+export default ActivityFormModal;

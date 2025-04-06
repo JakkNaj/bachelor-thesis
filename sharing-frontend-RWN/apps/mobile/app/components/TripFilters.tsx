@@ -36,6 +36,8 @@ export const TripFilters = ({ activeFilter, onFilterChange }: TTripFiltersProps)
 	);
 };
 
+export default TripFilters;
+
 type TTripFiltersStyles = {
 	container: object;
 };

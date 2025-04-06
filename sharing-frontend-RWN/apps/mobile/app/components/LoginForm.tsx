@@ -78,6 +78,8 @@ export const LoginForm = ({ onSuccess }: TLoginFormProps) => {
 	);
 };
 
+export default LoginForm;
+
 const styles = StyleSheet.create({
 	container: {
 		padding: 16,

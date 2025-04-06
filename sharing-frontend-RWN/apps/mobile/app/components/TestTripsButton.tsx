@@ -34,6 +34,8 @@ export const TestTripsButton = () => {
 	);
 };
 
+export default TestTripsButton;
+
 const styles = StyleSheet.create({
 	container: {
 		marginTop: 20,

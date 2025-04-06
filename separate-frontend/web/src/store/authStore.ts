@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import Cookies from "js-cookie";
 import { UserResponse } from "../api/generated/schemas";
 import { customInstance } from "../api/mutator/custom-instance";
 
@@ -12,8 +11,7 @@ export enum EAuthStatus {
 type TAuthStore = {
 	status: EAuthStatus;
 	user: UserResponse | null;
-	token: string | null;
-	setAuth: (token: string, user: UserResponse) => void;
+	setAuth: (user: UserResponse) => void;
 	clearAuth: () => void;
 	logout: () => Promise<void>;
 	checkAuth: () => void;
@@ -22,30 +20,17 @@ type TAuthStore = {
 export const useAuthStore = create<TAuthStore>((set) => ({
 	status: EAuthStatus.LOADING,
 	user: null,
-	token: null,
 
-	setAuth: (token, user) => {
-		// Set token in HTTP-only cookie
-		Cookies.set("auth_token", token, {
-			expires: 7, // 7 days
-			secure: true,
-			sameSite: "strict",
-		});
-
+	setAuth: (user) => {
 		set({
 			status: EAuthStatus.AUTHENTICATED,
-			token,
 			user,
 		});
 	},
 
 	clearAuth: () => {
-		// Remove token from cookies
-		Cookies.remove("auth_token");
-
 		set({
 			status: EAuthStatus.UNAUTHENTICATED,
-			token: null,
 			user: null,
 		});
 	},
@@ -60,48 +45,30 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 		} catch (error) {
 			console.error("Logout error:", error);
 		} finally {
-			Cookies.remove("auth_token");
 			set({
 				status: EAuthStatus.UNAUTHENTICATED,
-				token: null,
 				user: null,
 			});
 		}
 	},
 
 	checkAuth: () => {
-		const token = Cookies.get("auth_token");
-
-		if (token) {
-			// Set initial authenticated state
-			set({
-				status: EAuthStatus.AUTHENTICATED,
-				token,
-			});
-
-			// Fetch user profile
-			customInstance<UserResponse>({
-				url: "/api/users/profile",
-				method: "GET",
-			})
-				.then((user) => {
-					set({ user });
-				})
-				.catch(() => {
-					// If profile fetch fails, clear auth
-					Cookies.remove("auth_token");
-					set({
-						status: EAuthStatus.UNAUTHENTICATED,
-						token: null,
-						user: null,
-					});
+		// Fetch user profile to check if authenticated
+		customInstance<UserResponse>({
+			url: "/api/users/profile",
+			method: "GET",
+		})
+			.then((user) => {
+				set({
+					status: EAuthStatus.AUTHENTICATED,
+					user,
 				});
-		} else {
-			set({
-				status: EAuthStatus.UNAUTHENTICATED,
-				token: null,
-				user: null,
+			})
+			.catch(() => {
+				set({
+					status: EAuthStatus.UNAUTHENTICATED,
+					user: null,
+				});
 			});
-		}
 	},
 }));

@@ -134,6 +134,8 @@ const useStyles = () => {
 		},
 		activitiesList: {
 			paddingLeft: spacing[4],
+			paddingBottom: spacing[1],
+			paddingTop: spacing[2],
 		},
 		activityItem: {
 			flexDirection: 'row',

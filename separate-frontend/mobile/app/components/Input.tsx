@@ -35,6 +35,4 @@ export const Input = forwardRef<TextInput, TInputProps>(({ className = "", error
 	);
 });
 
-Input.displayName = "Input";
-
 export default Input;

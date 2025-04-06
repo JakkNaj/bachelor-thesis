@@ -111,7 +111,7 @@ export const Login = () => {
 							isLoading={isSubmitting || loginMutation.isPending}
 							loadingText="Signing in..."
 						>
-							Sign in
+							Login
 						</Button>
 					</View>
 

@@ -1,5 +1,4 @@
 import { Svg, Path } from "react-native-svg";
-import { TouchableOpacity } from "react-native";
 
 type TCrossIconProps = {
 	size?: number;

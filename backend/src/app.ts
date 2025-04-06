@@ -9,6 +9,7 @@ import { activityRoutes } from './routes/activity.routes';
 import { specs } from './config/swagger';
 import { loggerMiddleware } from './middleware/logger.middleware';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 export const prisma = new PrismaClient();
 
@@ -24,6 +25,7 @@ app.use(cors({
 // Apply logger middleware before other middleware
 app.use(loggerMiddleware);
 app.use(express.json());
+app.use(cookieParser());
 app.use(passport.initialize());
 
 // Swagger documentation

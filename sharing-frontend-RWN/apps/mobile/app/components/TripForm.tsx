@@ -190,6 +190,7 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 	);
 };
 
+export default TripForm;
 const useStyles = () => {
 	return createStyles<TTripFormStyles>(theme => ({
 		container: {

@@ -57,8 +57,16 @@ export const authController = {
 
       const token = jwt.sign({ id: user.id }, JWT_SECRET);
       
+      // Set HttpOnly cookie for web clients
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Use secure in production
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      });
+      
       res.json({
-        token,
+        token, // Still send token in response for mobile clients
         user: {
           id: user.id,
           email: user.email,

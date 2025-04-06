@@ -38,8 +38,8 @@ export const Login = () => {
 	const { mutate: login, isPending } = usePostApiAuthLogin({
 		mutation: {
 			onSuccess: (data: AuthResponse) => {
-				if (data.token && data.user) {
-					setAuth(data.token, data.user);
+				if (data.user) {
+					setAuth(data.user);
 					navigate(redirectPath, { replace: true });
 				}
 			},

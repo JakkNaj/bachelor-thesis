@@ -57,6 +57,8 @@ export const TripFormModal = ({
 	);
 };
 
+export default TripFormModal;
+
 const useStyles = () => {
 	return createStyles<TTripFormModalStyles>(theme => ({
 		container: {

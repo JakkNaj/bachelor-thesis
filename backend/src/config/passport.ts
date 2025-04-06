@@ -39,7 +39,15 @@ passport.use(
 passport.use(
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req) => {
+        // Try to get token from Authorization header first
+        const authHeader = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+        if (authHeader) {
+          return authHeader;
+        }
+        // If no Authorization header, try to get from cookie
+        return req.cookies?.token;
+      },
       secretOrKey: JWT_SECRET,
     },
     async (jwtPayload, done) => {

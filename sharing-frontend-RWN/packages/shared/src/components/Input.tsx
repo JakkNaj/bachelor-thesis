@@ -6,11 +6,28 @@ import { createStyles } from '../utils/createStyles';
 type TInputProps = {
 	error?: string;
 	multiline?: boolean;
+	secureTextEntry?: boolean;
+	onChange?: (e: any) => void;
+	value?: string;
 } & TextInputProps;
 
 export const Input = forwardRef<TextInput, TInputProps>(
-	({ error, multiline, style, ...props }, ref) => {
+	({ error, multiline, secureTextEntry, style, onChange, value, ...props }, ref) => {
 		const styles = useStyles(error, multiline);
+
+		const handleChange = (e: any) => {
+			if (onChange) {
+				if (Platform.OS === 'web') {
+					onChange(e);
+				} else {
+					onChange({
+						target: {
+							value: e,
+						},
+					});
+				}
+			}
+		};
 
 		return (
 			<View style={styles.container}>
@@ -19,6 +36,10 @@ export const Input = forwardRef<TextInput, TInputProps>(
 					style={[styles.input, style]}
 					placeholderTextColor={colors.slate[400]}
 					multiline={multiline}
+					secureTextEntry={secureTextEntry}
+					onChangeText={Platform.OS === 'web' ? undefined : handleChange}
+					onChange={Platform.OS === 'web' ? handleChange : undefined}
+					value={value}
 					{...props}
 				/>
 				{error && <Text style={styles.errorText}>{error}</Text>}
