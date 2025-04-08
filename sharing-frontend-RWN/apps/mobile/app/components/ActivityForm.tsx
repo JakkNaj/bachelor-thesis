@@ -6,9 +6,9 @@ import {
 } from '@monorepo/shared/dist/yup';
 import { ActivityInput, ActivityInputType } from '@monorepo/shared/src/api/generated/schemas';
 import { Button } from '@monorepo/shared/src/components/Button';
-import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker';
+import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker/DateTimePicker';
 import { Input } from '@monorepo/shared/src/components/Input';
-import { Select } from '@monorepo/shared/src/components/Select';
+import { Select } from '@monorepo/shared/src/components/Select/Select';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';
 import { formatDate, formatDateForInput, formatTime } from '@monorepo/shared/src/utils/dateUtils';
 import { Controller, useForm } from 'react-hook-form';

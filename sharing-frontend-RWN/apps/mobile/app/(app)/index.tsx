@@ -8,6 +8,7 @@ import { TripCard } from '@monorepo/shared/src/components/TripCard';
 import { useTripActions } from '@monorepo/shared/src/hooks/useTripActions';
 import { colors, fontSizes, fontWeights, spacing } from '@monorepo/shared/src/theme';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';
+import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { TripFilters } from '../components/TripFilters';
@@ -40,6 +41,7 @@ export const AppIndex = () => {
 	const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const styles = useStyles();
+	const router = useRouter();
 
 	const filteredTrips = useMemo(() => {
 		if (!trips) return [];
@@ -58,6 +60,10 @@ export const AppIndex = () => {
 
 	const handleCreateTrip = (data: TripInput) => {
 		createTrip(data, () => setIsModalVisible(false));
+	};
+
+	const handleTripDetail = (id: number) => {
+		router.push(`/trips/${id}` as any);
 	};
 
 	return (
@@ -131,6 +137,7 @@ export const AppIndex = () => {
 								startDate={trip.startDate}
 								endDate={trip.endDate}
 								activities={trip.activities || []}
+								onPressDetail={handleTripDetail}
 							/>
 						))
 					)}

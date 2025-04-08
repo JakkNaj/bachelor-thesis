@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, Modal, Pressable, Text, View } from 'react-native';
 import { Activity, ActivityInput, ActivityInputType } from '../api/generated/schemas';
 import { CrossIcon } from '../assets/icons/CrossIcon';
@@ -47,7 +47,7 @@ type TMenuState = {
 	activity: Activity | null;
 	position: {
 		top: number;
-		right: number;
+		left: number;
 	};
 };
 
@@ -63,8 +63,9 @@ export const ActivityStepper = ({
 	const [menuState, setMenuState] = useState<TMenuState>({
 		isVisible: false,
 		activity: null,
-		position: { top: 0, right: 0 },
+		position: { top: 0, left: 0 },
 	});
+	const menuButtonRefs = useRef<Record<number, View | null>>({});
 
 	const { updateActivity, deleteActivity, isUpdating, isDeleting, updateError } =
 		useActivityActions({
@@ -99,12 +100,21 @@ export const ActivityStepper = ({
 	};
 
 	const handleOpenMenu = (activity: Activity, event: any) => {
-		const { pageY, pageX } = event.nativeEvent;
-		setMenuState({
-			isVisible: true,
-			activity,
-			position: { top: pageY, right: pageX },
-		});
+		const buttonRef = menuButtonRefs.current[activity.id];
+
+		if (buttonRef) {
+			buttonRef.measure((x, y, width, height, pageX, pageY) => {
+				const menuWidth = 100;
+				setMenuState({
+					isVisible: true,
+					activity,
+					position: {
+						top: pageY,
+						left: pageX - menuWidth + width,
+					},
+				});
+			});
+		}
 	};
 
 	const handleEdit = (activity: Activity) => {
@@ -147,7 +157,13 @@ export const ActivityStepper = ({
 										<Text style={styles.description}>{activity.description}</Text>
 									)}
 								</View>
-								<Pressable onPress={e => handleOpenMenu(activity, e)} style={styles.menuButton}>
+								<Pressable
+									ref={ref => {
+										menuButtonRefs.current[activity.id] = ref;
+									}}
+									onPress={e => handleOpenMenu(activity, e)}
+									style={styles.menuButton}
+								>
 									<DotsIcon size={14} color={colors.slate[900]} />
 								</Pressable>
 							</View>
@@ -170,8 +186,9 @@ export const ActivityStepper = ({
 						style={[
 							styles.menuContainer,
 							{
-								top: menuState.position.top - 20,
-								right: 20,
+								position: 'absolute',
+								top: menuState.position.top,
+								left: menuState.position.left,
 								opacity: menuState.isVisible ? 1 : 0,
 							},
 						]}

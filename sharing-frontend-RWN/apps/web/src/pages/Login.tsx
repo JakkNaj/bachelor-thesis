@@ -90,6 +90,7 @@ export const Login = () => {
 							control={control}
 							render={({ field: { onChange, value } }) => (
 								<Input
+									type="email"
 									id="email"
 									value={value}
 									onChange={onChange}
@@ -112,7 +113,7 @@ export const Login = () => {
 									onChange={onChange}
 									error={errors.password?.message}
 									placeholder="Enter your password"
-									secureTextEntry
+									type="password"
 								/>
 							)}
 						/>
@@ -124,6 +125,7 @@ export const Login = () => {
 						onPress={handleSubmit(onSubmit)}
 						isLoading={isPending || isSubmitting}
 						loadingText="Signing in..."
+						fullWidth
 					>
 						Sign in
 					</Button>
@@ -143,15 +145,15 @@ const LoginContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	background-color: ${colors.slate[50]};
-	padding: 0 ${spacing[4]};
+	padding: 0 ${spacing[4]}px;
 `;
 
 const LoginCard = styled.div`
 	width: 100%;
 	max-width: 28rem; /* 448px */
 	background-color: ${colors.white};
-	padding: ${spacing[8]};
-	border-radius: ${radius.xl};
+	padding: ${spacing[8]}px;
+	border-radius: ${radius.xl}px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 `;
 
@@ -176,11 +178,11 @@ const LoginSubtitle = styled.p`
 const LoginForm = styled.form`
 	display: flex;
 	flex-direction: column;
-	gap: ${spacing[2]};
+	gap: ${spacing[2]}px;
 `;
 
 const FormGroup = styled.div`
-	margin-bottom: ${spacing[4]};
+	margin-bottom: ${spacing[4]}px;
 `;
 
 const FormLabel = styled.label`
@@ -188,22 +190,22 @@ const FormLabel = styled.label`
 	font-size: ${fontSizes.sm};
 	font-weight: ${fontWeights.medium};
 	color: ${colors.slate[700]};
-	margin-bottom: ${spacing[1]};
+	margin-bottom: ${spacing[1]}px;
 `;
 
 const ErrorMessage = styled.div`
 	background-color: ${colors.red[50]};
 	color: ${colors.red[500]};
 	font-size: ${fontSizes.sm};
-	padding: ${spacing[3]};
-	border-radius: ${radius.lg};
+	padding: ${spacing[3]}px;
+	border-radius: ${radius.lg}px;
 `;
 
 const RegisterLink = styled.p`
 	font-size: ${fontSizes.sm};
 	color: ${colors.slate[600]};
 	text-align: center;
-	margin-top: ${spacing[4]};
+	margin-top: ${spacing[4]}px;
 `;
 
 const StyledLink = styled(Link)`

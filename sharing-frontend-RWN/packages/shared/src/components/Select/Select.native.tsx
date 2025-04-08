@@ -1,19 +1,8 @@
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { createStyles } from '../utils/createStyles';
-
-type TSelectProps = {
-	value: string;
-	onValueChange: (value: string) => void;
-	items: Array<{
-		label: string;
-		value: string;
-	}>;
-	placeholder?: string;
-	error?: string;
-	closeOnSelect?: boolean;
-};
+import { createStyles } from '../../utils/createStyles';
+import { TSelectProps } from './Select.types';
 
 export const Select = ({
 	value,
@@ -22,6 +11,7 @@ export const Select = ({
 	placeholder,
 	error,
 	closeOnSelect = true,
+	id,
 }: TSelectProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const styles = useStyles();

@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
 import { Activity } from '../api/generated/schemas';
 import { EyeIcon } from '../assets/icons/EyeIcon';
@@ -14,6 +13,7 @@ type TTripCardProps = {
 	startDate: string;
 	endDate: string;
 	activities: Activity[];
+	onPressDetail: (id: number) => void;
 };
 
 type TTripCardStyles = {
@@ -40,8 +40,8 @@ export const TripCard = ({
 	startDate,
 	endDate,
 	activities,
+	onPressDetail,
 }: TTripCardProps) => {
-	const router = useRouter();
 	const styles = useStyles();
 
 	// Function to get two random activities
@@ -85,7 +85,7 @@ export const TripCard = ({
 				</View>
 				<Button
 					variant="secondary"
-					onPress={() => router.push(`/(app)/trips/${id}` as any)}
+					onPress={() => onPressDetail(id)}
 					icon={<EyeIcon size={16} color={colors.slate[900]} />}
 				>
 					View Trip
@@ -98,6 +98,8 @@ export const TripCard = ({
 const useStyles = () => {
 	return createStyles<TTripCardStyles>(theme => ({
 		container: {
+			flex: 1,
+			width: '100%',
 			borderWidth: 1,
 			borderColor: theme.colors.slate[200],
 			padding: spacing[4],

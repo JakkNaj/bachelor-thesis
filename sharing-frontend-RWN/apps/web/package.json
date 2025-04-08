@@ -20,6 +20,7 @@
 		"react-native-web": "~0.19.13",
 		"react-router-dom": "^7.5.0",
 		"styled-components": "^6.1.17",
+		"vite-plugin-react-native-web": "^2.1.1",
 		"zustand": "^5.0.3"
 	},
 	"devDependencies": {

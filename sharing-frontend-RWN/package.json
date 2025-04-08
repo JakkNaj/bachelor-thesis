@@ -8,10 +8,6 @@
 	"scripts": {
 		"mobile": "yarn workspace mobile start",
 		"web": "yarn workspace @monorepo/web dev",
-		"build:web": "yarn workspace @monorepo/web build",
-		"build:shared": "yarn workspace @monorepo/shared build",
-		"build": "yarn build:shared && yarn build:web",
-		"clean": "yarn workspace @monorepo/shared clean",
 		"generate-api": "yarn workspace @monorepo/shared generate-api"
 	},
 	"devDependencies": {

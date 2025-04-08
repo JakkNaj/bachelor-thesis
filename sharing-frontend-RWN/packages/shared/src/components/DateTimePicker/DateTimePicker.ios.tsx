@@ -1,24 +1,10 @@
 import DateTimePickerRN from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { colors, fontSizes, radius, spacing } from '../theme';
-import { createStyles } from '../utils/createStyles';
-import { Calendar } from './Calendar';
-
-type TDateTimePickerProps = {
-	date?: string;
-	time?: string;
-	onDateChange?: (date: string) => void;
-	onTimeChange?: (time: string) => void;
-	error?: {
-		date?: string;
-		time?: string;
-	};
-	placeholder?: {
-		date?: string;
-		time?: string;
-	};
-};
+import { colors, fontSizes, radius, spacing } from '../../theme';
+import { createStyles } from '../../utils/createStyles';
+import { Calendar } from '../Calendar';
+import { TDateTimePickerProps } from './DateTimePicker.types';
 
 const formatTimeForDisplay = (time: string) => {
 	const date = new Date(`2000-01-01T${time}:00`);
@@ -155,6 +141,7 @@ const useStyles = () => {
 	return createStyles<TDateTimePickerStyles>(theme => ({
 		container: {
 			width: '100%',
+			backgroundColor: 'white',
 		},
 		content: {
 			gap: spacing[2],
@@ -202,3 +189,5 @@ const useStyles = () => {
 		},
 	}));
 };
+
+export default DateTimePicker;

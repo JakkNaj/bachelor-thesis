@@ -12,6 +12,7 @@ type TButtonProps = {
 	icon?: ReactNode;
 	outlined?: boolean;
 	disabled?: boolean;
+	type?: 'button' | 'submit' | 'reset';
 	onPress: () => void;
 } & Omit<TouchableOpacityProps, 'onPress'>;
 
@@ -34,6 +35,7 @@ export const Button = ({
 	icon,
 	outlined = false,
 	disabled,
+	type = 'button',
 	onPress,
 	...props
 }: TButtonProps) => {

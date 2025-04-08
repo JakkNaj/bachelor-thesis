@@ -1,70 +1,66 @@
+import { colors, fontSizes } from '@monorepo/shared';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuthStore } from '../store/authStore';
-import { EAuthStatus } from '../store/authStore';
 import { Header } from '../components/Header';
-import { breakpoints, colors, fontSizes } from '@monorepo/shared';
+import { EAuthStatus, useAuthStore } from '../store/authStore';
 
 type MainLayoutProps = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { status, logout, user } = useAuthStore();
-  const navigate = useNavigate();
-  
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
-  
-  return (
-    <Container>
-      {status === EAuthStatus.AUTHENTICATED && (
-        <Header
-          userName={user?.name || 'User'}
-          onLogout={handleLogout}
-        />
-      )}
-      <MainContent>
-        {children}
-      </MainContent>
-      <Footer>
-        <FooterContent>
-          <p>&copy; {new Date().getFullYear()} Trip Planner App</p>
-        </FooterContent>
-      </Footer>
-    </Container>
-  );
+	const { status, logout, user } = useAuthStore();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		await logout();
+		navigate('/login');
+	};
+
+	return (
+		<Container>
+			{status === EAuthStatus.AUTHENTICATED && (
+				<Header userName={user?.name || 'User'} onLogout={handleLogout} />
+			)}
+			<MainContent>{children}</MainContent>
+			<Footer>
+				<FooterContent>
+					<p>&copy; {new Date().getFullYear()} Trip Planner App</p>
+				</FooterContent>
+			</Footer>
+		</Container>
+	);
 };
 
-
 const Container = styled.div`
-  min-height: 100vh;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: ${colors.white};
+	width: 100%;
+	background-color: ${colors.white};
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
 `;
 
 const MainContent = styled.main`
-  width: 100%;
-  max-width: ${breakpoints['2xl']};
-  margin: 0 auto;
-  padding: 0 1rem;
-  flex: 1;
+	max-width: 1536px;
+	margin: 0 auto;
+	padding: 0 1rem;
+	flex: 1;
+	width: 100%;
+	overflow-y: auto;
+	box-sizing: border-box;
 `;
 
 const Footer = styled.footer`
-  border-top: 1px solid ${colors.slate[200]};
+	border-top: 1px solid ${colors.slate[200]};
+	width: 100%;
 `;
 
 const FooterContent = styled.div`
-  width: 100%;
-  max-width: ${breakpoints['2xl']};
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
-  font-size: ${fontSizes.sm}px;
-  color: ${colors.slate[600]};
+	max-width: 1536px;
+	margin: 0 auto;
+	padding: 1.5rem 1rem;
+	font-size: ${fontSizes.sm}px;
+	color: ${colors.slate[600]};
 `;

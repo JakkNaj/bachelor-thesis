@@ -6,7 +6,7 @@ import {
 } from '@monorepo/shared/dist/yup';
 import { TripInput } from '@monorepo/shared/src/api/generated/schemas';
 import { Button } from '@monorepo/shared/src/components/Button';
-import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker';
+import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker/DateTimePicker';
 import { Input } from '@monorepo/shared/src/components/Input';
 import { fontSizes, fontWeights, radius, spacing } from '@monorepo/shared/src/theme';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';

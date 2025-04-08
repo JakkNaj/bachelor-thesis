@@ -5633,6 +5633,15 @@ flow-parser@0.*:
   resolved "https://registry.npmjs.org/flow-parser/-/flow-parser-0.266.1.tgz"
   integrity sha512-dON6h+yO7FGa/FO5NQCZuZHN0o3I23Ev6VYOJf9d8LpdrArHPt39wE++LLmueNV/hNY5hgWGIIrgnrDkRcXkPg==
 
+flow-remove-types@^2.259.1:
+  version "2.266.1"
+  resolved "https://registry.yarnpkg.com/flow-remove-types/-/flow-remove-types-2.266.1.tgz#ebd2b29423a7642e22a27a2f1b5c4d65d5a15a36"
+  integrity sha512-dKaAhawO6bcBm5q/7FnX3gAAVZninLcDaCGIqbXIXfaLRTubnVzWgGDPXIPt72BH8uOwg6m3GifVPbn/W4+rcg==
+  dependencies:
+    hermes-parser "0.25.1"
+    pirates "^3.0.2"
+    vlq "^0.2.1"
+
 follow-redirects@^1.15.6:
   version "1.15.9"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.9.tgz"
@@ -7897,6 +7906,11 @@ node-int64@^0.4.0:
   resolved "https://registry.npmjs.org/node-int64/-/node-int64-0.4.0.tgz"
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
+node-modules-regexp@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
+  integrity sha512-JMaRS9L4wSRIR+6PTVEikTrq/lMGEZR43a48ETeilY0Q0iMwVnccMFrUM1k+tNzmYuIU0Vh710bCUqHX+/+ctQ==
+
 node-readfiles@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/node-readfiles/-/node-readfiles-0.2.0.tgz"
@@ -8374,6 +8388,13 @@ pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/pify/-/pify-4.0.1.tgz"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
+
+pirates@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/pirates/-/pirates-3.0.2.tgz#7e6f85413fd9161ab4e12b539b06010d85954bb9"
+  integrity sha512-c5CgUJq6H2k6MJz72Ak1F5sN9n9wlSlJyEnwvpm9/y3WB4E3pHBDT2c6PEiS1vyJvq2bUxUAIu0EGf8Cx4Ic7Q==
+  dependencies:
+    node-modules-regexp "^1.0.0"
 
 pirates@^4.0.1, pirates@^4.0.4, pirates@^4.0.6:
   version "4.0.7"
@@ -10314,6 +10335,13 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
+vite-plugin-react-native-web@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-react-native-web/-/vite-plugin-react-native-web-2.1.1.tgz#5531827cc95cf5b3821c3e4bb50b02a63a437831"
+  integrity sha512-1Dsuf/p2muYwAqjyDC3LpcO8gTI+Ab2SjUZA7GzlMq1ZMnypUGQyFslIHJ7v3kpz30CLJFfPu2eqTDXDcRfGqQ==
+  dependencies:
+    flow-remove-types "^2.259.1"
+
 vite@^5.0.8:
   version "5.4.17"
   resolved "https://registry.npmjs.org/vite/-/vite-5.4.17.tgz"
@@ -10324,6 +10352,11 @@ vite@^5.0.8:
     rollup "^4.20.0"
   optionalDependencies:
     fsevents "~2.3.3"
+
+vlq@^0.2.1:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
+  integrity sha512-DRibZL6DsNhIgYQ+wNdWDL2SL3bKPlVrRiBqV5yuMm++op8W4kGFtaQfCs4KEJn0wBZcHVHJ3eoywX8983k1ow==
 
 vlq@^1.0.0:
   version "1.0.1"
