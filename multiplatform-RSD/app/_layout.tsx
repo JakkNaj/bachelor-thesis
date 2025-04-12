@@ -1,14 +1,18 @@
-// Required for CSS to work on Expo Web
 import '../stylex.css';
-// Required for Fast Refresh to work on Expo Web
 import '@expo/metro-runtime';
 import { Stack } from "expo-router";
+import { Platform } from 'react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-type TRootLayoutProps = {};
+const queryClient = new QueryClient();
 
-export const RootLayout = ({}: TRootLayoutProps): JSX.Element => {
-  return <Stack />;
-};
-
-// Expo Router requires a default export
-export default RootLayout;
+export default function RootLayout() {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<Stack screenOptions={{ headerShown: false }}>
+				<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+				<Stack.Screen name="(app)" />
+			</Stack>
+		</QueryClientProvider>
+	);
+}

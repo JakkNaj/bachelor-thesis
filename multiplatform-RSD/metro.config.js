@@ -10,4 +10,9 @@ config.resolver.unstable_enablePackageExports = true;
 // 2. Only for npm monorepos: force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
 // config.resolver.disableHierarchicalLookup = true;
 
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  buffer: require.resolve('buffer/'),
+};
+
 module.exports = config;
