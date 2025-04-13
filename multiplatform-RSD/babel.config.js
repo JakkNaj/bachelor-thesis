@@ -27,7 +27,7 @@ module.exports = function (api) {
       'babel-preset-expo',
       // React Strict DOM's babel preset
       [reactStrictPreset, {
-        debug: dev,
+        debug: true,
         dev,
         platform
       }]

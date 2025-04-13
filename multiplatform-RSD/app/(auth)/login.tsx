@@ -1,10 +1,10 @@
 import { css, html } from "react-strict-dom";
 import { usePostApiAuthLogin } from "@/api/generated/auth/auth";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authService } from '@/lib/store/auth-service';
 import { Platform } from "react-native";
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/components/Button";
 
 const styles = css.create({
   safeContainer: {
@@ -86,12 +86,17 @@ export default function LoginPage() {
     mutation: {
       onSuccess: async (data) => {
         if (data.token && data.user) {
-          await authService.saveAuth(data.token, {
-            id: data.user.id!,
-            email: data.user.email!,
-            name: data.user.name!,
-          });
-          router.replace('/(app)' as any);
+          try {
+            await authService.saveAuth(data.token, {
+              id: data.user.id!,
+              email: data.user.email!,
+              name: data.user.name!,
+            });
+            router.navigate('/(app)');
+          } catch (error) {
+            console.error("Error saving auth:", error);
+            setError("Failed to save authentication data");
+          }
         }
       },
       onError: (error: Error) => {
@@ -102,8 +107,31 @@ export default function LoginPage() {
   });
 
   const handleLogin = () => {
+    setError(null);
+    if (!email || !password) {
+      setError("Please enter both email and password");
+      return;
+    }
     login({ data: { email, password } });
   };
+
+  // Auto-login with test credentials
+  useEffect(() => {
+    const autoLogin = async () => {
+      try {
+        login({ 
+          data: { 
+            email: 'test@example.com', 
+            password: 'testpassword' 
+          } 
+        });
+      } catch (error) {
+        console.error('Auto-login failed:', error);
+      }
+    };
+
+    autoLogin();
+  }, []);
 
   return (
     <html.div style={styles.safeContainer}>

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { authStorage } from '@/lib/store/auth-storage';
+import { authService } from '@/lib/store/auth-service';
 
 const API_URL = 'http://localhost:4000';
 
@@ -22,7 +22,7 @@ export const apiClient = async <T>({ url, method, headers = {}, data, signal }: 
 
   // Add Authorization header for mobile
   if (Platform.OS !== 'web') {
-    const token = await authStorage.getToken();
+    const token = await authService.getToken();
     if (token) {
       requestHeaders.set('Authorization', `Bearer ${token}`);
     }
