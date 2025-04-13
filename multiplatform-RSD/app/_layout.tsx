@@ -16,7 +16,7 @@ const styles = css.create({
 
 const webStyles = css.create({
 	container: {
-		overflowY: 'auto',
+		overflow: 'auto',
 	},
 });
 

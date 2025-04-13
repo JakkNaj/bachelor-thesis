@@ -1,4 +1,4 @@
-import { Trip } from "@/api/generated/schemas"
+import { TripInput } from "@/api/generated/schemas"
 import { useGetApiTrips } from "@/api/generated/trips/trips"
 import PlusIcon from "@/assets/icons/PlusIcon/PlusIcon"
 import { Button } from "@/components/Button"
@@ -7,16 +7,33 @@ import { ETripFilter } from "@/types/ETripFilter"
 import { useMemo, useState } from "react"
 import { Platform } from "react-native"
 import { css, html } from "react-strict-dom"
-import { TripCard } from "@/components/TripCard"
 import { colors } from "@/assets/colors/colors"
 import { TripsListSection } from "./TripsListSection"
+import { FormModal } from "@/components/FormModal/FormModal"
+import { useTripActions } from "@/hooks/useTripActions"
 
 export const TripsSection = () => {
     const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const { data: trips, isLoading } = useGetApiTrips();
+    const { createTrip, isCreating, createError } = useTripActions();
 
     const handleTripDetail = (id: number) => {
         // Handle trip detail navigation
+    };
+
+    const handleOpenModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleSubmitTrip = async (data: TripInput) => {
+        createTrip(data, () => {
+            setIsModalVisible(false);
+        });
     };
 
     const filteredTrips = useMemo(() => {
@@ -39,7 +56,7 @@ export const TripsSection = () => {
                 <html.h2 style={styles.tripTitle}>Your Trips</html.h2>
                 <Button 
                     title="Create a new trip"
-                    onPress={() => {}} 
+                    onPress={handleOpenModal} 
                     icon={<PlusIcon color="white" size={20}/>}
                 />
             </html.div>
@@ -50,9 +67,21 @@ export const TripsSection = () => {
                 filteredTrips={filteredTrips} 
                 handleTripDetail={handleTripDetail} 
             />
+
+            
+            <FormModal
+                isVisible={isModalVisible}
+                onClose={handleCloseModal}
+                onSubmit={handleSubmitTrip}
+                isSubmitting={isCreating}
+                submitError={createError as Error | null}
+            />
+            
         </html.div>
     );
 };
+
+export default TripsSection;
 
 const styles = css.create({
     sectionContainer: {
