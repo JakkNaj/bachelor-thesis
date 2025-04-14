@@ -1,7 +1,7 @@
-import { html } from "react-strict-dom";
+import { TripDetail } from "@/pages/(app)/trips/[id]/[id]";
 
 export const TripDetails = () => {
-	return <html.p>TripDetails</html.p>;
+	return <TripDetail />;
 };
 
 export default TripDetails;

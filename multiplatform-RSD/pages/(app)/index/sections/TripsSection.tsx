@@ -11,6 +11,8 @@ import { colors } from "@/assets/colors/colors"
 import { TripsListSection } from "./TripsListSection"
 import { FormModal } from "@/components/FormModal/FormModal"
 import { useTripActions } from "@/hooks/useTripActions"
+import { router } from "expo-router"
+import { TripForm } from "@/components/TripForm"
 
 export const TripsSection = () => {
     const [activeFilter, setActiveFilter] = useState<ETripFilter>(ETripFilter.ALL);
@@ -19,7 +21,7 @@ export const TripsSection = () => {
     const { createTrip, isCreating, createError } = useTripActions();
 
     const handleTripDetail = (id: number) => {
-        // Handle trip detail navigation
+        router.navigate(`/trips/${id}`);
     };
 
     const handleOpenModal = () => {
@@ -67,14 +69,18 @@ export const TripsSection = () => {
                 filteredTrips={filteredTrips} 
                 handleTripDetail={handleTripDetail} 
             />
-
             
             <FormModal
                 isVisible={isModalVisible}
                 onClose={handleCloseModal}
-                onSubmit={handleSubmitTrip}
-                isSubmitting={isCreating}
-                submitError={createError as Error | null}
+                title="Create New Trip"
+                children={
+                    <TripForm 
+                        onSubmit={handleSubmitTrip}
+                        isSubmitting={isCreating}
+                        submitError={createError as Error | null}
+                    />
+                }
             />
             
         </html.div>

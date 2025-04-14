@@ -1,5 +1,5 @@
 import DateTimePickerRN from '@react-native-community/datetimepicker';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Calendar } from './Calendar';
 import { colors } from '@/assets/colors/colors';
@@ -37,6 +37,17 @@ export const SplitDateTimePicker = ({
 	const [selectedDate, setSelectedDate] = useState<Date | undefined>(
 		date ? new Date(date) : undefined
 	);
+
+	useEffect(() => {
+		if (date) {
+			const newDate = new Date(date);
+			if (time) {
+				const [hours, minutes] = time.split(':');
+				newDate.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+			}
+			setSelectedDate(newDate);
+		}
+	}, [date, time]);
 
 	const handleDateSelect = (newDate: Date | undefined) => {
 		if (newDate) {

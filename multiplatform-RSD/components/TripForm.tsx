@@ -12,6 +12,7 @@ import { Input } from '@/components/Input';
 import { formatDateForInput } from '@/lib/utils/dateUtils';
 import { Controller, useForm } from 'react-hook-form';
 import { colors } from '@/assets/colors/colors';
+import { Platform, KeyboardAvoidingView, ScrollView, StyleSheet as RNStyleSheet } from 'react-native';
 
 type TTripFormProps = {
 	initialData?: TripInput;
@@ -62,113 +63,135 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 		onSubmit(transformFormDataToTripInput(data));
 	};
 
-	return (
-		<html.div style={styles.scrollContainer}>
-			<html.div style={styles.container}>
-				{submitError && (
-					<html.div style={styles.errorContainer()}>
-						<html.span style={styles.errorText()}>{getErrorMessage(submitError)}</html.span>
-					</html.div>
-				)}
+	const renderContent = () => (
+		<html.div style={styles.container}>
+			{submitError && (
+				<html.div style={styles.errorContainer()}>
+					<html.span style={styles.errorText()}>{getErrorMessage(submitError)}</html.span>
+				</html.div>
+			)}
 
-				<html.div style={styles.formSection}>
+			<html.div style={styles.formSection}>
+				<html.div style={styles.fieldContainer}>
+					<html.span style={styles.label()}>Trip Title*</html.span>
+					<Controller
+						control={control}
+						name="title"
+						render={({ field: { onChange, value } }) => (
+							<Input
+								placeholder="Enter trip title"
+								value={value}
+								onChange={onChange}
+								error={errors.title?.message}
+							/>
+						)}
+					/>
+				</html.div>
+
+				<html.div style={styles.dateTimeContainer}>
 					<html.div style={styles.fieldContainer}>
-						<html.span style={styles.label()}>Trip Title*</html.span>
+						<html.span style={styles.label()}>Start Date and Time*</html.span>
 						<Controller
 							control={control}
-							name="title"
+							name="startDate"
 							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter trip title"
+								<DateTimePicker
 									value={value}
 									onChange={onChange}
-									error={errors.title?.message}
+									error={{
+										date: errors.startDate?.message,
+										time: errors.startDate?.message,
+									}}
+									placeholder={{
+										date: 'Start date',
+										time: 'Start time',
+									}}
 								/>
 							)}
 						/>
 					</html.div>
 
-					<html.div style={styles.dateTimeContainer}>
-						<html.div style={styles.fieldContainer}>
-							<html.span style={styles.label()}>Start Date and Time*</html.span>
-							<Controller
-								control={control}
-								name="startDate"
-								render={({ field: { onChange, value } }) => (
-									<DateTimePicker
-										value={value}
-										onChange={onChange}
-										error={{
-											date: errors.startDate?.message,
-											time: errors.startDate?.message,
-										}}
-										placeholder={{
-											date: 'Start date',
-											time: 'Start time',
-										}}
-									/>
-								)}
-							/>
-						</html.div>
-
-						<html.div style={styles.fieldContainer}>
-							<html.span style={styles.label()}>End Date and Time*</html.span>
-							<Controller
-								control={control}
-								name="endDate"
-								render={({ field: { onChange, value } }) => (
-									<DateTimePicker
-										value={value}
-										onChange={onChange}
-										error={{
-											date: errors.endDate?.message,
-											time: errors.endDate?.message,
-										}}
-										placeholder={{
-											date: 'End date',
-											time: 'End time',
-										}}
-									/>
-								)}
-							/>
-						</html.div>
-					</html.div>
-
 					<html.div style={styles.fieldContainer}>
-						<html.span style={styles.label()}>Description</html.span>
+						<html.span style={styles.label()}>End Date and Time*</html.span>
 						<Controller
 							control={control}
-							name="description"
+							name="endDate"
 							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter trip description"
-									value={value ?? ''}
+								<DateTimePicker
+									value={value}
 									onChange={onChange}
-									multiline
+									error={{
+										date: errors.endDate?.message,
+										time: errors.endDate?.message,
+									}}
+									placeholder={{
+										date: 'End date',
+										time: 'End time',
+									}}
 								/>
 							)}
 						/>
 					</html.div>
 				</html.div>
 
-				<html.div style={styles.submitContainer}>
-					<Button
-						onPress={handleSubmit(onFormSubmit)}
-						variant="primary"
-						fullWidth
-						disabled={isSubmitting}
-						title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
+				<html.div style={styles.fieldContainer}>
+					<html.span style={styles.label()}>Description</html.span>
+					<Controller
+						control={control}
+						name="description"
+						render={({ field: { onChange, value } }) => (
+							<Input
+								placeholder="Enter trip description"
+								value={value ?? ''}
+								onChange={onChange}
+								multiline
+							/>
+						)}
 					/>
 				</html.div>
 			</html.div>
+
+			<html.div style={styles.submitContainer}>
+				<Button
+					onPress={handleSubmit(onFormSubmit)}
+					variant="primary"
+					fullWidth
+					disabled={isSubmitting}
+					title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
+				/>
+			</html.div>
 		</html.div>
+	);
+
+	if (Platform.OS === 'web') {
+		return renderContent();
+	}
+
+	return (
+		<KeyboardAvoidingView 
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={nativeStyles.keyboardAvoidingView}
+		>
+			<ScrollView 
+				contentContainerStyle={nativeStyles.scrollViewContent}
+				keyboardShouldPersistTaps="handled"
+			>
+				{renderContent()}
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 
-const styles = css.create({
-	scrollContainer: {
-		maxHeight: '100vh',
+const nativeStyles = RNStyleSheet.create({
+	keyboardAvoidingView: {
+		flex: 1,
 	},
+	scrollViewContent: {
+		flexGrow: 1,
+	},
+});
+
+const styles = css.create({
 	container: {
 		flexDirection: 'column',
 		gap: '1.5rem'

@@ -1,27 +1,21 @@
-import { Trip, TripInput } from '@/api/generated/schemas';
-import { CrossIcon } from '@/assets/icons/CrossIcon/CrossIcon';
+import { css, html } from 'react-strict-dom';
 import { colors } from '@/assets/colors/colors';
-import { html, css } from 'react-strict-dom';
+import { CrossIcon } from '@/assets/icons/CrossIcon/CrossIcon';
 import { useState, useEffect } from 'react';
-import { TripForm } from '@/components/TripForm';
 
-type TFormModalWebProps = {
+type TFormModalProps<TFormData> = {
 	isVisible: boolean;
 	onClose: () => void;
-	onSubmit: (data: TripInput) => void;
-	isSubmitting: boolean;
-	submitError?: Error | null;
-	initialData?: Trip;
+	title: string;
+	children: React.ReactNode;
 };
 
-export const FormModal = ({
+export const FormModal = <TFormData,>({
 	isVisible,
 	onClose,
-	onSubmit,
-	isSubmitting,
-	submitError,
-	initialData,
-}: TFormModalWebProps) => {
+	title,
+	children,
+}: TFormModalProps<TFormData>) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
@@ -37,7 +31,7 @@ export const FormModal = ({
 			<html.div style={[styles.panel(), isOpen && styles.panelOpen]}>
 				<html.div style={styles.content}>
 					<html.div style={styles.header}>
-						<html.h2 style={styles.title}>Create New Trip</html.h2>
+						<html.h2 style={styles.title}>{title}</html.h2>
 						<html.button 
 							style={styles.closeButton()} 
 							onClick={onClose}
@@ -48,20 +42,13 @@ export const FormModal = ({
 					</html.div>
 
 					<html.div style={styles.formContainer}>
-						<TripForm
-							onSubmit={onSubmit}
-							isSubmitting={isSubmitting}
-							submitError={submitError}
-							initialData={initialData}
-						/>
+						{children}
 					</html.div>
 				</html.div>
 			</html.div>
 		</>
 	);
 };
-
-export default FormModal;
 
 const styles = css.create({
 	overlay: {
@@ -83,7 +70,7 @@ const styles = css.create({
 		right: 0,
 		top: 0,
 		height: '100%',
-		width: '672px',
+		width: '42rem',
 		backgroundColor: colors.white,
 		boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
 		transform: 'translateX(100%)',
@@ -95,18 +82,18 @@ const styles = css.create({
 	},
 	content: {
 		height: '100%',
-		padding: 24,
+		padding: '1.5rem',
 	},
 	header: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginBottom: 16,
+		marginBottom: '1rem',
 	},
 	title: {
-		fontSize: 24,
-		fontWeight: 600,
+		fontSize: '1.5rem',
+		fontWeight: '600',
 		margin: 0,
 	},
 	closeButton: () => ({
@@ -115,7 +102,7 @@ const styles = css.create({
 		borderStyle: 'none',
 		borderColor: 'transparent',
 		cursor: 'pointer',
-		padding: 8,
+		padding: '0.5rem',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',

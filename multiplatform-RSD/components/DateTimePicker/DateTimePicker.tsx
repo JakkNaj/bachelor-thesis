@@ -23,7 +23,6 @@ export const DateTimePicker = ({
     const [date, setDate] = useState<string>('');
     const [time, setTime] = useState<string>('');
 
-    // Initialize date and time from value if provided
     useEffect(() => {
         if (value) {
             const [datePart, timePart] = value.split('T');

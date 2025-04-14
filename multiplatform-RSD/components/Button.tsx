@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { css, html } from 'react-strict-dom';
 import { colors } from '../assets/colors/colors';
+import { Platform } from 'react-native';
 
 type TButtonProps = {
 	title: string;
@@ -38,7 +39,11 @@ export const Button = ({
 	return (
 		<html.button
 			type={type}
-			style={[styles.button(variant, outlined, fullWidth, disabled || isLoading, !!icon), style]}
+			style={[
+				styles.button(variant, outlined, fullWidth, disabled || isLoading, !!icon),
+				Platform.OS === 'web' && webStyles.button(fullWidth),
+				style,
+			]}
 			onClick={handleClick}
 			disabled={disabled || isLoading}
 		>
@@ -75,7 +80,6 @@ const styles = css.create({
 		borderWidth: outlined ? '1px' : '0',
 		borderStyle: 'solid',
 		borderColor: variant === 'danger' && outlined ? colors.red[500] : colors.slate[300],
-		width: fullWidth ? '100%' : 'auto',
 		alignSelf: fullWidth ? 'stretch' : 'flex-start',
 		opacity: disabled ? '0.5' : '1',
 		cursor: disabled ? 'not-allowed' : 'pointer',
@@ -97,4 +101,10 @@ const styles = css.create({
 	iconContainer: {
 		marginRight: '0.5rem',
 	},
+});
+
+const webStyles = css.create({
+	button: (fullWidth: boolean) => ({
+		width: fullWidth ? '100%' : 'auto',
+	}),
 });

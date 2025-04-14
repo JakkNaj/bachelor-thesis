@@ -1,44 +1,33 @@
-import { Trip, TripInput } from '@/api/generated/schemas';
 import { CrossIcon } from '@/assets/icons/CrossIcon/CrossIcon';
 import { Modal, SafeAreaView, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { TripForm } from '@/components/TripForm';
 import { colors } from '@/assets/colors/colors';
 
 type TTripFormModalProps = {
 	isVisible: boolean;
 	onClose: () => void;
-	onSubmit: (data: TripInput) => void;
-	isSubmitting: boolean;
-	submitError?: Error | null;
-	initialData?: Trip;
+	title: string;
+	children: React.ReactNode;
 };
 
 export const FormModal = ({
 	isVisible,
 	onClose,
-	onSubmit,
-	isSubmitting,
-	submitError,
-	initialData,
+	title,
+	children
 }: TTripFormModalProps) => {
 	return (
 		<Modal visible={isVisible} animationType="slide" onRequestClose={onClose}>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.content}>
 					<View style={styles.header}>
-						<Text style={styles.title}>Create New Trip</Text>
+						<Text style={styles.title}>{title}</Text>
 						<TouchableOpacity onPress={onClose}>
 							<CrossIcon size={24} color={colors.slate[400]} />
 						</TouchableOpacity>
 					</View>
 
 					<View style={styles.formContainer}>
-						<TripForm
-							onSubmit={onSubmit}
-							isSubmitting={isSubmitting}
-							submitError={submitError}
-							initialData={initialData}
-						/>
+						{children}
 					</View>
 				</View>
 			</SafeAreaView>
