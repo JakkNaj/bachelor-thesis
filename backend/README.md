@@ -73,7 +73,7 @@ project/
 ```
 
 ## License
-[TODO]
+MIT
 
 
 
