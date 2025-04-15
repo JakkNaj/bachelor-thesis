@@ -129,7 +129,8 @@ const HeroContent = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	padding: ${spacing[4]}px 0;
+	padding: ${spacing[1]}px 0;
+	margin-bottom: ${spacing[3]}px;
 `;
 
 const HeroTitle = styled.h1`
@@ -137,7 +138,12 @@ const HeroTitle = styled.h1`
 	font-weight: ${fontWeights.bold};
 	line-height: 40px;
 	color: ${colors.black};
-	text-align: center;
+	text-align: start;
+	margin-bottom: ${spacing[3]}px;
+
+	@media (max-width: 768px) {
+		font-size: ${fontSizes['3xl']}px;
+	}
 `;
 
 const HeroDescription = styled.p`
@@ -148,6 +154,7 @@ const HeroDescription = styled.p`
 	line-height: 28px;
 	font-weight: ${fontWeights.normal};
 	color: ${colors.slate[600]};
+	margin-bottom: ${spacing[2]}px;
 `;
 
 const ButtonContainer = styled.div`
@@ -176,6 +183,13 @@ const HeaderContainer = styled.div`
 	align-items: center;
 	padding: 0 ${spacing[2]}px;
 	gap: 10rem;
+
+	@media (max-width: 768px) {
+		gap: ${spacing[4]}px;
+		grid-template-columns: auto 1fr;
+		align-items: center;
+		margin-top: ${spacing[2]}px;
+	}
 `;
 
 const HeaderTitle = styled.h2`
@@ -185,11 +199,22 @@ const HeaderTitle = styled.h2`
 	text-align: center;
 	grid-column: 2;
 	margin-bottom: 0;
+
+	@media (max-width: 768px) {
+		grid-column: 1;
+		text-align: start;
+		margin-top: 0;
+	}
 `;
 
 const HeaderButton = styled.div`
 	grid-column: 3;
 	justify-self: end;
+
+	@media (max-width: 768px) {
+		grid-column: 2;
+		justify-self: center;
+	}
 `;
 
 const ContentSection = styled.section`
@@ -203,6 +228,7 @@ const TripsContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: ${spacing[4]}px;
+	margin-bottom: 4rem;
 `;
 
 const EmptyState = styled.div`

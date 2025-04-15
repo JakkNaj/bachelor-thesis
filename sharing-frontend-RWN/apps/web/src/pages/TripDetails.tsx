@@ -88,8 +88,6 @@ export const TripDetails = ({ className }: TTripDetailsProps) => {
 				activities={trip.data.activities || []}
 				tripStartDate={trip.data.startDate}
 				tripEndDate={trip.data.endDate}
-				onActivityAdded={() => {}}
-				onActivityUpdated={() => {}}
 			/>
 
 			<SidePanel isOpen={isEditingTrip} onClose={() => setIsEditingTrip(false)}>

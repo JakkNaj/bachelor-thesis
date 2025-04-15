@@ -40,6 +40,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
+	overflow-y: auto;
 `;
 
 const MainContent = styled.main`
@@ -48,7 +49,6 @@ const MainContent = styled.main`
 	padding: 0 1rem;
 	flex: 1;
 	width: 100%;
-	overflow-y: auto;
 	box-sizing: border-box;
 `;
 

@@ -48,6 +48,10 @@ const Panel = styled.div<{ $isOpen: boolean }>`
 	transform: translateX(${props => (props.$isOpen ? '0' : '100%')});
 	transition: transform 0.3s ease-in-out;
 	z-index: 50;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 `;
 
 const Content = styled.div`

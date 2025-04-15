@@ -256,6 +256,10 @@ const DateContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: ${spacing[4]}px;
+
+	@media (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
 `;
 
 const ErrorMessage = styled.div`

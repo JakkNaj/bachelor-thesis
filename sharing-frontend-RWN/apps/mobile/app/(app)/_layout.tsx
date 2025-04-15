@@ -45,7 +45,7 @@ export default function AppLayout() {
 					title: '',
 					headerLeft: () => (
 						<View style={styles.headerLeft}>
-							<LogoIcon size={24} />
+							<LogoIcon size={32} />
 							<Text style={styles.logoText}>TripPlanner</Text>
 						</View>
 					),
@@ -78,7 +78,6 @@ const useStyles = () => {
 			display: 'flex',
 			flexDirection: 'row',
 			alignItems: 'center',
-			marginLeft: spacing[4],
 		},
 		logoText: {
 			fontSize: fontSizes.xl,

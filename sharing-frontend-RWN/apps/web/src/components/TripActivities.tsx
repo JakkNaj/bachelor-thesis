@@ -14,8 +14,6 @@ type TTripActivitiesProps = {
 	activities: Activity[];
 	tripStartDate: string;
 	tripEndDate: string;
-	onActivityAdded: () => void;
-	onActivityUpdated: () => void;
 };
 
 export const TripActivities = ({
@@ -23,8 +21,6 @@ export const TripActivities = ({
 	activities,
 	tripStartDate,
 	tripEndDate,
-	onActivityAdded,
-	onActivityUpdated,
 }: TTripActivitiesProps) => {
 	const [isAddingActivity, setIsAddingActivity] = useState(false);
 	const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
@@ -38,12 +34,10 @@ export const TripActivities = ({
 		if (editingActivity) {
 			updateActivity(data, () => {
 				setEditingActivity(null);
-				onActivityUpdated();
 			});
 		} else {
 			createActivity(data, () => {
 				setIsAddingActivity(false);
-				onActivityAdded();
 			});
 		}
 	};
@@ -154,6 +148,10 @@ const Section = styled.section`
 	gap: ${spacing[1]}px;
 	padding: ${spacing[2]}px 0 ${spacing[3]}px;
 	width: 100%;
+
+	@media (max-width: 768px) {
+		padding: 0;
+	}
 `;
 
 const HeaderContainer = styled.div`
@@ -163,6 +161,14 @@ const HeaderContainer = styled.div`
 	align-items: center;
 	padding: 0 ${spacing[2]}px;
 	gap: 10rem;
+
+	@media (max-width: 768px) {
+		gap: ${spacing[4]}px;
+		grid-template-columns: auto 1fr;
+		align-items: center;
+		margin-top: 0;
+		padding-top: 0;
+	}
 `;
 
 const SectionTitle = styled.h2`
@@ -172,11 +178,22 @@ const SectionTitle = styled.h2`
 	text-align: center;
 	grid-column: 2;
 	margin-bottom: 0;
+
+	@media (max-width: 768px) {
+		grid-column: 1;
+		text-align: start;
+		margin-top: 0;
+	}
 `;
 
 const HeaderButton = styled.div`
 	grid-column: 3;
 	justify-self: end;
+
+	@media (max-width: 768px) {
+		grid-column: 2;
+		justify-self: end;
+	}
 `;
 
 const ContentSection = styled.section`

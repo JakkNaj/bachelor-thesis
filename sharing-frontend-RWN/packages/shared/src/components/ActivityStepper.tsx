@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Alert, Modal, Pressable, Text, View } from 'react-native';
+import { Alert, Modal, Platform, Pressable, Text, View } from 'react-native';
 import { Activity, ActivityInput, ActivityInputType } from '../api/generated/schemas';
 import { CrossIcon } from '../assets/icons/CrossIcon';
 import { DotsIcon } from '../assets/icons/DotsIcon';
@@ -79,24 +79,33 @@ export const ActivityStepper = ({
 	};
 
 	const handleDelete = (activity: Activity) => {
-		Alert.alert(
-			'Delete Activity',
-			'Are you sure you want to delete this activity? This action cannot be undone.',
-			[
-				{
-					text: 'Cancel',
-					style: 'cancel',
-					onPress: () => setDeletingActivity(null),
-				},
-				{
-					text: 'Delete',
-					style: 'destructive',
-					onPress: () => {
-						deleteActivity(activity.id, () => setDeletingActivity(null));
+		if (Platform.OS === 'web') {
+			if (
+				window.confirm(
+					'Are you sure you want to delete this activity? This action cannot be undone.'
+				)
+			) {
+				deleteActivity(activity.id);
+			}
+		} else {
+			Alert.alert(
+				'Delete Activity',
+				'Are you sure you want to delete this activity? This action cannot be undone.',
+				[
+					{
+						text: 'Cancel',
+						style: 'cancel',
 					},
-				},
-			]
-		);
+					{
+						text: 'Delete',
+						onPress: () => {
+							deleteActivity(activity.id);
+						},
+						style: 'destructive',
+					},
+				]
+			);
+		}
 	};
 
 	const handleOpenMenu = (activity: Activity, event: any) => {
