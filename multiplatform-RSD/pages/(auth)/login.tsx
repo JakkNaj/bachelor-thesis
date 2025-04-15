@@ -3,7 +3,7 @@ import { usePostApiAuthLogin } from "@/api/generated/auth/auth";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { authService } from '@/lib/store/auth-service';
-import { Platform } from "react-native";
+import { Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 
@@ -45,7 +45,7 @@ export const LoginPage = () => {
     login({ data: { email, password } });
   };
 
-   // Auto-login with test credentials
+  /*  // Auto-login with test credentials
   useEffect(() => {
     const autoLogin = async () => {
       try {
@@ -61,9 +61,9 @@ export const LoginPage = () => {
     };
 
     autoLogin();
-  }, []); 
+  }, []);  */
 
-  return (
+  const renderContent = () => (
     <html.div style={styles.container}>
       <html.div style={[styles.card, Platform.OS === 'web' && webStyles.card]}>
         <html.div style={styles.header}>
@@ -113,20 +113,49 @@ export const LoginPage = () => {
         </html.div>
 
         <html.div style={styles.linkContainer}>
-            <html.p style={styles.registerText}>
+          <html.p style={styles.registerText}>
             Don't have an account?{" "}
             <html.span 
-                style={styles.registerLink}
-                onClick={() => router.navigate('/(auth)/signup')}
+              style={styles.registerLink}
+              onClick={() => router.navigate('/(auth)/signup')}
             >
-                Register
+              Register
             </html.span>
-            </html.p>
+          </html.p>
         </html.div>
       </html.div>
     </html.div>
   );
+
+  if (Platform.OS === 'web') {
+    return renderContent();
+  }
+
+  return (
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={nativeStyles.keyboardAvoidingView}
+    >
+      <ScrollView 
+        contentContainerStyle={nativeStyles.scrollViewContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        {renderContent()}
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
+
+const nativeStyles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+});
 
 const webStyles = css.create({
   card: {

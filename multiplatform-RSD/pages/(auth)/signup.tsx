@@ -3,7 +3,7 @@ import { usePostApiAuthSignup } from "@/api/generated/auth/auth";
 import { router } from "expo-router";
 import { useState } from "react";
 import { authService } from '@/lib/store/auth-service';
-import { Platform } from "react-native";
+import { Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import * as yup from "yup";
@@ -74,7 +74,7 @@ export const SignupPage = () => {
     });
   };
 
-  return (
+  const renderContent = () => (
     <html.div style={styles.container}>
       <html.div style={[styles.card, Platform.OS === 'web' && webStyles.card]}>
         <html.div style={styles.header}>
@@ -176,20 +176,49 @@ export const SignupPage = () => {
         </html.div>
 
         <html.div style={styles.linkContainer}>
-            <html.p style={styles.loginText}>
+          <html.p style={styles.loginText}>
             Already have an account?{" "}
             <html.span 
-                style={styles.loginLink}
-                onClick={() => router.navigate('/(auth)/login')}
+              style={styles.loginLink}
+              onClick={() => router.navigate('/(auth)/login')}
             >
-                Sign in
+              Sign in
             </html.span>
-            </html.p>
+          </html.p>
         </html.div>
       </html.div>
     </html.div>
   );
+
+  if (Platform.OS === 'web') {
+    return renderContent();
+  }
+
+  return (
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={nativeStyles.keyboardAvoidingView}
+    >
+      <ScrollView 
+        contentContainerStyle={nativeStyles.scrollViewContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        {renderContent()}
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
 };
+
+const nativeStyles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+});
 
 const webStyles = css.create({
   card: {
