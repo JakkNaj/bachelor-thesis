@@ -1,50 +1,96 @@
-# Welcome to your Expo app 👋
+# Mobile Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo, featuring a modern UI with Tailwind CSS styling.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- Modern UI components with Tailwind CSS styling
+- Type-safe development with TypeScript
+- Form handling with React Hook Form and Yup validation
+- API integration with Axios and React Query
+- Calendar and date/time picking functionality
+- Activity and Trip management
+- Authentication system
+- Responsive design with NativeWind
 
-   ```bash
-   npm install
-   ```
+## 📱 Tech Stack
 
-2. Start the app
+- **Framework**: React Native with Expo
+- **Styling**: Tailwind CSS (NativeWind)
+- **Type Safety**: TypeScript
+- **State Management**: React Query
+- **Form Handling**: React Hook Form + Yup
+- **API Integration**: Axios + Orval
+- **UI Components**: Custom components with Expo Vector Icons
+- **Navigation**: Expo Router
+- **Date/Time**: React Native Calendar Picker, DateTimePicker
 
-   ```bash
-    npx expo start
-   ```
+## 🛠️ Prerequisites
 
-In the output, you'll find options to open the app in a
+- Node.js (LTS version)
+- npm or yarn
+- Expo CLI
+- iOS Simulator (for Mac) or Android Studio (for Android development)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🚀 Getting Started
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Install dependencies**
 
-## Get a fresh project
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-When you're ready, run:
+2. **Start the development server**
 
-```bash
-npm run reset-project
+    ```bash
+    npm start
+    # or
+    yarn start
+    ```
+
+3. **Run on specific platform**
+    ```bash
+    # For iOS
+    npm run ios
+    # For Android
+    npm run android
+    # For web
+    npm run web
+    ```
+
+## 📁 Project Structure
+
+```
+app/
+├── api/              # API configuration and generated types
+├── assets/           # Static assets
+├── components/       # Reusable UI components
+├── hooks/           # Custom React hooks
+├── lib/             # Utility functions and configurations
+├── types/           # TypeScript type definitions
+├── (auth)/          # Authentication related screens
+└── (app)/           # Main application screens
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🔧 Available Scripts
 
-## Learn more
+- `npm start` - Start the Expo development server
+- `npm run android` - Start the app on Android
+- `npm run ios` - Start the app on iOS
+- `npm run lint` - Run ESLint
+- `npm run generate-api` - Generate API types using Orval
 
-To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 🔐 Authentication
 
-## Join the community
+The application includes a complete authentication system with secure storage using Expo Secure Store.
 
-Join our community of developers creating universal apps.
+## 📱 Platform Support
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- iOS
+- Android
+
+## 📝 License
+MIT
