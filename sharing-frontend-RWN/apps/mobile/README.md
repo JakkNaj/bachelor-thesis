@@ -1,50 +1,144 @@
-# Welcome to your Expo app 👋
+# Trip Planner Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application for planning trips and managing activities, built with Expo and sharing code with the web application through a monorepo structure.
 
-## Get started
+## Features
 
-1. Install dependencies
+- User authentication with JWT tokens
+- Create, read, update, and delete trips
+- Add, edit, and remove activities for each trip
+- Secure API communication with bearer token authentication
+- Form validation using Yup
+- State management with React Query
+- File-based routing with Expo Router
+- Cross-platform compatibility (iOS, Android)
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- **Expo**: React Native development platform
+- **React Native**: Mobile UI framework
+- **TypeScript**: Type safety
+- **React Query**: Data fetching and caching
+- **Orval**: API client generation from OpenAPI spec
+- **Expo Router**: File-based routing
+- **React Hook Form**: Form handling
+- **Yup**: Form validation
+- **Axios**: HTTP client
+- **Expo Secure Store**: Secure token storage
 
-   ```bash
-    npx expo start
-   ```
+## Project Structure
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+app/
+  ├── (auth)/              # Authentication routes
+  ├── (tabs)/              # Main tab navigation
+  ├── modals/              # Modal screens
+  ├── components/          # Reusable components
+  ├── hooks/               # Custom hooks
+  ├── utils/               # Utility functions
+  └── _layout.tsx          # Root layout component
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Monorepo Structure
 
-## Learn more
+This application is part of a monorepo and uses code from the shared package:
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+monorepo/
+  ├── packages/
+  │   └── shared/          # Shared code, types, and API clients
+  └── apps/
+      ├── web/             # React web application
+      └── mobile/          # This mobile application
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The shared package contains:
 
-## Join the community
+- API client generation and types
+- Common components
+- Shared utilities and hooks
+- Authentication logic
 
-Join our community of developers creating universal apps.
+## Getting Started
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Prerequisites
+
+- Node.js (v18 or higher)
+- Yarn package manager
+- Expo CLI (`npm install -g expo-cli`)
+- iOS Simulator (for Mac) or Android Studio (for Android development)
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+yarn install
+```
+
+3. Generate API clients (from root directory):
+
+```bash
+yarn generate-api
+```
+
+4. Start the development server:
+
+```bash
+yarn mobile
+```
+
+### Running the App
+
+After starting the development server, you can:
+
+- Press `i` to open in iOS simulator
+- Press `a` to open in Android emulator
+- Scan the QR code with your phone to run on a physical device
+  (**if so**, then you have to change the BASEURL in api/axios-config to your computer ip address, where you started backend service)
+
+## Development
+
+### Available Scripts
+
+- `yarn start` - Start Expo development server
+- `yarn ios` - Start iOS simulator
+- `yarn android` - Start Android emulator
+- `yarn lint` - Run ESLint
+
+### API Communication
+
+The application uses a custom Axios instance for API communication that:
+
+- Sets the base URL for all API requests
+- Adds authentication tokens to requests
+- Handles 401 unauthorized responses
+- Manages token storage in Expo Secure Store
+
+### Authentication
+
+The application uses JWT tokens for authentication. Tokens are stored securely using Expo Secure Store and automatically added to API requests via the Axios interceptor.
+
+## Troubleshooting
+
+1. If you encounter build issues:
+
+   - Make sure you've run `yarn generate-api` from the root directory
+   - Check if all dependencies are properly installed
+   - Run `yarn reset-project` to clear Expo cache
+
+2. For API-related issues:
+
+   - Verify that the API client is properly generated in the shared package
+   - Check if the API endpoints are correctly configured
+   - Ensure authentication tokens are properly set
+
+3. For Expo-specific issues:
+   - Clear Expo cache with `expo start -c`
+   - Make sure you have the latest Expo CLI installed
+   - Check if your Expo SDK version is compatible with your React Native version
+
+## License
+
+MIT

@@ -1,9 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-	transformFormDataToTripInput,
-	tripFormSchema,
-	TTripFormData,
-} from '@monorepo/shared/dist/yup';
 import { TripInput } from '@monorepo/shared/src/api/generated/schemas';
 import { Button } from '@monorepo/shared/src/components/Button';
 import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker/DateTimePicker';
@@ -11,8 +6,13 @@ import { Input } from '@monorepo/shared/src/components/Input';
 import { fontSizes, fontWeights, radius, spacing } from '@monorepo/shared/src/theme';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';
 import { formatDateForInput } from '@monorepo/shared/src/utils/dateUtils';
+import {
+	transformFormDataToTripInput,
+	tripFormSchema,
+	TTripFormData,
+} from '@monorepo/shared/src/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 
 type TTripFormProps = {
 	initialData?: TripInput;
@@ -30,6 +30,7 @@ type TTripFormStyles = {
 	label: object;
 	dateTimeContainer: object;
 	submitContainer: object;
+	scrollContent: object;
 };
 
 export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: TTripFormProps) => {
@@ -76,121 +77,127 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 	};
 
 	return (
-		<ScrollView>
-			<View style={styles.container}>
-				{submitError && (
-					<View style={styles.errorContainer}>
-						<Text style={styles.errorText}>{getErrorMessage(submitError)}</Text>
-					</View>
-				)}
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={{ flex: 1 }}
+		>
+			<ScrollView contentContainerStyle={styles.scrollContent}>
+				<View style={styles.container}>
+					{submitError && (
+						<View style={styles.errorContainer}>
+							<Text style={styles.errorText}>{getErrorMessage(submitError)}</Text>
+						</View>
+					)}
 
-				<View style={styles.formSection}>
-					<View style={styles.fieldContainer}>
-						<Text style={styles.label}>Trip Title*</Text>
-						<Controller
-							control={control}
-							name="title"
-							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter trip title"
-									value={value}
-									onChangeText={onChange}
-									error={errors.title?.message}
-								/>
-							)}
-						/>
-					</View>
-
-					<View style={styles.dateTimeContainer}>
+					<View style={styles.formSection}>
 						<View style={styles.fieldContainer}>
-							<Text style={styles.label}>Start Date and Time*</Text>
+							<Text style={styles.label}>Trip Title*</Text>
 							<Controller
 								control={control}
-								name="startDate"
-								render={({ field: { onChange, value } }) => {
-									const [date, time] = value ? value.split('T') : ['', ''];
-									return (
-										<DateTimePicker
-											date={date}
-											time={time}
-											onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
-											onTimeChange={newTime => onChange(`${date}T${newTime}`)}
-											error={{
-												date: errors.startDate?.message,
-												time: errors.startDate?.message,
-											}}
-											placeholder={{
-												date: 'Start date',
-												time: 'Start time',
-											}}
-										/>
-									);
-								}}
+								name="title"
+								render={({ field: { onChange, value } }) => (
+									<Input
+										placeholder="Enter trip title"
+										value={value}
+										onChangeText={onChange}
+										error={errors.title?.message}
+									/>
+								)}
 							/>
 						</View>
 
+						<View style={styles.dateTimeContainer}>
+							<View style={styles.fieldContainer}>
+								<Text style={styles.label}>Start Date and Time*</Text>
+								<Controller
+									control={control}
+									name="startDate"
+									render={({ field: { onChange, value } }) => {
+										const [date, time] = value ? value.split('T') : ['', ''];
+										return (
+											<DateTimePicker
+												date={date}
+												time={time}
+												onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
+												onTimeChange={newTime => onChange(`${date}T${newTime}`)}
+												error={{
+													date: errors.startDate?.message,
+													time: errors.startDate?.message,
+												}}
+												placeholder={{
+													date: 'Start date',
+													time: 'Start time',
+												}}
+											/>
+										);
+									}}
+								/>
+							</View>
+
+							<View style={styles.fieldContainer}>
+								<Text style={styles.label}>End Date and Time*</Text>
+								<Controller
+									control={control}
+									name="endDate"
+									render={({ field: { onChange, value } }) => {
+										const [date, time] = value ? value.split('T') : ['', ''];
+										return (
+											<DateTimePicker
+												date={date}
+												time={time}
+												onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
+												onTimeChange={newTime => onChange(`${date}T${newTime}`)}
+												error={{
+													date: errors.endDate?.message,
+													time: errors.endDate?.message,
+												}}
+												placeholder={{
+													date: 'End date',
+													time: 'End time',
+												}}
+											/>
+										);
+									}}
+								/>
+							</View>
+						</View>
+
 						<View style={styles.fieldContainer}>
-							<Text style={styles.label}>End Date and Time*</Text>
+							<Text style={styles.label}>Description</Text>
 							<Controller
 								control={control}
-								name="endDate"
-								render={({ field: { onChange, value } }) => {
-									const [date, time] = value ? value.split('T') : ['', ''];
-									return (
-										<DateTimePicker
-											date={date}
-											time={time}
-											onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
-											onTimeChange={newTime => onChange(`${date}T${newTime}`)}
-											error={{
-												date: errors.endDate?.message,
-												time: errors.endDate?.message,
-											}}
-											placeholder={{
-												date: 'End date',
-												time: 'End time',
-											}}
-										/>
-									);
-								}}
+								name="description"
+								render={({ field: { onChange, value } }) => (
+									<Input
+										placeholder="Enter trip description"
+										value={value ?? ''}
+										onChangeText={onChange}
+										multiline
+										numberOfLines={2}
+									/>
+								)}
 							/>
 						</View>
 					</View>
 
-					<View style={styles.fieldContainer}>
-						<Text style={styles.label}>Description</Text>
-						<Controller
-							control={control}
-							name="description"
-							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter trip description"
-									value={value ?? ''}
-									onChangeText={onChange}
-									multiline
-									numberOfLines={2}
-								/>
-							)}
-						/>
+					<View style={styles.submitContainer}>
+						<Button
+							onPress={handleSubmit(onFormSubmit)}
+							variant="primary"
+							fullWidth
+							disabled={isSubmitting}
+						>
+							{isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
+						</Button>
 					</View>
 				</View>
-
-				<View style={styles.submitContainer}>
-					<Button
-						onPress={handleSubmit(onFormSubmit)}
-						variant="primary"
-						fullWidth
-						disabled={isSubmitting}
-					>
-						{isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
-					</Button>
-				</View>
-			</View>
-		</ScrollView>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 
 export default TripForm;
+
 const useStyles = () => {
 	return createStyles<TTripFormStyles>(theme => ({
 		container: {
@@ -225,6 +232,9 @@ const useStyles = () => {
 		submitContainer: {
 			flexDirection: 'row',
 			justifyContent: 'flex-end',
+		},
+		scrollContent: {
+			flexGrow: 1,
 		},
 	}));
 };

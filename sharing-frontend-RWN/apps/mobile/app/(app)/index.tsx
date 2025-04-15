@@ -1,4 +1,3 @@
-import { ETripFilter } from '@monorepo/shared/dist/types/ETripFilter';
 import { Trip, TripInput } from '@monorepo/shared/src/api/generated/schemas';
 import { useGetApiTrips } from '@monorepo/shared/src/api/generated/trips/trips';
 import { CrossIcon } from '@monorepo/shared/src/assets/icons/CrossIcon';
@@ -13,6 +12,7 @@ import { useMemo, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { TripFilters } from '../components/TripFilters';
 import { TripFormModal } from '../components/TripFormModal';
+import { ETripFilter } from '@monorepo/shared/src/types/ETripFilter';
 
 type TAppIndexStyles = {
 	container: object;

@@ -1,6 +1,6 @@
-# Trip Planner App
+# Trip Planner Web App
 
-A web application for planning trips and managing activities built with React, TypeScript, React Query, and Orval.
+A web application for planning trips and managing activities built with React, TypeScript, and React Native Web for cross-platform compatibility.
 
 ## Features
 
@@ -11,27 +11,29 @@ A web application for planning trips and managing activities built with React, T
 - Form validation using Yup
 - State management with Zustand
 - Routing with React Router
+- Cross-platform compatibility using React Native Web
 
 ## Tech Stack
 
 - **React**: UI library
 - **TypeScript**: Type safety
+- **React Native Web**: Cross-platform compatibility
 - **React Query**: Data fetching and caching
 - **Orval**: API client generation from OpenAPI spec
 - **React Router**: Routing
 - **Zustand**: State management
 - **Yup**: Form validation
 - **Axios**: HTTP client
-- **React Hook Form**: Form handling
+- **Styled Components**: Styling
+- **Vite**: Build tool and development server
 
 ## Project Structure
 
 ```
 src/
   ├── api/
-  │   ├── generated/       # Generated API clients and types
-  │   ├── mutator/         # Custom Axios instance
-  │   └── openapi.yaml     # OpenAPI specification
+  │   ├── generated/       # Generated API clients and types from shared package
+  │   └── mutator/         # Custom Axios instance
   ├── components/          # Reusable components
   ├── hooks/               # Custom hooks
   ├── layouts/             # Layout components
@@ -52,23 +54,23 @@ monorepo/
   ├── packages/
   │   └── shared/          # Shared code, types, and API clients
   └── apps/
-      └── web/             # This web application
+      ├── web/             # This web application
+      └── mobile/          # React Native mobile application
 ```
 
 The shared package contains:
 
-- API client generation
-- Type definitions
-- Common utilities
+- API client generation and types
+- Common components
+- Shared utilities and hooks
 - Authentication logic
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- Yarn
-- npm
+- Node.js (v18 or higher)
+- Yarn package manager
 
 ### Installation
 
@@ -79,40 +81,54 @@ The shared package contains:
 yarn install
 ```
 
-3. Generate API clients:
+3. Generate API clients (from root directory):
 
 ```bash
 yarn generate-api
 ```
 
-4. Build the shared package:
-
-```bash
-yarn build:shared
-```
-
-5. Start the development server:
+4. Start the development server:
 
 ```bash
 yarn web
 ```
 
-## API Communication
+The application will be available at `http://localhost:5173`
 
-The application uses a custom Axios instance configured in `src/api/axios-config.ts` for API communication. This instance:
+## Development
+
+### Available Scripts
+
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn preview` - Preview production build
+- `yarn lint` - Run ESLint
+
+### API Communication
+
+The application uses a custom Axios instance for API communication that:
 
 - Sets the base URL for all API requests
 - Adds authentication tokens to requests
-- Handles 401 unauthorized responses by redirecting to the login page
+- Handles 401 unauthorized responses
 - Manages token storage in cookies
 
-## API Documentation
-
-The API is documented using OpenAPI specification in `src/api/openapi.json`. The shared package uses Orval to generate TypeScript clients and types from this specification and then are shared to this web app
-
-## Authentication
+### Authentication
 
 The application uses JWT tokens for authentication. Tokens are stored in cookies for security and automatically added to API requests via the Axios interceptor.
+
+## Troubleshooting
+
+1. If you encounter build issues:
+
+   - Make sure you've run `yarn generate-api` from the root directory
+   - Check if all dependencies are properly installed
+   - Clear Vite cache by removing `node_modules/.vite`
+
+2. For API-related issues:
+   - Verify that the API client is properly generated in the shared package
+   - Check if the API endpoints are correctly configured
+   - Ensure authentication tokens are properly set
 
 ## License
 

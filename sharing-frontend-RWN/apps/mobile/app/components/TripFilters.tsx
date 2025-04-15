@@ -1,4 +1,4 @@
-import { ETripFilter } from '@monorepo/shared/dist/types/ETripFilter';
+import { ETripFilter } from '@monorepo/shared/src/types/ETripFilter';
 import { FilterTag } from '@monorepo/shared/src/components/FilterTag';
 import { colors, spacing } from '@monorepo/shared/src/theme';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';

@@ -3,7 +3,7 @@ import {
 	createActivitySchema,
 	TActivityFormData,
 	transformFormDataToActivityInput,
-} from '@monorepo/shared/dist/yup';
+} from '@monorepo/shared/src/yup';
 import { ActivityInput, ActivityInputType } from '@monorepo/shared/src/api/generated/schemas';
 import { Button } from '@monorepo/shared/src/components/Button';
 import { DateTimePicker } from '@monorepo/shared/src/components/DateTimePicker/DateTimePicker';
@@ -12,7 +12,7 @@ import { Select } from '@monorepo/shared/src/components/Select/Select';
 import { createStyles } from '@monorepo/shared/src/utils/createStyles';
 import { formatDate, formatDateForInput, formatTime } from '@monorepo/shared/src/utils/dateUtils';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 
 type TActivityFormProps = {
 	initialData?: ActivityInput;
@@ -63,6 +63,9 @@ const useStyles = () => {
 		submitContainer: {
 			flexDirection: 'row',
 			justifyContent: 'flex-end',
+		},
+		scrollContent: {
+			flexGrow: 1,
 		},
 	}));
 };
@@ -127,147 +130,152 @@ export const ActivityForm = ({
 	};
 
 	return (
-		<ScrollView>
-			<View style={styles.container}>
-				{submitError && (
-					<View style={styles.errorContainer}>
-						<Text style={styles.errorText}>{getErrorMessage(submitError)}</Text>
-					</View>
-				)}
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={{ flex: 1 }}
+		>
+			<ScrollView contentContainerStyle={styles.scrollContent}>
+				<View style={styles.container}>
+					{submitError && (
+						<View style={styles.errorContainer}>
+							<Text style={styles.errorText}>{getErrorMessage(submitError)}</Text>
+						</View>
+					)}
 
-				<View style={styles.formSection}>
-					<View style={styles.fieldContainer}>
-						<Text style={styles.label}>Activity Title*</Text>
-						<Controller
-							control={control}
-							name="title"
-							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter activity title"
-									value={value}
-									onChangeText={onChange}
-									error={errors.title?.message}
-								/>
-							)}
-						/>
-					</View>
-
-					<View style={styles.fieldContainer}>
-						<Text style={styles.label}>Activity Type*</Text>
-						<Controller
-							control={control}
-							name="type"
-							render={({ field: { onChange, value } }) => (
-								<Select
-									value={value}
-									onValueChange={onChange}
-									items={activityTypeOptions}
-									placeholder="Select activity type"
-									error={errors.type?.message}
-									closeOnSelect={false}
-								/>
-							)}
-						/>
-					</View>
-
-					<View style={styles.dateTimeContainer}>
+					<View style={styles.formSection}>
 						<View style={styles.fieldContainer}>
-							<Text style={styles.infoText}>
-								Trip start: {formatTime(tripStartDate)} {formatDate(tripStartDate)}
-							</Text>
-							<Text style={styles.label}>Start Date and Time*</Text>
+							<Text style={styles.label}>Activity Title*</Text>
 							<Controller
 								control={control}
-								name="startTime"
-								render={({ field: { onChange, value } }) => {
-									const [date, time] = value ? value.split('T') : ['', ''];
-									return (
-										<DateTimePicker
-											date={date}
-											time={time}
-											onDateChange={newDate => {
-												const currentTime = time || '00:00';
-												onChange(`${newDate}T${currentTime}`);
-											}}
-											onTimeChange={newTime => {
-												const currentDate = date || new Date().toISOString().split('T')[0];
-												onChange(`${currentDate}T${newTime}`);
-											}}
-											error={{
-												date: errors.startTime?.message,
-												time: errors.startTime?.message,
-											}}
-											placeholder={{
-												date: 'Start date',
-												time: 'Start time',
-											}}
-										/>
-									);
-								}}
+								name="title"
+								render={({ field: { onChange, value } }) => (
+									<Input
+										placeholder="Enter activity title"
+										value={value}
+										onChangeText={onChange}
+										error={errors.title?.message}
+									/>
+								)}
 							/>
 						</View>
 
 						<View style={styles.fieldContainer}>
-							<Text style={styles.infoText}>
-								Trip end: {formatTime(tripEndDate)} {formatDate(tripEndDate)}
-							</Text>
-							<Text style={styles.label}>End Date and Time*</Text>
+							<Text style={styles.label}>Activity Type*</Text>
 							<Controller
 								control={control}
-								name="endTime"
-								render={({ field: { onChange, value } }) => {
-									const [date, time] = value ? value.split('T') : ['', ''];
-									return (
-										<DateTimePicker
-											date={date}
-											time={time}
-											onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
-											onTimeChange={newTime => onChange(`${date}T${newTime}`)}
-											error={{
-												date: errors.endTime?.message,
-												time: errors.endTime?.message,
-											}}
-											placeholder={{
-												date: 'End date',
-												time: 'End time',
-											}}
-										/>
-									);
-								}}
+								name="type"
+								render={({ field: { onChange, value } }) => (
+									<Select
+										value={value}
+										onValueChange={onChange}
+										items={activityTypeOptions}
+										placeholder="Select activity type"
+										error={errors.type?.message}
+										closeOnSelect={false}
+									/>
+								)}
+							/>
+						</View>
+
+						<View style={styles.dateTimeContainer}>
+							<View style={styles.fieldContainer}>
+								<Text style={styles.infoText}>
+									Trip start: {formatTime(tripStartDate)} {formatDate(tripStartDate)}
+								</Text>
+								<Text style={styles.label}>Start Date and Time*</Text>
+								<Controller
+									control={control}
+									name="startTime"
+									render={({ field: { onChange, value } }) => {
+										const [date, time] = value ? value.split('T') : ['', ''];
+										return (
+											<DateTimePicker
+												date={date}
+												time={time}
+												onDateChange={newDate => {
+													const currentTime = time || '00:00';
+													onChange(`${newDate}T${currentTime}`);
+												}}
+												onTimeChange={newTime => {
+													const currentDate = date || new Date().toISOString().split('T')[0];
+													onChange(`${currentDate}T${newTime}`);
+												}}
+												error={{
+													date: errors.startTime?.message,
+													time: errors.startTime?.message,
+												}}
+												placeholder={{
+													date: 'Start date',
+													time: 'Start time',
+												}}
+											/>
+										);
+									}}
+								/>
+							</View>
+
+							<View style={styles.fieldContainer}>
+								<Text style={styles.infoText}>
+									Trip end: {formatTime(tripEndDate)} {formatDate(tripEndDate)}
+								</Text>
+								<Text style={styles.label}>End Date and Time*</Text>
+								<Controller
+									control={control}
+									name="endTime"
+									render={({ field: { onChange, value } }) => {
+										const [date, time] = value ? value.split('T') : ['', ''];
+										return (
+											<DateTimePicker
+												date={date}
+												time={time}
+												onDateChange={newDate => onChange(`${newDate}T${time || '00:00'}`)}
+												onTimeChange={newTime => onChange(`${date}T${newTime}`)}
+												error={{
+													date: errors.endTime?.message,
+													time: errors.endTime?.message,
+												}}
+												placeholder={{
+													date: 'End date',
+													time: 'End time',
+												}}
+											/>
+										);
+									}}
+								/>
+							</View>
+						</View>
+
+						<View style={styles.fieldContainer}>
+							<Text style={styles.label}>Description</Text>
+							<Controller
+								control={control}
+								name="description"
+								render={({ field: { onChange, value } }) => (
+									<Input
+										placeholder="Enter activity description"
+										value={value ?? ''}
+										onChangeText={onChange}
+										multiline
+										numberOfLines={2}
+									/>
+								)}
 							/>
 						</View>
 					</View>
 
-					<View style={styles.fieldContainer}>
-						<Text style={styles.label}>Description</Text>
-						<Controller
-							control={control}
-							name="description"
-							render={({ field: { onChange, value } }) => (
-								<Input
-									placeholder="Enter activity description"
-									value={value ?? ''}
-									onChangeText={onChange}
-									multiline
-									numberOfLines={2}
-								/>
-							)}
-						/>
+					<View style={styles.submitContainer}>
+						<Button
+							onPress={handleSubmit(onFormSubmit)}
+							variant="primary"
+							fullWidth
+							disabled={isSubmitting}
+						>
+							{isSubmitting ? 'Saving...' : initialData ? 'Update Activity' : 'Create Activity'}
+						</Button>
 					</View>
 				</View>
-
-				<View style={styles.submitContainer}>
-					<Button
-						onPress={handleSubmit(onFormSubmit)}
-						variant="primary"
-						fullWidth
-						disabled={isSubmitting}
-					>
-						{isSubmitting ? 'Saving...' : initialData ? 'Update Activity' : 'Create Activity'}
-					</Button>
-				</View>
-			</View>
-		</ScrollView>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 

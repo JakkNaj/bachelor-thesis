@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loginSchema, TLoginSchema } from '@monorepo/shared/dist/yup/LoginFormSchema';
+import { loginSchema, TLoginSchema } from '@monorepo/shared/src/yup/LoginFormSchema';
 import { usePostApiAuthLogin } from '@monorepo/shared/src/api/generated/auth/auth';
 import { Button } from '@monorepo/shared/src/components/Button';
 import { Input } from '@monorepo/shared/src/components/Input';
