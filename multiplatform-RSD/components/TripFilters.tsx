@@ -44,5 +44,6 @@ const styles = css.create({
         paddingTop: '0.5rem',
         paddingBottom: '1rem',
         backgroundColor: colors.white,
+		flexShrink: 0,
     }),
 })

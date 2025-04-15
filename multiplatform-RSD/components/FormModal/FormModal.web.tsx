@@ -68,14 +68,17 @@ const styles = css.create({
 	panel: () => ({
 		position: 'fixed',
 		right: 0,
-		top: 0,
-		height: '100%',
+		top: '48px',
+		height: 'calc(100% - 48px)',
 		width: '42rem',
 		backgroundColor: colors.white,
 		boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
 		transform: 'translateX(100%)',
 		transition: 'transform 0.3s ease-in-out',
 		zIndex: 50,
+		'@media (max-width: 768px)': {
+			width: '100%',
+		},
 	}),
 	panelOpen: {
 		transform: 'translateX(0)',

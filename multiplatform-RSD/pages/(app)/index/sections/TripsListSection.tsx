@@ -4,7 +4,8 @@ import { Button } from "@/components/Button"
 import { TripCard } from "@/components/TripCard";
 import { Platform } from "react-native"
 import { ScrollView } from "react-native";
-import { css, html } from "react-strict-dom"
+import { css, html } from "react-strict-dom";
+import { StyleSheet } from "react-native";
 
 type tripsListSectionProps = {
     isLoading: boolean;
@@ -64,25 +65,31 @@ export const TripsListSection = ({ isLoading, filteredTrips, handleTripDetail }:
         <ScrollView>
             {renderContent()}
         </ScrollView>
-    )
+    );
 }
+
+const scrollViewStyles = StyleSheet.create({
+    container: {
+        minHeight: "100%",
+        flex: 1,
+    },
+
+});
 
 const styles = css.create({
     tripsListContainer: {
-        display: 'flex',
-        flexDirection: 'column',
+        marginTop: "0.5rem",
         flex: 1,
-        marginTop: "0.5rem"
     },
     tripsList: {
         display: 'flex',
         flexDirection: 'column',
-        flex: 1,
     },
     tripsGrid: {
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
+        paddingBottom: "2rem",
     },
     loadingContainer: {
         display: 'flex',

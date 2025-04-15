@@ -1,15 +1,35 @@
 import { colors } from "@/assets/colors/colors";
 import { CrossIcon } from "@/assets/icons/CrossIcon/CrossIcon";
 import { Button } from "@/components/Button";
+import { FormModal } from "@/components/FormModal/FormModal";
+import { TripForm } from "@/components/TripForm";
+import { useTripActions } from "@/hooks/useTripActions";
+import { TripInput } from "@/api/generated/schemas";
 import { useState } from "react";
 import { Platform } from "react-native";
 import { css, html } from "react-strict-dom"
 
 export const HeroSection = () => {
     const [isHeroVisible, setIsHeroVisible] = useState(true);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const { createTrip, isCreating, createError } = useTripActions();
 
     const toggleHeroVisibility = () => {
         setIsHeroVisible(!isHeroVisible);
+    };
+
+    const handleOpenModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleSubmitTrip = async (data: TripInput) => {
+        createTrip(data, () => {
+            setIsModalVisible(false);
+        });
     };
     
     return (
@@ -24,7 +44,7 @@ export const HeroSection = () => {
                     </html.p>
                     <Button 
                         title="Get Started" 
-                        onPress={() => {}} 
+                        onPress={handleOpenModal}
                         style={styles.heroButton}
                     />
                 </html.div>
@@ -34,6 +54,18 @@ export const HeroSection = () => {
                 >
                     <CrossIcon size={24} color={colors.gray[600]} />
                 </html.div>
+
+                <FormModal
+                    isVisible={isModalVisible}
+                    onClose={handleCloseModal}
+                    title="Create New Trip"
+                >
+                    <TripForm 
+                        onSubmit={handleSubmitTrip}
+                        isSubmitting={isCreating}
+                        submitError={createError as Error | null}
+                    />
+                </FormModal>
             </html.div>
         )
     )

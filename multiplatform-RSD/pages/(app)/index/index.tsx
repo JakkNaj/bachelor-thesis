@@ -34,10 +34,13 @@ const webStyles = css.create({
 
 const defaultStyles = css.create({
     outerWrapper: {
-        minHeight: "100vh",
         backgroundColor: "white",
+        flex: 1,
     },
     innerWrapper: {
+        flex: 1,
         maxWidth: "1536px",
+        display: "flex",
+        flexDirection: "column",
     },
 });

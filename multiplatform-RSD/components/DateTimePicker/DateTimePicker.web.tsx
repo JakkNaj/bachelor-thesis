@@ -46,6 +46,7 @@ const styles = css.create({
 	container: {
 		marginBottom: '1rem',
         display: 'flex',
+		flexDirection: 'column',
 	},
 	input: () => ({
         flex: 1,

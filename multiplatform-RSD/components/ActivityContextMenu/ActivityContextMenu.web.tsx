@@ -91,7 +91,7 @@ export const ActivityContextMenu = ({
                         disabled={isDeleting}
                         aria-label="Delete activity"
                     >
-                        <CrossIcon size={24} color={colors.red[500]} />
+                        <CrossIcon size={16} color={colors.red[500]} />
                         <html.span style={styles.menuOptionTextDelete()}>Delete</html.span>
                     </html.button>
                 </html.div>
@@ -116,8 +116,8 @@ const styles = css.create({
     },
     menuContainer: () => ({
         position: 'absolute',
-        bottom: '2.5rem',
         right: 0,
+        bottom: "-4rem",
         backgroundColor: colors.white,
         borderRadius: '0.5rem',
         padding: '0.125rem',

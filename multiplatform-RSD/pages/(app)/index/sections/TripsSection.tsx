@@ -93,6 +93,7 @@ const styles = css.create({
     sectionContainer: {
         display: 'flex',
         flexDirection: 'column',
+        flex: 1,
     },
     tripContainer: {
         display: 'flex',
@@ -100,6 +101,7 @@ const styles = css.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: '1rem',
+        flexShrink: 0,
     },
     tripTitle: {
         fontSize: '1.8rem',

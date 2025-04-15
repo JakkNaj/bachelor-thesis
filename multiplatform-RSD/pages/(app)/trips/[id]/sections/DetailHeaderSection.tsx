@@ -9,6 +9,7 @@ import { TripForm } from "@/components/TripForm";
 import { useTripActions } from "@/hooks/useTripActions";
 import { Alert, Platform } from "react-native";
 import { useRouter } from "expo-router";
+import { BackIcon } from "@/assets/icons/BackIcon/BackIcon";
 
 type TDetailHeaderSectionProps = {
     trip: Trip;
@@ -67,6 +68,12 @@ export const DetailHeaderSection = ({
 
     return (
         <html.div style={styles.tripDetails}>
+            {Platform.OS === 'web' &&
+                <html.div style={styles.backContainer} onClick={() => router.navigate("/")}>
+                    <BackIcon />
+                    <html.span style={styles.backText()}>Back to home</html.span>
+                </html.div>
+            }
             <html.div style={styles.header}>
                 <html.div style={styles.titleContainer}>
                     <html.h1 style={styles.title()}>{trip.title}</html.h1>
@@ -128,6 +135,18 @@ const styles = css.create({
         marginBottom: 0,
     }),
     description: () => ({
+        fontSize: '1.125rem',
+        color: colors.slate[600],
+        margin: 0,
+    }),
+    backContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '0.5rem',
+        cursor: 'pointer',
+    },
+    backText: () => ({
         fontSize: '1.125rem',
         color: colors.slate[600],
         margin: 0,

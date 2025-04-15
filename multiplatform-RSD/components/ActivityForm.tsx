@@ -159,7 +159,7 @@ export const ActivityForm = ({
 						<html.span style={styles.infoText()}>
 							Trip end: {formatTime(tripEndDate)} {formatDate(tripEndDate)}
 						</html.span>
-						<html.span style={styles.label()}>End Date and Time*</html.span>
+						<html.span style={styles.label()}>End Date and Time</html.span>
 						<Controller
 							control={control}
 							name="endTime"
@@ -263,6 +263,8 @@ const styles = css.create({
 	},
 	fieldContainer: {
 		gap: '0.25rem',
+		display: "flex",
+		flexDirection: "column",
 	},
 	label: () => ({
 		fontSize: '1.125rem',
@@ -276,6 +278,7 @@ const styles = css.create({
 	dateTimeContainer: {
 		flexDirection: 'column',
 		gap: '1rem',
+		marginTop: "1rem",
 	},
 	submitContainer: {
 		flexDirection: 'row',
