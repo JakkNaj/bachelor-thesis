@@ -73,6 +73,9 @@ export const DetailHeaderSection = ({
                     <html.p style={styles.dateText()}>
                         {formatDateRange(trip.startDate, trip.endDate)}
                     </html.p>
+                    {trip.description && (
+                        <html.p style={styles.description()}>{trip.description}</html.p>
+                    )}
                 </html.div>
                 <TripContextMenu 
                     onEdit={handleEdit}
@@ -80,10 +83,6 @@ export const DetailHeaderSection = ({
                     isDeleting={isDeleting}
                 />
             </html.div>
-            {trip.description && (
-                <html.p style={styles.description()}>{trip.description}</html.p>
-            )}
-
             <FormModal
                 isVisible={isEditModalVisible}
                 onClose={handleCloseEditModal}
@@ -105,6 +104,7 @@ const styles = css.create({
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
+        marginBottom: '1rem',
     },
     header: {
         display: 'flex',

@@ -2,8 +2,8 @@ import { css, html } from "react-strict-dom"
 import { DetailHeaderSection } from "./sections/DetailHeaderSection"
 import { useLocalSearchParams } from "expo-router";
 import { useGetApiTripsId } from "@/api/generated/trips/trips";
-import { Platform } from "react-native";
 import { TripActivitiesSection } from "./sections/TripActivitiesSection";
+import { Platform } from "react-native";
 
 export const TripDetail = () => {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -18,40 +18,17 @@ export const TripDetail = () => {
     }
 
     return (
-        <html.div style={Platform.OS === 'web' ? webStyles.outerWrapper : defaultStyles.outerWrapper}>
-            <html.div style={Platform.OS === 'web' ? webStyles.innerWrapper : defaultStyles.innerWrapper}>
-                <DetailHeaderSection trip={trip} />
-                <TripActivitiesSection tripId={trip.id} tripDates={{ startDate: trip.startDate, endDate: trip.endDate }} activities={trip.activities || []} />
-            </html.div>
+        <html.div style={Platform.OS === 'web' ? webStyles.container : {}}>
+            <DetailHeaderSection trip={trip} />
+            <TripActivitiesSection tripId={trip.id} tripDates={{ startDate: trip.startDate, endDate: trip.endDate }} activities={trip.activities || []} />
         </html.div>
     )
 }
 
-const webStyles = css.create({
-    outerWrapper: {
-        minHeight: "100vh",
-        backgroundColor: "white",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    innerWrapper: {
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "1536px",
-        width: "100%",
-        alignSelf: "center",
-    }
-});
+export default TripDetail;
 
-const defaultStyles = css.create({
-    outerWrapper: {
-        minHeight: "100vh",
-        backgroundColor: "white",
-    },
-    innerWrapper: {
-        maxWidth: "1536px",
+const webStyles = css.create({
+    container: {
         padding: "1rem",
-        gap: "1rem",
-    },
-});
+    }
+})

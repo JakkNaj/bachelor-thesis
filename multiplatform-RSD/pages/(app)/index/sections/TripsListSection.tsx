@@ -71,11 +71,13 @@ const styles = css.create({
     tripsListContainer: {
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        flex: 1,
+        marginTop: "0.5rem"
     },
     tripsList: {
         display: 'flex',
         flexDirection: 'column',
+        flex: 1,
     },
     tripsGrid: {
         display: 'flex',

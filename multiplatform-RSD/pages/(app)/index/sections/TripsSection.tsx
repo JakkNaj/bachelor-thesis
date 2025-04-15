@@ -55,7 +55,7 @@ export const TripsSection = () => {
         <html.div style={[styles.sectionContainer, Platform.OS === 'web' && webStyles.sectionContainer]}>
             <html.div style={[styles.tripContainer, Platform.OS === 'web' && webStyles.tripContainer]}>
                 {Platform.OS === 'web' && <html.div></html.div>}
-                <html.h2 style={styles.tripTitle}>Your Trips</html.h2>
+                <html.h1 style={[styles.tripTitle, Platform.OS === 'web' && webStyles.tripsTitle()]}>Your Trips</html.h1>
                 <Button 
                     title="Create a new trip"
                     onPress={handleOpenModal} 
@@ -93,7 +93,6 @@ const styles = css.create({
     sectionContainer: {
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
     },
     tripContainer: {
         display: 'flex',
@@ -104,7 +103,6 @@ const styles = css.create({
     },
     tripTitle: {
         fontSize: '1.8rem',
-        fontWeight: 'bold',
     },
     tripsListContainer: {
         display: 'flex',
@@ -159,14 +157,21 @@ const styles = css.create({
 const webStyles = css.create({
     sectionContainer: {
         alignItems: 'center',
-        padding: '1rem',
     },
     tripContainer: {
         width: '100%',
         maxWidth: '980px',
+        marginBottom: 0,
     },
     tripsListContainer: {
         width: '100%',
         maxWidth: '980px',
     },
+    tripsTitle: () => ({
+        fontSize: '40px',
+        fontWeight: '700',
+        color: colors.slate[900],
+        marginBottom: 0,
+        paddingBottom: 0,
+    }),
 });

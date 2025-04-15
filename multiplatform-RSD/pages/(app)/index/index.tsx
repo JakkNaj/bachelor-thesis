@@ -18,16 +18,15 @@ export default Home;
 
 const webStyles = css.create({
     outerWrapper: {
-        minHeight: "100vh",
         backgroundColor: "white",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        padding: "1rem",
     },
     innerWrapper: {
         display: "flex",
         flexDirection: "column",
-        maxWidth: "1536px",
         width: "100%",
         alignSelf: "center",
     }
@@ -40,7 +39,5 @@ const defaultStyles = css.create({
     },
     innerWrapper: {
         maxWidth: "1536px",
-        padding: "1rem",
-        gap: "1rem",
     },
 });

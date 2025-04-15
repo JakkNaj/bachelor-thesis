@@ -26,15 +26,16 @@ export const AppLayout = () => {
 	}, []);
 
 	return (
-		<html.div style={[styles.layoutContainer, Platform.OS === 'web' && webStyles.layoutContainer]}>
+		<html.div style={styles.layoutContainer}>
 			<Stack
 			screenOptions={{
-				headerShown: Platform.OS !== 'web',
-					headerRight: () => (
-						<html.div style={styles.avatarContainer} onClick={() => router.push('/profile')}>
-							<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
-						</html.div>
-					),
+				headerRight: () => (
+					<html.div
+					 style={[styles.avatarContainer, Platform.OS === 'web' && webStyles.avatarContainer]}
+					 onClick={() => router.navigate('/profile')}>
+						<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
+					</html.div>
+				),
 				}}
 			>
 				<Stack.Screen
@@ -42,9 +43,11 @@ export const AppLayout = () => {
 					options={{
 						title: '',
 						headerLeft: () => (
-							<html.div style={styles.headerContainer}>
+							<html.div
+							 style={[styles.headerContainer, Platform.OS === 'web' && webStyles.headerContainer]}
+							 onClick={() => router.navigate('/')}>
 								<LogoIcon size={32} />
-								<html.h2>TripPlanner</html.h2>
+								<html.h2 style={Platform.OS === 'web' && webStyles.h2}>TripPlanner</html.h2>
 							</html.div>
 						),
 					}}
@@ -52,7 +55,15 @@ export const AppLayout = () => {
 				<Stack.Screen
 					name="trips/[id]"
 					options={{
-						title: 'Trip Details',
+						title: Platform.OS === 'web' ? ' - trip details' : 'Trip Details',
+						headerLeft: Platform.OS === 'web' ? () => (
+							<html.div
+							 style={[styles.headerContainer, webStyles.headerContainer]}
+							 onClick={() => router.navigate('/')}>
+								<LogoIcon size={32} />
+								<html.h2>TripPlanner</html.h2>
+							</html.div>
+						) : undefined
 					}}
 				/>
 				<Stack.Screen
@@ -73,7 +84,7 @@ const styles = css.create({
 	layoutContainer: {
 		display: 'flex',
 		flexDirection: 'column',
-		minHeight: '100vh',
+		flex: 1,
 		backgroundColor: 'white',
 	},
 	headerContainer: {
@@ -90,9 +101,16 @@ const styles = css.create({
 });
 
 const webStyles = css.create({
-	layoutContainer: {
-		paddingLeft: "1rem",
-		paddingRight: "1rem",
-		paddingTop: "1rem",
+	headerContainer: {
+		paddingBottom: 0,
+		paddingLeft: '1rem',
+		cursor: 'pointer',
+	},
+	avatarContainer: {
+		paddingRight: '1rem',
+		paddingBottom: '0',
+	},
+	h2: {
+		cursor: 'pointer',
 	},
 });

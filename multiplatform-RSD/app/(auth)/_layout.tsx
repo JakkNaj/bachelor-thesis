@@ -1,9 +1,10 @@
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 import { css, html } from "react-strict-dom";
 
 export default function AuthLayout() {
     return (
-        <html.div style={styles.container}>
+        <html.div style={[styles.container, Platform.OS === 'web' && webStyles.container]}>
             <Stack
                 screenOptions={{
                     headerShown: false,
@@ -18,9 +19,21 @@ export default function AuthLayout() {
     )
 }
 
+const webStyles = css.create({
+    container: {
+        maxWidth: "448px",
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: "100%",
+    }
+})
+
 const styles = css.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+        padding: "1rem",
     }
 })

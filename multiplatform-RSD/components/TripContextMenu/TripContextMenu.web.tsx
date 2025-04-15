@@ -33,7 +33,10 @@ export const TripContextMenu = ({
 const styles = css.create({
     container: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: {
+            default: 'row',
+            '@media (max-width: 768px)': 'column',
+        },
         gap: '0.5rem',
     },
 });

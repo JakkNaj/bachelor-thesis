@@ -1,5 +1,5 @@
-import { html } from "react-strict-dom";
+import { SignupPage } from "@/pages/(auth)/signup";
 
 export default function Signup() {
-  return <html.p>Signup</html.p>;
+  return <SignupPage />;
 }

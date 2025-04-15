@@ -9,26 +9,34 @@ const queryClient = new QueryClient();
 
 const styles = css.create({
 	container: {
-		minHeight: '100vh',
+		flex: 1,
 		fontFamily: "'Geist', 'system-ui', sans-serif",
 	},
 });
 
-const webStyles = css.create({
-	container: {
-		overflow: 'auto',
-	},
-});
 
 export default function RootLayout() {
-	return (
-		<html.div style={[styles.container, Platform.OS === 'web' && webStyles.container]}>
+	const renderContent = () => {
+		return (
 			<QueryClientProvider client={queryClient}>
-				<Stack screenOptions={{ headerShown: false }}>
-					<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-					<Stack.Screen name="(app)" />
-				</Stack>
+				<html.div style={styles.container}>
+					<Stack screenOptions={{ headerShown: false }}>
+						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+						<Stack.Screen name="(app)" />
+					</Stack>
+				</html.div>
 			</QueryClientProvider>
-		</html.div>
+		)
+	};
+
+	if (Platform.OS === 'web') {
+		return (
+			<div style={{ overflowY: 'auto', height: '100%' }}>
+				{renderContent()}
+			</div>
+		)
+	}
+	return (
+		renderContent()
 	);
 }

@@ -125,7 +125,6 @@ const styles = css.create({
         alignSelf: 'flex-end',
     },
 	activitiesList: {
-		paddingLeft: '1rem',
 		paddingBottom: '0.25rem',
 		paddingTop: '0.5rem',
 	},
