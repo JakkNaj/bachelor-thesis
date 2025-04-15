@@ -1,50 +1,77 @@
-# Welcome to your Expo app 👋
+# Multiplatform RSD Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a multiplatform application built with Expo and React Strict DOM (RSD), designed to run seamlessly on both web and mobile platforms. The application follows the recommended setup from the [React Strict DOM documentation](https://facebook.github.io/react-strict-dom/learn/setup/).
 
-## Get started
+## About React Strict DOM
 
-1. Install dependencies
+React Strict DOM (RSD) is a JavaScript library that enables rendering React web interfaces on React Native. It provides:
 
+- A subset of React DOM and Web APIs that work on both web and native platforms
+- Strict HTML elements with modern web attributes
+- Built-in CSS styling system with optimized atomic CSS extraction
+- Support for imperative DOM and Web APIs on native platforms
+
+## Project Structure
+
+```
+├── api/                    # API configuration and generated code
+│   ├── generated/         # Auto-generated API client code
+│   ├── openapi.json      # OpenAPI specification
+│   └── orval.config.ts   # Orval configuration
+├── app/                   # Expo Router app directory
+│   ├── (auth)/           # Authentication routes
+│   └── (app)/            # Main application routes
+├── components/            # Reusable UI components
+├── lib/                   # Utility functions and store
+├── assets/               # Static assets (images, icons, fonts)
+└── types/                # TypeScript type definitions
+```
+
+## Getting Started
+
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Generate API client:
    ```bash
-    npx expo start
+   npm run generate-api
    ```
 
-In the output, you'll find options to open the app in a
+3. Start the backend server:
+   not in this folder, separate project
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+4. Start the development server:
+   ```bash
+   npm start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+## Development Options
 
-When you're ready, run:
+You can run the app on:
+- Web browser
+- iOS simulator
+- Android emulator
+- Physical device using Expo Go
+  (if so, then the url in apiClient has to be changed to the ip address of device you started backend service on)
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Key Features
 
-## Learn more
+- **Cross-platform**: Runs on both web and mobile platforms
+- **Type-safe**: Built with TypeScript
+- **Modern UI**: Uses React Strict DOM for consistent UI across platforms
+- **API Integration**: Auto-generated API client using Orval
+- **Form Handling**: Uses React Hook Form with Yup validation
+- **State Management**: Implements React Query for server state
 
-To learn more about developing your project with Expo, look at the following resources:
+## Technology Stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo](https://expo.dev) - React Native development platform
+- [React Strict DOM](https://facebook.github.io/react-strict-dom/learn/) - Cross-platform UI library
+- [React Query](https://tanstack.com/query/latest) - Server state management
+- [React Hook Form](https://react-hook-form.com/) - Form handling
+- [Yup](https://github.com/jquense/yup) - Schema validation
+- [Orval](https://orval.dev/) - API client generation
