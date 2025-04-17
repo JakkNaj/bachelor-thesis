@@ -58,9 +58,7 @@ export const Home = ({ className }: THomeProps) => {
 
 			<section className="mx-auto flex max-w-[1536px] flex-col justify-center items-center gap-[4px] pb-[10px] pt-[16px]">
 				<div className="flex flex-row items-center w-full relative">
-					<h2 className="absolute left-1/2 -translate-x-1/2 text-2xl font-bold leading-tight tracking-tighter md:text-4xl">
-						Your Trips
-					</h2>
+					<h2 className="absolute left-1/2 -translate-x-1/2 text-3xl font-bold leading-tight tracking-tighter">Your Trips</h2>
 					<div className="ml-auto">
 						<Button variant="primary" onClick={() => setIsFormOpen(true)}>
 							Create a new trip
@@ -70,7 +68,7 @@ export const Home = ({ className }: THomeProps) => {
 				<TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 			</section>
 
-			<section className="container py-2">
+			<section className="mx-auto w-full px-4 py-2">
 				<div className="mx-auto flex max-w-[980px] flex-col items-center gap-4">
 					<div className="w-full">
 						{filteredTrips.length === 0 ? (

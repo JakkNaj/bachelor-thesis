@@ -13,7 +13,7 @@ export const components = {
 		lineHeight: lineHeights.normal,
 	},
 	button: {
-		paddingY: 12, // 0.5rem
+		paddingY: 8, // 0.5rem
 		paddingX: 16, // 1rem
 		borderRadius: radius.lg,
 		fontWeight: fontWeights.medium,

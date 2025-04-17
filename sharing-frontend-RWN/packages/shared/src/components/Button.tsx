@@ -121,7 +121,7 @@ const useStyles = (variant: TButtonProps['variant'], outlined: boolean) => {
 				justifyContent: 'center',
 			},
 			text: {
-				fontSize: fontSizes.base,
+				fontSize: fontSizes.sm,
 				fontWeight: fontWeights.medium,
 				color: getTextColor(),
 				textAlign: 'center',

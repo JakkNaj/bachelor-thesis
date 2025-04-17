@@ -108,24 +108,23 @@ const useStyles = () => {
 		},
 		header: {
 			flexDirection: 'row',
-			justifyContent: 'space-between',
+			justifyContent: 'flex-start',
 			alignItems: 'flex-start',
 			marginBottom: spacing[2],
 			gap: spacing[4],
 		},
 		title: {
-			fontSize: fontSizes.xl,
+			fontSize: fontSizes.base,
 			fontWeight: fontWeights.semibold,
 			color: theme.colors.slate[900],
-			flex: 1,
 		},
 		dateText: {
-			fontSize: fontSizes.base,
+			fontSize: fontSizes.sm,
 			color: theme.colors.slate[900],
 			marginBottom: spacing[1],
 		},
 		description: {
-			fontSize: fontSizes.base,
+			fontSize: fontSizes.sm,
 			color: theme.colors.slate[500],
 			marginBottom: spacing[2],
 		},
@@ -135,7 +134,6 @@ const useStyles = () => {
 			alignItems: 'flex-end',
 		},
 		activitiesList: {
-			paddingLeft: spacing[4],
 			paddingBottom: spacing[1],
 			paddingTop: spacing[2],
 		},
@@ -156,15 +154,15 @@ const useStyles = () => {
 			backgroundColor: theme.colors.slate[500],
 		},
 		activityText: {
-			fontSize: fontSizes.base,
+			fontSize: fontSizes.sm,
 			color: theme.colors.slate[700],
 		},
 		moreText: {
-			fontSize: fontSizes.base,
+			fontSize: fontSizes.sm,
 			color: theme.colors.slate[500],
 		},
 		noActivitiesText: {
-			fontSize: fontSizes.base,
+			fontSize: fontSizes.sm,
 			color: theme.colors.slate[500],
 		},
 	}));

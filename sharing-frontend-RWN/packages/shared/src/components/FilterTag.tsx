@@ -32,7 +32,7 @@ const useStyles = (isActive: boolean) => {
 			backgroundColor: isActive ? theme.colors.slate[100] : 'transparent',
 		},
 		text: {
-			fontSize: fontSizes.lg,
+			fontSize: fontSizes.sm,
 			color: isActive ? theme.colors.slate[900] : theme.colors.slate[600],
 			fontWeight: isActive ? fontWeights.medium : fontWeights.normal,
 		},

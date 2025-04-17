@@ -178,6 +178,7 @@ const SectionTitle = styled.h2`
 	text-align: center;
 	grid-column: 2;
 	margin-bottom: 0;
+	margin-top: 0;
 
 	@media (max-width: 768px) {
 		grid-column: 1;

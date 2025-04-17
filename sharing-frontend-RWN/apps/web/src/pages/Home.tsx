@@ -140,6 +140,7 @@ const HeroTitle = styled.h1`
 	color: ${colors.black};
 	text-align: start;
 	margin-bottom: ${spacing[3]}px;
+	margin-top: ${spacing[3]}px;
 
 	@media (max-width: 768px) {
 		font-size: ${fontSizes['3xl']}px;
@@ -193,7 +194,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h2`
-	font-size: ${fontSizes['4xl']}px;
+	font-size: ${fontSizes['3xl']}px;
 	font-weight: ${fontWeights.bold};
 	line-height: 1.2;
 	text-align: center;
