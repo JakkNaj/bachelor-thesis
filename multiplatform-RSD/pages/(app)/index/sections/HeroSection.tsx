@@ -34,7 +34,7 @@ export const HeroSection = () => {
     
     return (
         isHeroVisible && (
-            <html.div style={styles.heroContainer}>
+            <html.div style={styles.heroContainer()}>
                 <html.div style={styles.heroContent}>
                     <html.h1 style={[styles.heroTitle(), Platform.OS === 'web' && webStyles.heroTitle()]}>Build your travel plans with ease!</html.h1>
                     <html.p style={styles.heroDescription}>
@@ -72,13 +72,16 @@ export const HeroSection = () => {
 }
 
 const styles = css.create({
-    heroContainer: {
+    heroContainer: () => ({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-start",
         paddingBottom: "0.5rem",
-	},
+        borderBottomWidth: '1px',
+        borderBottomColor: colors.slate[200],
+        borderBottomStyle: 'solid',
+    }),
     heroContent: {
         display: "flex",
         flexDirection: "column",

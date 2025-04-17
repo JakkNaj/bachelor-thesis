@@ -109,6 +109,7 @@ const styles = css.create({
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
+        marginTop: '1rem',
     },
     header: {
         display: 'flex',

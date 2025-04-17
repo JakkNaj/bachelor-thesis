@@ -68,14 +68,6 @@ export const TripsListSection = ({ isLoading, filteredTrips, handleTripDetail }:
     );
 }
 
-const scrollViewStyles = StyleSheet.create({
-    container: {
-        minHeight: "100%",
-        flex: 1,
-    },
-
-});
-
 const styles = css.create({
     tripsListContainer: {
         marginTop: "0.5rem",

@@ -151,15 +151,13 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 				</html.div>
 			</html.div>
 
-			<html.div style={styles.submitContainer}>
-				<Button
-					onPress={handleSubmit(onFormSubmit)}
-					variant="primary"
-					fullWidth
-					disabled={isSubmitting}
-					title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
-				/>
-			</html.div>
+			<Button
+				onPress={handleSubmit(onFormSubmit)}
+				variant="primary"
+				fullWidth
+				disabled={isSubmitting}
+				title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
+			/>
 		</html.div>
 	);
 
@@ -221,10 +219,6 @@ const styles = css.create({
 		flexDirection: 'column',
 		gap: '1rem'
 	},
-	submitContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end'
-	}
 });
 
 export default TripForm;

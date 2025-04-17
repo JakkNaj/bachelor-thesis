@@ -65,9 +65,9 @@ const styles = css.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingTop: '0.75rem',
+		paddingTop: '0.5rem',
 		paddingRight: '1.5rem',
-		paddingBottom: '0.75rem',
+		paddingBottom: '0.5rem',
 		paddingLeft: hasIcon ? '1rem' : '1.5rem',
 		borderRadius: '0.5rem',
 		backgroundColor: outlined 
@@ -85,7 +85,7 @@ const styles = css.create({
 		cursor: disabled ? 'not-allowed' : 'pointer',
 	}),
 	text: (variant: 'primary' | 'secondary' | 'danger', outlined: boolean, disabled: boolean) => ({
-		fontSize: '1rem',
+		fontSize: '0.875rem',
 		fontWeight: '500',
 		color: outlined 
 			? variant === 'danger' 

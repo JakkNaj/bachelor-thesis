@@ -151,15 +151,13 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 				</View>
 			</View>
 
-			<View style={styles.submitContainer}>
-				<Button
-					onPress={handleSubmit(onFormSubmit)}
-					variant="primary"
-					fullWidth
-					disabled={isSubmitting}
-					title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
-				/>
-			</View>
+			<Button
+				onPress={handleSubmit(onFormSubmit)}
+				variant="primary"
+				fullWidth
+				disabled={isSubmitting}
+				title={isSubmitting ? 'Saving...' : initialData ? 'Update Trip' : 'Create Trip'}
+			/>
 		</View>
 	);
 
@@ -216,9 +214,5 @@ const styles = StyleSheet.create({
 	dateTimeContainer: {
 		flexDirection: 'column',
 		gap: 16,
-	},
-	submitContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
 	},
 });

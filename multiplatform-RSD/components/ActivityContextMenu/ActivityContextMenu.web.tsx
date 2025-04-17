@@ -4,7 +4,6 @@ import { colors } from '@/assets/colors/colors';
 import { CrossIcon } from '@/assets/icons/CrossIcon/CrossIcon';
 import { PencilIcon } from '@/assets/icons/PencilIcon/PencilIcon';
 import { DotsIcon } from '@/assets/icons/DotsIcon/DotsIcon';
-import { Platform } from 'react-native';
 
 type TActivityContextMenuProps = {
     onEdit: () => void;

@@ -203,15 +203,13 @@ export const ActivityForm = ({
 				</html.div>
 			</html.div>
 
-			<html.div style={styles.submitContainer}>
-				<Button
-					onPress={handleSubmit(onFormSubmit)}
-					variant="primary"
-					fullWidth
-					disabled={isSubmitting}
-					title={isSubmitting ? 'Saving...' : initialData ? 'Update Activity' : 'Create Activity'}
-				/>
-			</html.div>
+			<Button
+				onPress={handleSubmit(onFormSubmit)}
+				variant="primary"
+				fullWidth
+				disabled={isSubmitting}
+				title={isSubmitting ? 'Saving...' : initialData ? 'Update Activity' : 'Create Activity'}
+			/>
 		</html.div>
 	);
 
@@ -279,9 +277,5 @@ const styles = css.create({
 		flexDirection: 'column',
 		gap: '1rem',
 		marginTop: "1rem",
-	},
-	submitContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
 	},
 });

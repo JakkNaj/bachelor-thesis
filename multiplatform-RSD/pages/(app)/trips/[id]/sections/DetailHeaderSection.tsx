@@ -67,29 +67,50 @@ export const DetailHeaderSection = ({
     };
 
     return (
-        <html.div style={styles.tripDetails}>
-            {Platform.OS === 'web' &&
-                <html.div style={styles.backContainer} onClick={() => router.navigate("/")}>
-                    <BackIcon />
-                    <html.span style={styles.backText()}>Back to home</html.span>
+        <html.div style={styles.tripDetails()}>
+            {Platform.OS === 'web' ? (
+                <>
+                    <html.div style={styles.topBar}>
+                        <html.div style={styles.backContainer} onClick={() => router.navigate("/")}>
+                            <BackIcon color={colors.slate[600]} />
+                            <html.span style={styles.backText()}>Back to home</html.span>
+                        </html.div>
+                        <TripContextMenu 
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            isDeleting={isDeleting}
+                        />
+                    </html.div>
+                    <html.div style={styles.contentContainer}>
+                        <html.h1 style={styles.title()}>{trip.title}</html.h1>
+                        <html.p style={styles.dateText()}>
+                            {formatDateRange(trip.startDate, trip.endDate)}
+                        </html.p>
+                        {trip.description && (
+                            <html.p style={styles.description()}>{trip.description}</html.p>
+                        )}
+                    </html.div>
+                </>
+            ) : (
+                <html.div style={styles.mobileContainer}>
+                    <html.div style={styles.contentContainer}>
+                        <html.h1 style={styles.title()}>{trip.title}</html.h1>
+                        <html.p style={styles.dateText()}>
+                            {formatDateRange(trip.startDate, trip.endDate)}
+                        </html.p>
+                        {trip.description && (
+                            <html.p style={styles.description()}>{trip.description}</html.p>
+                        )}
+                    </html.div>
+                    <html.div style={styles.mobileMenuContainer}>
+                        <TripContextMenu 
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                            isDeleting={isDeleting}
+                        />
+                    </html.div>
                 </html.div>
-            }
-            <html.div style={styles.header}>
-                <html.div style={styles.titleContainer}>
-                    <html.h1 style={styles.title()}>{trip.title}</html.h1>
-                    <html.p style={styles.dateText()}>
-                        {formatDateRange(trip.startDate, trip.endDate)}
-                    </html.p>
-                    {trip.description && (
-                        <html.p style={styles.description()}>{trip.description}</html.p>
-                    )}
-                </html.div>
-                <TripContextMenu 
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    isDeleting={isDeleting}
-                />
-            </html.div>
+            )}
             <FormModal
                 isVisible={isEditModalVisible}
                 onClose={handleCloseEditModal}
@@ -107,19 +128,36 @@ export const DetailHeaderSection = ({
 };
 
 const styles = css.create({
-    tripDetails: {
+    tripDetails: () => ({
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.5rem',
-        marginBottom: '1rem',
+        gap: '1.5rem',
+        paddingBottom: '1rem',
+        borderBottomWidth: '1px',
+        borderBottomColor: colors.slate[200],
+        borderBottomStyle: 'solid',
+    }),
+    topBar: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
     },
-    header: {
+    mobileContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+        width: '100%',
     },
-    titleContainer: {
+    mobileMenuContainer: {
+        paddingTop: '0.25rem',
+    },
+    contentContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
         flex: 1,
     },
     title: () => ({
@@ -131,13 +169,12 @@ const styles = css.create({
     dateText: () => ({
         fontSize: '1.125rem',
         color: colors.slate[600],
-        marginTop: '1rem',
         marginBottom: 0,
     }),
     description: () => ({
-        fontSize: '1.125rem',
+        fontSize: '0.9375rem',
+        fontWeight: 200,
         color: colors.slate[600],
-        margin: 0,
     }),
     backContainer: {
         display: 'flex',
@@ -147,7 +184,7 @@ const styles = css.create({
         cursor: 'pointer',
     },
     backText: () => ({
-        fontSize: '1.125rem',
+        fontSize: '1rem',
         color: colors.slate[600],
         margin: 0,
     }),

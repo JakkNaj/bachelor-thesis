@@ -92,7 +92,8 @@ export const Input = forwardRef<TextInput, TInputProps>(
 const useInputStyles = (error?: string, multiline?: boolean) => {
 	const getInputHeight = () => {
 		if (multiline) return { minHeight: 72 };
-		return { height: "100%" as const };
+		if (Platform.OS === 'web') return { height: '100%' as const };
+		return { height: 48 };
 	};
 
 	const getTextAlign = () => {

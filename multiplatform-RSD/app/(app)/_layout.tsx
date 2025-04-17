@@ -112,5 +112,7 @@ const webStyles = css.create({
 	},
 	h2: {
 		cursor: 'pointer',
+		fontSize: '1.125rem',
+		fontWeight: 500,
 	},
 });

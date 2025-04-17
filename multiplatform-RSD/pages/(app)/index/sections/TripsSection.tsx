@@ -59,7 +59,6 @@ export const TripsSection = () => {
                 <Button 
                     title="Create a new trip"
                     onPress={handleOpenModal} 
-                    icon={<PlusIcon color="white" size={20}/>}
                 />
             </html.div>
             <TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
@@ -94,6 +93,7 @@ const styles = css.create({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
+        marginTop: '1rem',
     },
     tripContainer: {
         display: 'flex',

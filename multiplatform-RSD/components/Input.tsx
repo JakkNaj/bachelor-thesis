@@ -60,7 +60,7 @@ const styles = css.create({
 		paddingRight: '1rem',
 		paddingTop: '0.75rem',
 		paddingBottom: '0.75rem',
-		fontSize: '1rem',
+		fontSize: '0.875rem',
 		borderRadius: '0.5rem',
 		borderWidth: '0.0625rem',
 		borderStyle: 'solid',
