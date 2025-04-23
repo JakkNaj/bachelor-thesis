@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authController } from '../controllers/auth.controller';
-import { authenticateJwt } from '../middleware/auth.middleware';
+import { authenticateJwt, checkAuthStatus } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -106,5 +106,21 @@ router.post('/signup', authController.signup);
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/logout', authenticateJwt, authController.logout);
+
+/**
+ * @swagger
+ * /api/auth/check:
+ *   get:
+ *     summary: Check if user is authenticated
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Authentication status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CheckAuthResponse'
+ */
+router.get('/check', checkAuthStatus, authController.checkAuth);
 
 export const authRouter = router;

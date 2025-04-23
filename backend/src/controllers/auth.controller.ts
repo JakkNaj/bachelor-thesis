@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { prisma } from '../app';
 import { JWT_SECRET } from '../config/passport';
-import type { TCreateUserArgs, TLoginUserArgs } from '../types/auth.types';
+import type { TCreateUserArgs, TLoginUserArgs, TCheckAuthResponse } from '../types/auth.types';
 import type { User } from '@prisma/client';
 
 export const authController = {
@@ -84,5 +84,12 @@ export const authController = {
     } catch (error) {
       res.status(500).json({ message: 'Error during logout' });
     }
+  },
+
+  checkAuth: (req: Request, res: Response): void => {
+    const response: TCheckAuthResponse = {
+      authenticated: !!req.user
+    };
+    res.status(200).json(response);
   }
 };

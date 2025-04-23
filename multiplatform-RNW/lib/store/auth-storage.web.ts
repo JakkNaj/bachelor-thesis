@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 export type TStoredUser = {
     id: number;
     email: string;
@@ -9,25 +11,33 @@ const USER_KEY = 'user_data';
 
 class WebAuthStorage {
     async saveToken(token: string): Promise<void> {
-        // do not save token on web - it is automatically saved in the browser httpOnly cookie
-        return Promise.resolve();
+        try {
+            localStorage.setItem(TOKEN_KEY, token);
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getToken(): Promise<string | null> {
-        // no token saved on web
-       return Promise.resolve(null);
+        try {
+            return localStorage.getItem(TOKEN_KEY);
+        } catch (error) {
+            return null;
+        }
     }
 
     async removeToken(): Promise<void> {
-        // no token saved on web
-        return Promise.resolve();
+        try {
+            localStorage.removeItem(TOKEN_KEY);
+        } catch (error) {
+            throw error;
+        }
     }
 
     async saveUser(user: TStoredUser): Promise<void> {
         try {
             localStorage.setItem(USER_KEY, JSON.stringify(user));
         } catch (error) {
-            console.error('Error saving user to localStorage:', error);
             throw error;
         }
     }
@@ -37,7 +47,6 @@ class WebAuthStorage {
             const userData = localStorage.getItem(USER_KEY);
             return userData ? JSON.parse(userData) : null;
         } catch (error) {
-            console.error('Error getting user from localStorage:', error);
             return null;
         }
     }
@@ -46,12 +55,11 @@ class WebAuthStorage {
         try {
             localStorage.removeItem(USER_KEY);
         } catch (error) {
-            console.error('Error removing user from localStorage:', error);
             throw error;
         }
     }
 }
 
-// export the same interface as native storage
+// Export the same interface as native storage
 export const authStorage = new WebAuthStorage();
 export default authStorage;

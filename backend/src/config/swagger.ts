@@ -199,6 +199,15 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        CheckAuthResponse: {
+          type: 'object',
+          properties: {
+            authenticated: {
+              type: 'boolean',
+              description: 'Whether the user is authenticated',
+            },
+          },
+        },
       },
     },
     security: [

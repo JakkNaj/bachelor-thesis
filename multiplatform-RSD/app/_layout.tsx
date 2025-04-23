@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 import { Platform } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { html, css } from 'react-strict-dom';
+import { AuthProvider } from '@/lib/store/auth-context';
 
 const queryClient = new QueryClient();
 
@@ -19,12 +20,14 @@ export default function RootLayout() {
 	const renderContent = () => {
 		return (
 			<QueryClientProvider client={queryClient}>
-				<html.div style={styles.container}>
-					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-						<Stack.Screen name="(app)" />
-					</Stack>
-				</html.div>
+				<AuthProvider>
+					<html.div style={styles.container}>
+						<Stack screenOptions={{ headerShown: false }}>
+							<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+							<Stack.Screen name="(app)" />
+						</Stack>
+					</html.div>
+				</AuthProvider>
 			</QueryClientProvider>
 		)
 	};

@@ -10,14 +10,15 @@ import {
 } from '@tanstack/react-query';
 import type {
   MutationFunction,
+  QueryClient,
   UseMutationOptions,
   UseMutationResult
 } from '@tanstack/react-query';
 
 import type {
   Activity,
-  ActivityInput,
   Error,
+  PostApiActivitiesTripTripIdBody,
   PutApiActivitiesIdBody
 } from '.././schemas';
 
@@ -31,7 +32,7 @@ import { apiClient } from '../../apiClient';
  */
 export const postApiActivitiesTripTripId = (
     tripId: number,
-    activityInput: ActivityInput,
+    postApiActivitiesTripTripIdBody: PostApiActivitiesTripTripIdBody,
  signal?: AbortSignal
 ) => {
       
@@ -39,7 +40,7 @@ export const postApiActivitiesTripTripId = (
       return apiClient<Activity>(
       {url: `/api/activities/trip/${tripId}`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: activityInput, signal
+      data: postApiActivitiesTripTripIdBody, signal
     },
       );
     }
@@ -47,8 +48,8 @@ export const postApiActivitiesTripTripId = (
 
 
 export const getPostApiActivitiesTripTripIdMutationOptions = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: ActivityInput}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: ActivityInput}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: PostApiActivitiesTripTripIdBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: PostApiActivitiesTripTripIdBody}, TContext> => {
     
 const mutationKey = ['postApiActivitiesTripTripId'];
 const {mutation: mutationOptions} = options ?
@@ -60,7 +61,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, {tripId: number;data: ActivityInput}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, {tripId: number;data: PostApiActivitiesTripTripIdBody}> = (props) => {
           const {tripId,data} = props ?? {};
 
           return  postApiActivitiesTripTripId(tripId,data,)
@@ -72,24 +73,24 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiActivitiesTripTripIdMutationResult = NonNullable<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>>
-    export type PostApiActivitiesTripTripIdMutationBody = ActivityInput
+    export type PostApiActivitiesTripTripIdMutationBody = PostApiActivitiesTripTripIdBody
     export type PostApiActivitiesTripTripIdMutationError = Error
 
     /**
  * @summary Add an activity to a trip
  */
 export const usePostApiActivitiesTripTripId = <TError = Error,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: ActivityInput}, TContext>, }
- ): UseMutationResult<
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiActivitiesTripTripId>>, TError,{tripId: number;data: PostApiActivitiesTripTripIdBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiActivitiesTripTripId>>,
         TError,
-        {tripId: number;data: ActivityInput},
+        {tripId: number;data: PostApiActivitiesTripTripIdBody},
         TContext
       > => {
 
       const mutationOptions = getPostApiActivitiesTripTripIdMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     /**
  * @summary Update an activity
@@ -144,7 +145,7 @@ const {mutation: mutationOptions} = options ?
  */
 export const usePutApiActivitiesId = <TError = Error,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiActivitiesId>>, TError,{id: number;data: PutApiActivitiesIdBody}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiActivitiesId>>,
         TError,
         {id: number;data: PutApiActivitiesIdBody},
@@ -153,7 +154,7 @@ export const usePutApiActivitiesId = <TError = Error,
 
       const mutationOptions = getPutApiActivitiesIdMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     /**
  * @summary Delete an activity
@@ -205,7 +206,7 @@ const {mutation: mutationOptions} = options ?
  */
 export const useDeleteApiActivitiesId = <TError = Error,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiActivitiesId>>, TError,{id: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiActivitiesId>>,
         TError,
         {id: number},
@@ -214,6 +215,6 @@ export const useDeleteApiActivitiesId = <TError = Error,
 
       const mutationOptions = getDeleteApiActivitiesIdMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     

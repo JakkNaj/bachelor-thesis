@@ -6,17 +6,27 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
   AuthResponse,
+  CheckAuthResponse,
   Error,
   PostApiAuthLoginBody,
   PostApiAuthSignupBody
@@ -217,4 +227,90 @@ export const usePostApiAuthLogout = <TError = Error,
 
       return useMutation(mutationOptions , queryClient);
     }
+    /**
+ * @summary Check if user is authenticated
+ */
+export const getApiAuthCheck = (
     
+ signal?: AbortSignal
+) => {
+      
+      
+      return apiClient<CheckAuthResponse>(
+      {url: `/api/auth/check`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetApiAuthCheckQueryKey = () => {
+    return [`/api/auth/check`] as const;
+    }
+
+    
+export const getGetApiAuthCheckQueryOptions = <TData = Awaited<ReturnType<typeof getApiAuthCheck>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiAuthCheckQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiAuthCheck>>> = ({ signal }) => getApiAuthCheck(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiAuthCheckQueryResult = NonNullable<Awaited<ReturnType<typeof getApiAuthCheck>>>
+export type GetApiAuthCheckQueryError = unknown
+
+
+export function useGetApiAuthCheck<TData = Awaited<ReturnType<typeof getApiAuthCheck>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiAuthCheck>>,
+          TError,
+          Awaited<ReturnType<typeof getApiAuthCheck>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiAuthCheck<TData = Awaited<ReturnType<typeof getApiAuthCheck>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiAuthCheck>>,
+          TError,
+          Awaited<ReturnType<typeof getApiAuthCheck>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiAuthCheck<TData = Awaited<ReturnType<typeof getApiAuthCheck>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Check if user is authenticated
+ */
+
+export function useGetApiAuthCheck<TData = Awaited<ReturnType<typeof getApiAuthCheck>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiAuthCheck>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiAuthCheckQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

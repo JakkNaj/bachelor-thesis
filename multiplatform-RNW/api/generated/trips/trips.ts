@@ -10,9 +10,14 @@ import {
   useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -21,9 +26,9 @@ import type {
 
 import type {
   Error,
+  PostApiTripsBody,
   PutApiTripsIdBody,
-  Trip,
-  TripInput
+  Trip
 } from '.././schemas';
 
 import { apiClient } from '../../apiClient';
@@ -52,7 +57,7 @@ export const getGetApiTripsQueryKey = () => {
     }
 
     
-export const getGetApiTripsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>, }
+export const getGetApiTripsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -67,25 +72,49 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiTripsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTrips>>>
 export type GetApiTripsQueryError = unknown
 
 
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTrips>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTrips>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTrips>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTrips>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get all trips for the authenticated user
  */
 
 export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, TError = unknown>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>, }
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTrips>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiTripsQueryOptions(options)
 
-  const query = useQuery(queryOptions ) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -98,7 +127,7 @@ export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, 
  * @summary Create a new trip
  */
 export const postApiTrips = (
-    tripInput: TripInput,
+    postApiTripsBody: PostApiTripsBody,
  signal?: AbortSignal
 ) => {
       
@@ -106,7 +135,7 @@ export const postApiTrips = (
       return apiClient<Trip>(
       {url: `/api/trips`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: tripInput, signal
+      data: postApiTripsBody, signal
     },
       );
     }
@@ -114,8 +143,8 @@ export const postApiTrips = (
 
 
 export const getPostApiTripsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext> => {
     
 const mutationKey = ['postApiTrips'];
 const {mutation: mutationOptions} = options ?
@@ -127,7 +156,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, {data: TripInput}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, {data: PostApiTripsBody}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiTrips(data,)
@@ -139,24 +168,24 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTrips>>>
-    export type PostApiTripsMutationBody = TripInput
+    export type PostApiTripsMutationBody = PostApiTripsBody
     export type PostApiTripsMutationError = unknown
 
     /**
  * @summary Create a new trip
  */
 export const usePostApiTrips = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext>, }
- ): UseMutationResult<
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiTrips>>,
         TError,
-        {data: TripInput},
+        {data: PostApiTripsBody},
         TContext
       > => {
 
       const mutationOptions = getPostApiTripsMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     /**
  * @summary Get a trip by ID
@@ -179,7 +208,7 @@ export const getGetApiTripsIdQueryKey = (id: number,) => {
     }
 
     
-export const getGetApiTripsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>, }
+export const getGetApiTripsIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -194,25 +223,49 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiTripsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTripsId>>>
 export type GetApiTripsIdQueryError = Error
 
 
+export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTripsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTripsId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTripsId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTripsId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get a trip by ID
  */
 
 export function useGetApiTripsId<TData = Awaited<ReturnType<typeof getApiTripsId>>, TError = Error>(
- id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>, }
-  
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTripsId>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiTripsIdQueryOptions(id,options)
 
-  const query = useQuery(queryOptions ) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -274,7 +327,7 @@ const {mutation: mutationOptions} = options ?
  */
 export const usePutApiTripsId = <TError = Error,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiTripsId>>, TError,{id: number;data: PutApiTripsIdBody}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiTripsId>>,
         TError,
         {id: number;data: PutApiTripsIdBody},
@@ -283,7 +336,7 @@ export const usePutApiTripsId = <TError = Error,
 
       const mutationOptions = getPutApiTripsIdMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     /**
  * @summary Delete a trip
@@ -335,7 +388,7 @@ const {mutation: mutationOptions} = options ?
  */
 export const useDeleteApiTripsId = <TError = Error,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiTripsId>>, TError,{id: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiTripsId>>,
         TError,
         {id: number},
@@ -344,6 +397,6 @@ export const useDeleteApiTripsId = <TError = Error,
 
       const mutationOptions = getDeleteApiTripsIdMutationOptions(options);
 
-      return useMutation(mutationOptions );
+      return useMutation(mutationOptions , queryClient);
     }
     

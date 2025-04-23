@@ -9,9 +9,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller, ControllerRenderProps } from "react-hook-form";
 import { colors } from "@/assets/colors/colors";
 import { loginSchema, TLoginSchema } from "@/types/LoginFormSchema";
+import { useAuth } from "@/lib/store/auth-context";
 
 export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
+  const { signIn, isAuthenticated } = useAuth();
+
+  // Redirect to app if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.navigate('/(app)');
+    }
+  }, [isAuthenticated]);
 
   const { control, handleSubmit, formState: { errors } } = useForm<TLoginSchema>({
     resolver: yupResolver(loginSchema),
@@ -26,7 +35,7 @@ export const LoginPage = () => {
       onSuccess: async (data) => {
         if (data.token && data.user) {
           try {
-            await authService.saveAuth(data.token, {
+            await signIn(data.token, {
               id: data.user.id!,
               email: data.user.email!,
               name: data.user.name!,
@@ -51,7 +60,7 @@ export const LoginPage = () => {
   };
 
   // Auto-login with test credentials
-  useEffect(() => {
+  /* useEffect(() => {
     const autoLogin = async () => {
       try {
         login({ 
@@ -66,7 +75,7 @@ export const LoginPage = () => {
     };
 
     autoLogin();
-  }, []); 
+  }, []);  */
 
   const renderContent = () => (
     <View style={styles.container}>

@@ -26,9 +26,9 @@ import type {
 
 import type {
   Error,
+  PostApiTripsBody,
   PutApiTripsIdBody,
-  Trip,
-  TripInput
+  Trip
 } from '.././schemas';
 
 import { apiClient } from '../../apiClient';
@@ -127,7 +127,7 @@ export function useGetApiTrips<TData = Awaited<ReturnType<typeof getApiTrips>>, 
  * @summary Create a new trip
  */
 export const postApiTrips = (
-    tripInput: TripInput,
+    postApiTripsBody: PostApiTripsBody,
  signal?: AbortSignal
 ) => {
       
@@ -135,7 +135,7 @@ export const postApiTrips = (
       return apiClient<Trip>(
       {url: `/api/trips`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: tripInput, signal
+      data: postApiTripsBody, signal
     },
       );
     }
@@ -143,8 +143,8 @@ export const postApiTrips = (
 
 
 export const getPostApiTripsMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext> => {
     
 const mutationKey = ['postApiTrips'];
 const {mutation: mutationOptions} = options ?
@@ -156,7 +156,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, {data: TripInput}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiTrips>>, {data: PostApiTripsBody}> = (props) => {
           const {data} = props ?? {};
 
           return  postApiTrips(data,)
@@ -168,18 +168,18 @@ const {mutation: mutationOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type PostApiTripsMutationResult = NonNullable<Awaited<ReturnType<typeof postApiTrips>>>
-    export type PostApiTripsMutationBody = TripInput
+    export type PostApiTripsMutationBody = PostApiTripsBody
     export type PostApiTripsMutationError = unknown
 
     /**
  * @summary Create a new trip
  */
 export const usePostApiTrips = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: TripInput}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiTrips>>, TError,{data: PostApiTripsBody}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiTrips>>,
         TError,
-        {data: TripInput},
+        {data: PostApiTripsBody},
         TContext
       > => {
 

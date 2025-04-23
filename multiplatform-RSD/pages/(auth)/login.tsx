@@ -2,7 +2,7 @@ import { css, html } from "react-strict-dom";
 import { usePostApiAuthLogin } from "@/api/generated/auth/auth";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
-import { authService } from '@/lib/store/auth-service';
+import { useAuth } from '@/lib/store/auth-context';
 import { Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -11,26 +11,32 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { signIn, isAuthenticated } = useAuth();
+
+  // Redirect to app if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.navigate('/(app)');
+    }
+  }, [isAuthenticated]);
 
   const { mutate: login, isPending } = usePostApiAuthLogin({
     mutation: {
       onSuccess: async (data) => {
         if (data.token && data.user) {
           try {
-            await authService.saveAuth(data.token, {
+            await signIn(data.token, {
               id: data.user.id!,
               email: data.user.email!,
               name: data.user.name!,
             });
             router.navigate('/(app)');
           } catch (error) {
-            console.error("Error saving auth:", error);
             setError("Failed to save authentication data");
           }
         }
       },
       onError: (error: Error) => {
-        console.error("Login error:", error);
         setError(error.message);
       }
     }

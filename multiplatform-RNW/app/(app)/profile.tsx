@@ -1,17 +1,25 @@
 import { useRouter } from 'expo-router';
-import { authService } from '../../lib/store/auth-service';
 import { useGetApiUsersProfile } from '@/api/generated/users/users';
 import { Button } from '@/components/Button';
 import { ScreenWrapper } from '@/pages/(app)/layout/ScreenWrapper';
 import { Platform, StyleSheet, View, Text } from 'react-native';
+import { useAuth } from '@/lib/store/auth-context';
+import { useState } from 'react';
 
 export const Profile = () => {
 	const router = useRouter();
 	const { data: userProfile } = useGetApiUsersProfile();
+	const { signOut } = useAuth();
+	const [ isLoggingOut, setIsLoggingOut ] = useState(false);
 
 	const handleLogout = async () => {
-		await authService.removeAuth();
-		router.replace('/(auth)/login' as any);
+		setIsLoggingOut(true);
+		try {
+			await signOut();
+			router.navigate('/(auth)/login');
+		} finally {
+			setIsLoggingOut(false);
+		}
 	};
 
 	return (
@@ -29,7 +37,7 @@ export const Profile = () => {
 					</View>
 				</View>
 				<Button
-					title="Logout"
+					title={isLoggingOut ? 'Logging out...' : 'Logout'}
 					onPress={handleLogout}
 					variant="danger"
 					outlined

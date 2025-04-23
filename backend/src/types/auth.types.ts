@@ -9,6 +9,10 @@ export type TLoginUserArgs = {
   password: string;
 };
   
+export type TCheckAuthResponse = {
+  authenticated: boolean;
+};
+  
   // make req.user available in protected routes
 declare global {
   namespace Express {

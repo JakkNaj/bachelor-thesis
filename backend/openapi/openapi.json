@@ -210,35 +210,12 @@
           }
         }
       },
-      "TripInput": {
+      "CheckAuthResponse": {
         "type": "object",
-        "required": [
-          "title",
-          "startDate",
-          "endDate"
-        ],
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "Trip title"
-          },
-          "description": {
-            "type": "string",
-            "description": "Trip description"
-          },
-          "startDate": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Trip start date"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Trip end date"
-          },
-          "destination": {
-            "type": "string",
-            "description": "Trip destination"
+          "authenticated": {
+            "type": "boolean",
+            "description": "Whether the user is authenticated"
           }
         }
       }
@@ -593,6 +570,26 @@
         }
       }
     },
+    "/api/auth/check": {
+      "get": {
+        "summary": "Check if user is authenticated",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Authentication status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckAuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trips": {
       "get": {
         "summary": "Get all trips for the authenticated user",
@@ -635,7 +632,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TripInput"
+                "type": "object",
+                "required": [
+                  "title",
+                  "startDate",
+                  "endDate"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
               }
             }
           }

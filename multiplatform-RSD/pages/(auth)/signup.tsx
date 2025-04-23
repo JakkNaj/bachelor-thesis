@@ -1,8 +1,8 @@
 import { css, html } from "react-strict-dom";
 import { usePostApiAuthSignup } from "@/api/generated/auth/auth";
 import { router } from "expo-router";
-import { useState } from "react";
-import { authService } from '@/lib/store/auth-service';
+import { useState, useEffect } from "react";
+import { useAuth } from '@/lib/store/auth-context';
 import { Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
@@ -28,6 +28,14 @@ const signupSchema = yup.object({
 
 export const SignupPage = () => {
   const [error, setError] = useState<string | null>(null);
+  const { signIn, isAuthenticated } = useAuth();
+
+  // Redirect to app if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/(app)');
+    }
+  }, [isAuthenticated]);
 
   const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<TSignupFormData>({
     resolver: yupResolver(signupSchema),
@@ -44,20 +52,18 @@ export const SignupPage = () => {
       onSuccess: async (data) => {
         if (data.token && data.user) {
           try {
-            await authService.saveAuth(data.token, {
+            await signIn(data.token, {
               id: data.user.id!,
               email: data.user.email!,
               name: data.user.name!,
             });
             router.navigate('/(app)');
           } catch (error) {
-            console.error("Error saving auth:", error);
             setError("Failed to save authentication data");
           }
         }
       },
       onError: (error: Error) => {
-        console.error("Signup error:", error);
         setError("Email is already taken");
       }
     }

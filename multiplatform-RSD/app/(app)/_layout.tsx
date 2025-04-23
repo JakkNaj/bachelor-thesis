@@ -1,29 +1,25 @@
 import { useGetApiUsersProfile } from '@/api/generated/users/users';
 import { LogoIcon } from '@/assets/icons/LogoIcon/LogoIcon';
 import { Avatar } from '@/components/Avatar';
-import { authService } from '@/lib/store/auth-service';
-import { Stack, useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useAuth } from '@/lib/store/auth-context';
+import { Stack, useRouter, Redirect } from 'expo-router';
 import { Platform } from 'react-native';
 import { html, css } from 'react-strict-dom';
 
 export const AppLayout = () => {
 	const router = useRouter();
 	const { data: userProfile } = useGetApiUsersProfile();
+	const { isAuthenticated, isLoading } = useAuth();
 
-	useEffect(() => {
-		const checkAuth = async () => {
-            if (Platform.OS === 'web') {
-                return;
-            }
-			const token = await authService.getToken();
-			if (!token) {
-				router.replace('/(auth)/login' as any);
-			}
-		};
+	// If still loading, don't render anything yet
+	if (isLoading) {
+		return null;
+	}
 
-		checkAuth();
-	}, []);
+	// If not authenticated, redirect to login
+	if (!isAuthenticated) {
+		return <Redirect href="/(auth)/login" />;
+	}
 
 	return (
 		<html.div style={styles.layoutContainer}>

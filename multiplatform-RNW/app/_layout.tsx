@@ -3,6 +3,7 @@ import { Platform, View, StyleSheet } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { colors } from "@/assets/colors/colors";
 import '../assets/styles/global.css';
+import { AuthProvider } from "@/lib/store/auth-context";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,8 @@ export const RootLayout = () => {
 		return (
 			<View style={styles.container}>
 				<QueryClientProvider client={queryClient}>
-					<Stack 
+					<AuthProvider>
+						<Stack 
 						screenOptions={{ 
 							headerShown: false,
 							contentStyle: {
@@ -29,8 +31,9 @@ export const RootLayout = () => {
 						}}
 					>
 						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-						<Stack.Screen name="(app)" />
-					</Stack>
+							<Stack.Screen name="(app)" />
+						</Stack>
+					</AuthProvider>
 				</QueryClientProvider>
 			</View>
 		)
