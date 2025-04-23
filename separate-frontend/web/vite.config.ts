@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { compression } from "vite-plugin-compression2";
+import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
 	plugins: [
@@ -9,6 +10,12 @@ export default defineConfig({
 			algorithm: "gzip",
 			exclude: [/\.(br)$/, /\.(gz)$/],
 			deleteOriginalAssets: false,
+		}),
+		visualizer({
+			open: true,
+			gzipSize: true,
+			brotliSize: true,
+			filename: "dist/stats.html",
 		}),
 	],
 	build: {

@@ -21,12 +21,6 @@ export default function AppLayout() {
 		checkAuth();
 	}, []);
 
-	const handleLogout = async () => {
-		await authStorage.removeToken();
-		await authStorage.removeUser();
-		router.replace("/(auth)/login" as any);
-	};
-
 	return (
 		<Stack
 			screenOptions={{
