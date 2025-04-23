@@ -15,4 +15,16 @@ config.resolver.extraNodeModules = {
   buffer: require.resolve('buffer/'),
 };
 
+// Production optimizations
+config.transformer.minifierConfig = {
+  keep_classnames: true,
+  keep_fnames: true,
+  mangle: {
+    keep_classnames: true,
+    keep_fnames: true
+  }
+};
+
+config.transformer.minifierPath = 'metro-minify-terser';
+
 module.exports = config;

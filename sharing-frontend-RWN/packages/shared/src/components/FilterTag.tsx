@@ -17,7 +17,7 @@ export const FilterTag = ({ children, isActive = false, onPress }: TFilterTagPro
 	const styles = useStyles(isActive);
 
 	return (
-		<TouchableOpacity onPress={onPress} style={styles.button}>
+		<TouchableOpacity onPress={onPress} style={styles.button} accessibilityRole="button" accessibilityLabel={children as string}>
 			<Text style={styles.text}>{children}</Text>
 		</TouchableOpacity>
 	);

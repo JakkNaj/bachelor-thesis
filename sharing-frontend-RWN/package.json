@@ -8,6 +8,9 @@
 	"scripts": {
 		"mobile": "yarn workspace mobile start",
 		"web": "yarn workspace @monorepo/web dev",
+		"web:analyze": "yarn workspace @monorepo/web analyze",
+		"web:build": "yarn workspace @monorepo/web build",
+		"web:preview": "yarn workspace @monorepo/web preview",
 		"generate-api": "yarn workspace @monorepo/shared generate-api"
 	},
 	"devDependencies": {

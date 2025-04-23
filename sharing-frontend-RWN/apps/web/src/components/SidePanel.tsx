@@ -1,4 +1,5 @@
 import { CrossIcon } from '@monorepo/shared/src/assets/icons/CrossIcon';
+import { Button } from '@monorepo/shared/src/components/Button';
 import { colors, spacing } from '@monorepo/shared/src/theme';
 import styled from 'styled-components';
 
@@ -14,9 +15,9 @@ export const SidePanel = ({ isOpen, onClose, children }: TSidePanelProps) => {
 			<Overlay $isOpen={isOpen} onClick={onClose} />
 			<Panel $isOpen={isOpen}>
 				<Content>
-					<CloseButton onClick={onClose}>
+					<Button onPress={onClose} variant="secondary" outlined accessibilityLabel="Close">
 						<CrossIcon />
-					</CloseButton>
+					</Button>
 					{children}
 				</Content>
 			</Panel>
@@ -58,16 +59,4 @@ const Content = styled.div`
 	height: 100%;
 	overflow-y: auto;
 	padding: ${spacing[6]}px;
-`;
-
-const CloseButton = styled.button`
-	position: absolute;
-	top: ${spacing[4]}px;
-	right: ${spacing[4]}px;
-	background-color: transparent;
-	border: none;
-	transition: color 0.2s ease-in-out;
-	&:hover {
-		color: ${colors.slate[600]};
-	}
 `;

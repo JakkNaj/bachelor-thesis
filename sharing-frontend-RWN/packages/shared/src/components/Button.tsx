@@ -14,6 +14,7 @@ type TButtonProps = {
 	disabled?: boolean;
 	type?: 'button' | 'submit' | 'reset';
 	onPress: () => void;
+	accessibilityLabel?: string;
 } & Omit<TouchableOpacityProps, 'onPress'>;
 
 type TButtonStyles = {
@@ -37,18 +38,27 @@ export const Button = ({
 	disabled,
 	type = 'button',
 	onPress,
+	accessibilityLabel,
 	...props
 }: TButtonProps) => {
 	const styles = useStyles(variant, outlined);
+	const buttonText = isLoading ? loadingText || 'Loading...' : children;
 
 	return (
-		<Pressable onPress={onPress} disabled={isLoading || disabled} {...props}>
+		<Pressable
+			onPress={onPress}
+			disabled={isLoading || disabled}
+			accessibilityRole="button"
+			accessibilityLabel={
+				accessibilityLabel || (typeof buttonText === 'string' ? buttonText : undefined)
+			}
+			accessibilityState={{ disabled: isLoading || disabled }}
+			{...props}
+		>
 			<View style={[styles.button, fullWidth && styles.fullWidth, disabled && styles.disabled]}>
 				<View style={styles.buttonContent}>
 					{icon && <View style={styles.iconContainer}>{icon}</View>}
-					<Text style={[styles.text, disabled && styles.disabledText]}>
-						{isLoading ? loadingText || 'Loading...' : children}
-					</Text>
+					<Text style={[styles.text, disabled && styles.disabledText]}>{buttonText}</Text>
 				</View>
 			</View>
 		</Pressable>

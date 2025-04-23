@@ -11,7 +11,6 @@ export const Select = ({
 	placeholder,
 	error,
 	closeOnSelect = true,
-	id,
 }: TSelectProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const styles = useStyles();

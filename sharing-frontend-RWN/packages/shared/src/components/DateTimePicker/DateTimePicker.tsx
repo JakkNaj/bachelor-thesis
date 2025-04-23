@@ -104,7 +104,7 @@ export const DateTimePicker = ({
 
 				{showDatePicker && (
 					<View style={styles.pickerContainer}>
-						<Calendar mode="single" selected={selectedDate} onSelect={handleDateSelect} />
+						<Calendar selected={selectedDate} onSelect={handleDateSelect} />
 					</View>
 				)}
 

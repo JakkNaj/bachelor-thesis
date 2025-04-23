@@ -67,7 +67,7 @@ export const ActivityStepper = ({
 	});
 	const menuButtonRefs = useRef<Record<number, View | null>>({});
 
-	const { updateActivity, deleteActivity, isUpdating, isDeleting, updateError } =
+	const { updateActivity, deleteActivity, isUpdating, updateError } =
 		useActivityActions({
 			tripId,
 			activityId: editingActivity?.id || deletingActivity?.id,
@@ -108,11 +108,11 @@ export const ActivityStepper = ({
 		}
 	};
 
-	const handleOpenMenu = (activity: Activity, event: any) => {
+	const handleOpenMenu = (activity: Activity) => {
 		const buttonRef = menuButtonRefs.current[activity.id];
 
 		if (buttonRef) {
-			buttonRef.measure((x, y, width, height, pageX, pageY) => {
+			buttonRef.measure((width, pageX, pageY) => {
 				const menuWidth = 100;
 				setMenuState({
 					isVisible: true,
@@ -170,7 +170,7 @@ export const ActivityStepper = ({
 									ref={ref => {
 										menuButtonRefs.current[activity.id] = ref;
 									}}
-									onPress={e => handleOpenMenu(activity, e)}
+									onPress={() => handleOpenMenu(activity)}
 									style={styles.menuButton}
 								>
 									<DotsIcon size={14} color={colors.slate[900]} />

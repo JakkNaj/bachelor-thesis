@@ -1,9 +1,7 @@
 import { useGetApiUsersProfile } from '@/api/generated/users/users';
 import { LogoIcon } from '@/assets/icons/LogoIcon';
 import { Avatar } from '@/components/Avatar';
-import { authService } from '@/lib/store/auth-service';
 import { Redirect, Stack, useRouter } from 'expo-router';
-import { useEffect } from 'react';
 import { Platform, View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors } from '@/assets/colors/colors';
 import { useAuth } from '@/lib/store/auth-context';

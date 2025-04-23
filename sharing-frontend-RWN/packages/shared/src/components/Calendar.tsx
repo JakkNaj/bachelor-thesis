@@ -6,19 +6,15 @@ import { colors, fontSizes, fontWeights, radius, spacing } from '../theme';
 import { createStyles } from '../utils/createStyles';
 
 type TCalendarProps = {
-	mode?: 'single' | 'range' | 'multiple';
 	selected?: Date | Date[] | { from: Date; to: Date };
 	onSelect?: (date: Date | undefined) => void;
 	disabled?: boolean;
-	initialFocus?: boolean;
 };
 
 export const Calendar = ({
-	mode = 'single',
 	selected,
 	onSelect,
 	disabled = false,
-	initialFocus,
 }: TCalendarProps) => {
 	const styles = useStyles();
 	const [currentMonth, setCurrentMonth] = React.useState(() => {

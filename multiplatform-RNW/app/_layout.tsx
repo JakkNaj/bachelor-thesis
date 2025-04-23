@@ -4,8 +4,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { colors } from "@/assets/colors/colors";
 import '../assets/styles/global.css';
 import { AuthProvider } from "@/lib/store/auth-context";
+import { useEffect } from "react";
 
-const queryClient = new QueryClient();
+// Create QueryClient outside of component to prevent recreation
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 5 * 60 * 1000, // 5 minutes
+		}
+	}
+});
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,6 +25,17 @@ const styles = StyleSheet.create({
 });
 
 export const RootLayout = () => {
+	useEffect(() => {
+		if (Platform.OS === 'web') {
+			// Add preconnect for Google Fonts
+			const link = document.createElement('link');
+			link.rel = 'preconnect';
+			link.href = 'https://fonts.gstatic.com';
+			link.crossOrigin = 'anonymous';
+			document.head.appendChild(link);
+		}
+	}, []);
+
 	const renderContent = () => {
 		return (
 			<View style={styles.container}>

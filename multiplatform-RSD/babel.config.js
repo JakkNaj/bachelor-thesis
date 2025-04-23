@@ -21,13 +21,17 @@ module.exports = function (api) {
   const dev = api.caller(getIsDev);
 
   return {
-    plugins: [],
+    plugins: [
+      // Production optimizations
+      ['transform-remove-console', { exclude: ['error', 'warn'] }],
+      'transform-react-remove-prop-types'
+    ],
     presets: [
       // Expo's babel preset
       'babel-preset-expo',
       // React Strict DOM's babel preset
       [reactStrictPreset, {
-        debug: true,
+        debug: dev,
         dev,
         platform
       }]

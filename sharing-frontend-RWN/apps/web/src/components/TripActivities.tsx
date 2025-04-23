@@ -24,7 +24,7 @@ export const TripActivities = ({
 }: TTripActivitiesProps) => {
 	const [isAddingActivity, setIsAddingActivity] = useState(false);
 	const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
-	const { createActivity, updateActivity, isCreating, isUpdating, createError, updateError } =
+	const { createActivity, updateActivity, isCreating, createError } =
 		useActivityActions({
 			tripId,
 			activityId: editingActivity?.id,

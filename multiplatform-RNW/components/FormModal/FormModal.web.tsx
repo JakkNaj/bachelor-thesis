@@ -25,7 +25,7 @@ export const FormModal = <TFormData,>({
 	if (!isVisible) return null;
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container]}>
 			<Pressable 
 				style={[
 					styles.overlay,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0,
 		zIndex: 999,
-		pointerEvents: 'none',
+		pointerEvents: 'none' as const,
 	},
 	overlay: {
 		position: 'absolute',
@@ -82,12 +82,12 @@ const styles = StyleSheet.create({
 		transitionProperty: 'opacity',
 		transitionDuration: '0.3s',
 		transitionTimingFunction: 'ease-in-out',
-		pointerEvents: 'none',
-        zIndex: 40,
+		pointerEvents: 'none' as const,
+		zIndex: 40,
 	},
 	overlayVisible: {
 		opacity: 1,
-		pointerEvents: 'auto',
+		pointerEvents: 'auto' as const,
 	},
 	panel: {
 		position: 'absolute',
@@ -97,19 +97,12 @@ const styles = StyleSheet.create({
 		width: '100%',
 		maxWidth: 672,
 		backgroundColor: colors.white,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: -2,
-			height: 0,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
+		boxShadow: '-2px 0px 3.84px rgba(0, 0, 0, 0.25)',
 		transform: [{ translateX: '100%' }],
 		transitionProperty: 'transform',
 		transitionDuration: '0.3s',
 		transitionTimingFunction: 'ease-in-out',
-		pointerEvents: 'auto',
+		pointerEvents: 'auto' as const,
 		zIndex: 50,
 	},
 	panelOpen: {
