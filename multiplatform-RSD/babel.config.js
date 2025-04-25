@@ -21,11 +21,7 @@ module.exports = function (api) {
   const dev = api.caller(getIsDev);
 
   return {
-    plugins: [
-      // Production optimizations
-      ['transform-remove-console', { exclude: ['error', 'warn'] }],
-      'transform-react-remove-prop-types'
-    ],
+    plugins: [],
     presets: [
       // Expo's babel preset
       'babel-preset-expo',

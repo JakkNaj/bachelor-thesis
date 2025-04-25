@@ -13,7 +13,7 @@ export const UserControls = ({ userName, onLogout }: TUserControlsProps) => {
 	return (
 		<Container>
 			<Avatar name={userName} size="sm" />
-			<Button onPress={onLogout} variant="danger" outlined accessibilityLabel="Logout">
+			<Button onPress={onLogout} variant="danger" accessibilityLabel="Logout">
 				<LogOutIcon />
 			</Button>
 		</Container>

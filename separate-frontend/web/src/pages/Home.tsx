@@ -43,7 +43,7 @@ export const Home = ({ className }: THomeProps) => {
 	return (
 		<div className={className}>
 			<section className="mx-auto flex max-w-[1536px] flex-col items-start gap-[4px] py-[20px] border-b-2 border-dotted border-slate-200">
-				<h1 className="text-center text-[36px] font-[700] leading-[40px] text-[rgb(9,9,11)]">Build your travel plans with ease!</h1>
+				<h1 className="text-start text-[36px] font-[700] leading-[40px] text-[rgb(9,9,11)]">Build your travel plans with ease!</h1>
 				<p className="max-w-[750px] text-start text-[18px] leading-[28px] font-[300] text-[rgb(9,9,11)]">
 					Accessible and customizable trip planning system. Free.
 					<br />
@@ -58,8 +58,8 @@ export const Home = ({ className }: THomeProps) => {
 
 			<section className="mx-auto flex max-w-[1536px] flex-col justify-center items-center gap-[4px] pb-[10px] pt-[16px]">
 				<div className="flex flex-row items-center w-full relative">
-					<h2 className="absolute left-1/2 -translate-x-1/2 text-3xl font-bold leading-tight tracking-tighter">Your Trips</h2>
-					<div className="ml-auto">
+					<h2 className="text-3xl font-bold leading-tight tracking-tighter md:text-center md:flex-1">Your Trips</h2>
+					<div className="ml-auto md:ml-0">
 						<Button variant="primary" onClick={() => setIsFormOpen(true)}>
 							Create a new trip
 						</Button>

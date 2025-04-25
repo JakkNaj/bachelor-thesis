@@ -24,7 +24,7 @@ export const TripsListSection = ({ isLoading, filteredTrips, handleTripDetail }:
                             </html.div>
                         ) : !filteredTrips?.length ? (
                             <html.div style={styles.emptyContainer}>
-                                <html.h3 style={styles.emptyTitle()}>No trips found for this filter.</html.h3>
+                                <html.h2 style={styles.emptyTitle()}>No trips found for this filter.</html.h2>
                                 <html.p style={styles.emptySubtitle()}>
                                     Try selecting a different filter or create a new trip.
                                 </html.p>

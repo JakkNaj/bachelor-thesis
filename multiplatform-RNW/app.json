@@ -13,18 +13,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png",
       "backgroundColor": "#ffffff",
       "themeColor": "#ffffff",
       "splash": {
-        "image": "./assets/images/splash-icon.png",
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       },
@@ -37,6 +34,13 @@
         "babel": {
           "include": ["@expo/vector-icons"]
         }
+      },
+      "meta": {
+        "title": "Multiplatform RNW",
+        "description": "A cross-platform application built with React Native Web",
+        "viewport": "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no",
+        "apple-mobile-web-app-capable": "yes",
+        "apple-mobile-web-app-status-bar-style": "black-translucent"
       }
     },
     "plugins": [

@@ -37,7 +37,7 @@ export const TripCard = ({
 	return (
 		<html.div style={styles.container()}>
 			<html.div style={styles.header}>
-				<html.h3 style={styles.title()}>{title}</html.h3>
+				<html.h2 style={styles.title()}>{title}</html.h2>
 				<html.span style={styles.dateText()}>{formatDateRange(startDate, endDate)}</html.span>
 			</html.div>
 
