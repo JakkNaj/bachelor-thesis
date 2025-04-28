@@ -6,8 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostApiAuthSignupBody = {
-  email: string;
-  name: string;
-  password: string;
-};
+export interface CheckAuthResponse {
+  /** Whether the user is authenticated */
+  authenticated?: boolean;
+}

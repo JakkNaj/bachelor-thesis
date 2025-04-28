@@ -6,8 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostApiAuthSignupBody = {
-  email: string;
-  name: string;
-  password: string;
+export type PostApiTripsBody = {
+  title: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
 };

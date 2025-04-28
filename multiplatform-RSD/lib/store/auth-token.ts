@@ -7,12 +7,3 @@ export const getAuthToken = async (): Promise<string | null> => {
   }
   return authStorage.getToken();
 };
-
-export const getAuthHeaders = async (): Promise<Record<string, string>> => {
-  if (Platform.OS === 'web') {
-    return {}; // Web uses HTTP-only cookies
-  }
-  
-  const token = await getAuthToken();
-  return token ? { 'Authorization': `Bearer ${token}` } : {};
-}; 
