@@ -1,5 +1,6 @@
 import { useGetApiUsersProfile } from '@/api/generated/users/users';
 import { LogoIcon } from '@/assets/icons/LogoIcon/LogoIcon';
+import { AppHeader } from '@/components/AppHeader';
 import { Avatar } from '@/components/Avatar';
 import { useAuth } from '@/lib/store/auth-context';
 import { Stack, useRouter, Redirect } from 'expo-router';
@@ -24,14 +25,27 @@ export const AppLayout = () => {
 	return (
 		<html.div style={styles.layoutContainer}>
 			<Stack
-			screenOptions={{
-				headerRight: () => (
-					<html.div
-					 style={[styles.avatarContainer, Platform.OS === 'web' && webStyles.avatarContainer]}
-					 onClick={() => router.navigate('/profile')}>
-						<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
-					</html.div>
-				),
+				screenOptions={{
+					...(Platform.OS === 'web'
+						? {
+							header: () => (
+								<AppHeader
+									onLogoPress={() => router.navigate('/')}
+									onAvatarPress={() => router.navigate('/profile')}
+									userName={userProfile?.name}
+								/>
+							),
+						}
+						: {
+							headerRight: () => (
+								<html.button
+									style={styles.avatarContainer}
+									onClick={() => router.navigate('/profile')}
+								>
+									<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
+								</html.button>
+							),
+						}),
 				}}
 			>
 				<Stack.Screen
@@ -93,6 +107,7 @@ const styles = css.create({
 	},
 	avatarContainer: {
 		paddingBottom: '0.5rem',
+		borderWidth: '0',
 	},
 });
 

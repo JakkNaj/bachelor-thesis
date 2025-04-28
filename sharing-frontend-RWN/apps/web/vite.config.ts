@@ -29,11 +29,10 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			output: {
-				manualChunks: function manualChunks(id) {
+				manualChunks: function manualChunks(id: string) {
 					if (id.includes('node_modules')) {
 						return 'vendor';
 					}
-				
 					return null;
 				},
 			},

@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { getAuthHeaders } from '@/lib/store/auth-token';
+import { authService } from '@/lib/store/auth-service';
 
 const API_URL = 'http://localhost:4000';
 
@@ -16,12 +16,18 @@ export const apiClient = async <T>({ url, method, headers = {}, data, signal, su
   const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
   const fullUrl = `${API_URL}/${cleanUrl}`;
   
-  const authHeaders = await getAuthHeaders();
   const requestHeaders = new Headers({
     'Content-Type': 'application/json',
-    ...authHeaders,
     ...headers,
   });
+
+  // add Authorization header for mobile
+  if (Platform.OS !== 'web') {
+    const token = await authService.getToken();
+    if (token) {
+      requestHeaders.set('Authorization', `Bearer ${token}`);
+    }
+  }
 
   try {
     const response = await fetch(fullUrl, {

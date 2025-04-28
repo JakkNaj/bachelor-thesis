@@ -17,16 +17,6 @@ type TButtonProps = {
 	accessibilityLabel?: string;
 } & Omit<TouchableOpacityProps, 'onPress'>;
 
-type TButtonStyles = {
-	button: object;
-	buttonContent: object;
-	text: object;
-	fullWidth: object;
-	disabled: object;
-	disabledText: object;
-	iconContainer: object;
-};
-
 export const Button = ({
 	children,
 	variant = 'primary',
@@ -66,7 +56,7 @@ export const Button = ({
 };
 
 const useStyles = (variant: TButtonProps['variant'], outlined: boolean) => {
-	return createStyles<TButtonStyles>(theme => {
+	return createStyles(theme => {
 		const getBackgroundColor = () => {
 			if (outlined) return 'white';
 
@@ -132,7 +122,7 @@ const useStyles = (variant: TButtonProps['variant'], outlined: boolean) => {
 			},
 			text: {
 				fontSize: fontSizes.sm,
-				fontWeight: fontWeights.medium,
+				fontWeight: fontWeights.medium as any,
 				color: getTextColor(),
 				textAlign: 'center',
 			},

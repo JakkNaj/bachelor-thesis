@@ -15,9 +15,11 @@ export const SidePanel = ({ isOpen, onClose, children }: TSidePanelProps) => {
 			<Overlay $isOpen={isOpen} onClick={onClose} />
 			<Panel $isOpen={isOpen}>
 				<Content>
-					<Button onPress={onClose} variant="secondary" outlined accessibilityLabel="Close">
-						<CrossIcon />
-					</Button>
+					<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+						<Button onPress={onClose} variant="secondary" accessibilityLabel="Close">
+							<CrossIcon />
+						</Button>
+					</div>
 					{children}
 				</Content>
 			</Panel>

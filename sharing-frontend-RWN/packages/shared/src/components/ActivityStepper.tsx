@@ -67,11 +67,10 @@ export const ActivityStepper = ({
 	});
 	const menuButtonRefs = useRef<Record<number, View | null>>({});
 
-	const { updateActivity, deleteActivity, isUpdating, updateError } =
-		useActivityActions({
-			tripId,
-			activityId: editingActivity?.id || deletingActivity?.id,
-		});
+	const { updateActivity, deleteActivity, isUpdating, updateError } = useActivityActions({
+		tripId,
+		activityId: editingActivity?.id || deletingActivity?.id,
+	});
 
 	const handleUpdateActivity = (data: ActivityInput) => {
 		if (!editingActivity) return;
@@ -112,14 +111,13 @@ export const ActivityStepper = ({
 		const buttonRef = menuButtonRefs.current[activity.id];
 
 		if (buttonRef) {
-			buttonRef.measure((width, pageX, pageY) => {
-				const menuWidth = 100;
+			buttonRef.measure((x, y, width, height, pageX, pageY) => {
 				setMenuState({
 					isVisible: true,
 					activity,
 					position: {
-						top: pageY,
-						left: pageX - menuWidth + width,
+						top: pageY - height,
+						left: pageX - 2 * width,
 					},
 				});
 			});
@@ -162,9 +160,9 @@ export const ActivityStepper = ({
 									<Text style={styles.timestamp}>
 										{formatDateTimeForActivityCard(activity.startTime, activity.endTime)}
 									</Text>
-									{activity.description && (
+									{activity.description ? (
 										<Text style={styles.description}>{activity.description}</Text>
-									)}
+									) : null}
 								</View>
 								<Pressable
 									ref={ref => {

@@ -5,6 +5,7 @@ import { Redirect, Stack, useRouter } from 'expo-router';
 import { Platform, View, Text, StyleSheet, Pressable } from 'react-native';
 import { colors } from '@/assets/colors/colors';
 import { useAuth } from '@/lib/store/auth-context';
+import { AppHeader } from '@/components/AppHeader';
 
 export const AppLayout = () => {
 	const router = useRouter();
@@ -24,14 +25,27 @@ export const AppLayout = () => {
 	return (
 		<View style={styles.layoutContainer}>
 			<Stack
-			screenOptions={{
-				headerRight: () => (
-					<Pressable
-					 style={[styles.avatarContainer, Platform.OS === 'web' && styles.webAvatarContainer]}
-					 onPress={() => router.navigate('/profile')}>
-						<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
-					</Pressable>
-				),
+				screenOptions={{
+					...(Platform.OS === 'web'
+						? {
+							header: () => (
+								<AppHeader
+									onLogoPress={() => router.navigate('/')}
+									onAvatarPress={() => router.navigate('/profile')}
+									userName={userProfile?.name}
+								/>
+							),
+						}
+						: {
+							headerRight: () => (
+								<Pressable
+									style={styles.avatarContainer}
+									onPress={() => router.navigate('/profile')}
+								>
+									<Avatar name={userProfile?.name ?? 'Unknown'} size="sm" />
+								</Pressable>
+							),
+						}),
 				}}
 			>
 				<Stack.Screen
@@ -54,14 +68,6 @@ export const AppLayout = () => {
 					name="trips/[id]"
 					options={{
 						title: Platform.OS === 'web' ? ' - trip details' : 'Trip Details',
-						headerLeft: Platform.OS === 'web' ? () => (
-							<Pressable
-							 style={[styles.headerContainer, styles.webHeaderContainer]}
-							 onPress={() => router.navigate('/')}>
-								<LogoIcon size={32} />
-								<Text style={styles.headerTitle}>TripPlanner</Text>
-							</Pressable>
-						) : undefined
 					}}
 				/>
 				<Stack.Screen

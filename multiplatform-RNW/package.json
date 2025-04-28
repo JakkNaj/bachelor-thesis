@@ -9,8 +9,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "generate-api": "orval --config api/orval.config.ts",
-    "build:web": "NODE_ENV=production expo export -p web"
-  },
+    "build:web": "NODE_ENV=production expo export -p web",
+    "serve:web": "serve dist -p 4173"
+  }, 
   "jest": {
     "preset": "jest-expo"
   },

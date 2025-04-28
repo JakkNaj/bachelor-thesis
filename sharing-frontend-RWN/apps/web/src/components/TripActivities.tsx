@@ -24,11 +24,10 @@ export const TripActivities = ({
 }: TTripActivitiesProps) => {
 	const [isAddingActivity, setIsAddingActivity] = useState(false);
 	const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
-	const { createActivity, updateActivity, isCreating, createError } =
-		useActivityActions({
-			tripId,
-			activityId: editingActivity?.id,
-		});
+	const { createActivity, updateActivity, isCreating, createError } = useActivityActions({
+		tripId,
+		activityId: editingActivity?.id,
+	});
 
 	const handleSubmit = (data: ActivityInput) => {
 		if (editingActivity) {
@@ -123,18 +122,16 @@ export const TripActivities = ({
 				</ContentContainer>
 			</ContentSection>
 
-			{isAddingActivity && (
-				<SidePanel isOpen={isAddingActivity} onClose={handleCloseForm}>
-					<PanelTitle>Add New Activity</PanelTitle>
-					<ActivityForm
-						onSubmit={handleSubmit}
-						isSubmitting={isCreating}
-						submitError={createError as Error}
-						tripStartDate={tripStartDate}
-						tripEndDate={tripEndDate}
-					/>
-				</SidePanel>
-			)}
+			<SidePanel isOpen={isAddingActivity} onClose={handleCloseForm}>
+				<PanelTitle>Add New Activity</PanelTitle>
+				<ActivityForm
+					onSubmit={handleSubmit}
+					isSubmitting={isCreating}
+					submitError={createError as Error}
+					tripStartDate={tripStartDate}
+					tripEndDate={tripEndDate}
+				/>
+			</SidePanel>
 		</>
 	);
 };

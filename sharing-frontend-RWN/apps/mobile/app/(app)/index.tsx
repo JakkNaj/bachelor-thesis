@@ -14,26 +14,6 @@ import { TripFilters } from '../components/TripFilters';
 import { TripFormModal } from '../components/TripFormModal';
 import { ETripFilter } from '@monorepo/shared/src/types/ETripFilter';
 
-type TAppIndexStyles = {
-	container: object;
-	heroSection: object;
-	heroContainer: object;
-	heroContent: object;
-	heroTitle: object;
-	heroSubtitle: object;
-	tripsHeaderContainer: object;
-	tripsHeaderWithoutHero: object;
-	tripsHeader: object;
-	tripsTitle: object;
-	tripsList: object;
-	tripsGrid: object;
-	loadingContainer: object;
-	loadingText: object;
-	emptyContainer: object;
-	emptyTitle: object;
-	emptySubtitle: object;
-};
-
 export const AppIndex = () => {
 	const { data: trips, isLoading } = useGetApiTrips();
 	const { createTrip, isCreating, createError } = useTripActions();
@@ -157,7 +137,7 @@ export const AppIndex = () => {
 };
 
 const useStyles = () => {
-	return createStyles<TAppIndexStyles>(theme => ({
+	return createStyles(theme => ({
 		container: {
 			flex: 1,
 			backgroundColor: colors.white,
@@ -175,7 +155,7 @@ const useStyles = () => {
 		},
 		heroTitle: {
 			fontSize: fontSizes['4xl'],
-			fontWeight: fontWeights.bold,
+			fontWeight: fontWeights.bold as any,
 			marginBottom: spacing[4],
 		},
 		heroSubtitle: {
@@ -197,7 +177,7 @@ const useStyles = () => {
 		},
 		tripsTitle: {
 			fontSize: fontSizes['4xl'],
-			fontWeight: fontWeights.bold,
+			fontWeight: fontWeights.bold as any,
 		},
 		tripsList: {
 			flex: 1,

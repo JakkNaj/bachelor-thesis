@@ -16,23 +16,6 @@ type TTripCardProps = {
 	onPressDetail: (id: number) => void;
 };
 
-type TTripCardStyles = {
-	container: object;
-	header: object;
-	title: object;
-	dateText: object;
-	description: object;
-	footer: object;
-	activitiesList: object;
-	activityItem: object;
-	dot: object;
-	activeDot: object;
-	inactiveDot: object;
-	activityText: object;
-	moreText: object;
-	noActivitiesText: object;
-};
-
 export const TripCard = ({
 	id,
 	title,
@@ -96,7 +79,7 @@ export const TripCard = ({
 };
 
 const useStyles = () => {
-	return createStyles<TTripCardStyles>(theme => ({
+	return createStyles(theme => ({
 		container: {
 			flex: 1,
 			width: '100%',
@@ -115,7 +98,7 @@ const useStyles = () => {
 		},
 		title: {
 			fontSize: fontSizes.base,
-			fontWeight: fontWeights.semibold,
+			fontWeight: fontWeights.semibold as any,
 			color: theme.colors.slate[900],
 		},
 		dateText: {

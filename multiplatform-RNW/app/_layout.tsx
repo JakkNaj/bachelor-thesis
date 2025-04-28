@@ -6,7 +6,6 @@ import '../assets/styles/global.css';
 import { AuthProvider } from "@/lib/store/auth-context";
 import { useEffect } from "react";
 
-// Create QueryClient outside of component to prevent recreation
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
@@ -38,23 +37,23 @@ export const RootLayout = () => {
 
 	const renderContent = () => {
 		return (
-			<View style={styles.container}>
-				<QueryClientProvider client={queryClient}>
-					<AuthProvider>
-						<Stack 
-						screenOptions={{ 
-							headerShown: false,
-							contentStyle: {
-								backgroundColor: colors.white,
-							},
-						}}
-					>
-						<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-							<Stack.Screen name="(app)" />
-						</Stack>
-					</AuthProvider>
-				</QueryClientProvider>
-			</View>
+				<View style={styles.container}>
+					<QueryClientProvider client={queryClient}>
+						<AuthProvider>
+							<Stack 
+							screenOptions={{ 
+								headerShown: false,
+								contentStyle: {
+									backgroundColor: colors.white,
+								},
+							}}
+							>
+								<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+								<Stack.Screen name="(app)" />
+							</Stack>
+						</AuthProvider>
+					</QueryClientProvider>
+				</View>
 		)
 	}
 

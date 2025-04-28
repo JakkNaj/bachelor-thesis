@@ -8,11 +8,6 @@ type TAvatarProps = {
 	size?: 'sm' | 'md' | 'lg';
 };
 
-type TAvatarStyles = {
-	container: object;
-	text: object;
-};
-
 const getInitials = (name: string): string => {
 	return name
 		.split(' ')
@@ -44,7 +39,7 @@ export const Avatar = ({ name, size = 'md' }: TAvatarProps) => {
 };
 
 const useStyles = (size: TAvatarProps['size']) => {
-	return createStyles<TAvatarStyles>(theme => {
+	return createStyles(theme => {
 		const getContainerSize = () => {
 			const sizeValue = components.avatar.sizes[size || 'md'];
 			return {
@@ -78,7 +73,7 @@ const useStyles = (size: TAvatarProps['size']) => {
 				...getContainerSize(),
 			},
 			text: {
-				fontWeight: fontWeights.medium,
+				fontWeight: fontWeights.medium as any,
 				color: theme.colors.slate[900],
 				...getTextStyle(),
 			},

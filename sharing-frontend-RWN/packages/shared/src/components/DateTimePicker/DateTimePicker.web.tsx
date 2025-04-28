@@ -49,14 +49,8 @@ export const DateTimePicker = ({
 	);
 };
 
-type TDateTimePickerStyles = {
-	container: object;
-	input: object;
-	errorText: object;
-};
-
 const useStyles = () => {
-	return createStyles<TDateTimePickerStyles>(theme => ({
+	return createStyles(theme => ({
 		container: {
 			marginBottom: spacing[4],
 		},

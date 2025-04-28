@@ -8,11 +8,6 @@ type TFilterTagProps = {
 	onPress: () => void;
 };
 
-type TFilterTagStyles = {
-	button: object;
-	text: object;
-};
-
 export const FilterTag = ({ children, isActive = false, onPress }: TFilterTagProps) => {
 	const styles = useStyles(isActive);
 
@@ -24,7 +19,7 @@ export const FilterTag = ({ children, isActive = false, onPress }: TFilterTagPro
 };
 
 const useStyles = (isActive: boolean) => {
-	return createStyles<TFilterTagStyles>(theme => ({
+	return createStyles(theme => ({
 		button: {
 			paddingHorizontal: spacing[3],
 			paddingVertical: spacing[2],
@@ -34,7 +29,7 @@ const useStyles = (isActive: boolean) => {
 		text: {
 			fontSize: fontSizes.sm,
 			color: isActive ? theme.colors.slate[900] : theme.colors.slate[600],
-			fontWeight: isActive ? fontWeights.medium : fontWeights.normal,
+			fontWeight: isActive ? fontWeights.medium as any : fontWeights.normal as any,
 		},
 	}));
 };

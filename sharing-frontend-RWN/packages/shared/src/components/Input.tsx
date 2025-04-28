@@ -90,17 +90,11 @@ export const Input = forwardRef<TextInput, TInputProps>(
 	}
 );
 
-type TInputStyles = {
-	container: object;
-	input: object;
-	errorText: object;
-};
-
 const useStyles = (error?: string, multiline?: boolean) => {
-	return createStyles<TInputStyles>(theme => {
+	return createStyles(theme => {
 		const getInputHeight = () => {
 			if (multiline) return { minHeight: 72 };
-			return { height: Platform.OS === 'web' ? 'auto' : 56 };
+			return { height: Platform.OS === 'web' ? ('auto' as any) : 56 };
 		};
 
 		const getTextAlign = () => {
@@ -123,19 +117,19 @@ const useStyles = (error?: string, multiline?: boolean) => {
 			},
 			input: {
 				width: '100%',
-				paddingHorizontal: Platform.OS === 'web' ? '16px' : 16,
-				paddingVertical: getPaddingVertical(),
-				fontSize: Platform.OS === 'web' ? fontSizes.sm : fontSizes.lg,
+				paddingHorizontal: Platform.OS === 'web' ? ('16px' as any) : 16,
+				paddingVertical: getPaddingVertical() as any,
+				fontSize: Platform.OS === 'web' ? (fontSizes.sm as any) : (fontSizes.lg as any),
 				borderRadius: radius.lg,
 				borderWidth: 1,
 				borderColor: error ? theme.colors.red[300] : theme.colors.slate[200],
 				backgroundColor: 'white',
 				...getInputHeight(),
 				...getTextAlign(),
-			},
+			} as any,
 			errorText: {
 				marginTop: 8,
-				fontSize: fontSizes.base,
+				fontSize: fontSizes.base as any,
 				color: theme.colors.red[500],
 			},
 		};

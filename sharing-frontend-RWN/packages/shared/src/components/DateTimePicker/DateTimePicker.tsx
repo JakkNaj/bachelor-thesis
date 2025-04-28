@@ -124,21 +124,8 @@ export const DateTimePicker = ({
 	);
 };
 
-type TDateTimePickerStyles = {
-	container: object;
-	content: object;
-	row: object;
-	flex1: object;
-	input: object;
-	inputError: object;
-	inputText: object;
-	inputTextPlaceholder: object;
-	errorText: object;
-	pickerContainer: object;
-};
-
 const useStyles = () => {
-	return createStyles<TDateTimePickerStyles>(theme => ({
+	return createStyles(theme => ({
 		container: {
 			width: '100%',
 		},

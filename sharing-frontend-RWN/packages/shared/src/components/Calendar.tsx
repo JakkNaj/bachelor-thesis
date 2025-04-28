@@ -168,24 +168,8 @@ export const Calendar = ({
 	);
 };
 
-type TCalendarStyles = {
-	container: object;
-	header: object;
-	headerButton: object;
-	headerTitle: object;
-	weekRow: object;
-	weekDayLabel: object;
-	dayButton: object;
-	dayButtonSelected: object;
-	dayButtonToday: object;
-	dayButtonDisabled: object;
-	dayText: object;
-	dayTextSelected: object;
-	dayTextOutsideMonth: object;
-};
-
 const useStyles = () => {
-	return createStyles<TCalendarStyles>(theme => ({
+	return createStyles(theme => ({
 		container: {
 			backgroundColor: colors.white,
 			borderRadius: radius.lg,
@@ -205,7 +189,7 @@ const useStyles = () => {
 		},
 		headerTitle: {
 			fontSize: fontSizes.lg,
-			fontWeight: fontWeights.semibold,
+			fontWeight: fontWeights.semibold as any,
 			color: colors.slate[900],
 		},
 		weekRow: {
@@ -239,7 +223,7 @@ const useStyles = () => {
 		},
 		dayTextSelected: {
 			color: colors.white,
-			fontWeight: fontWeights.semibold,
+			fontWeight: fontWeights.semibold as any,
 		},
 		dayTextOutsideMonth: {
 			color: theme.colors.slate[300],
