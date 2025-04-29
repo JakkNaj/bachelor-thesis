@@ -35,7 +35,6 @@ const styles = css.create({
   }),
   headerContent: {
     maxWidth: '1536px',
-    width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
     display: 'flex',
