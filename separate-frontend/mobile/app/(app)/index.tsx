@@ -40,7 +40,6 @@ export const AppIndex = () => {
 
 	return (
 		<View className="flex-1 bg-white">
-			{/* Hero Section */}
 			<View className="bg-white">
 				{showHero && (
 					<View className="px-4 py-4">
@@ -60,7 +59,6 @@ export const AppIndex = () => {
 					</View>
 				)}
 
-				{/* Your Trips Header */}
 				<View className={`px-4 mb-4 ${!showHero ? "mt-6" : ""}`}>
 					<View className="flex-row justify-between items-center">
 						<Text className="text-4xl font-bold">Your Trips</Text>
@@ -70,11 +68,9 @@ export const AppIndex = () => {
 					</View>
 				</View>
 
-				{/* Trip Filters */}
 				<TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 			</View>
 
-			{/* Scrollable Trips List */}
 			<ScrollView className="flex-1 px-4 pb-8 pt-2 bg-slate-50">
 				<View className="gap-4">
 					{isLoading ? (
@@ -105,7 +101,6 @@ export const AppIndex = () => {
 				</View>
 			</ScrollView>
 
-			{/* Trip Form Modal */}
 			<TripFormModal
 				isVisible={isModalVisible}
 				onClose={() => setIsModalVisible(false)}

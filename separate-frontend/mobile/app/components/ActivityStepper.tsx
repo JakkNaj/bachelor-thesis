@@ -91,7 +91,6 @@ export const ActivityStepper = ({ activities, tripId, tripDates }: TActivityStep
 
 	return (
 		<View>
-			{/* Activities list */}
 			<View>
 				{sortedActivities.map((activity, index) => (
 					<View
@@ -102,19 +101,14 @@ export const ActivityStepper = ({ activities, tripId, tripDates }: TActivityStep
 							${index !== 0 ? "pt-0" : ""}
 						`}
 					>
-						{/* Line container */}
 						<View className="w-8 items-center">
-							{/* Top line (hidden for first item) */}
 							{index !== 0 && <View className="absolute w-0.5 h-6 bg-slate-300" />}
-							{/* Bottom line (hidden for last item) */}
 							{index !== sortedActivities.length - 1 && <View className="absolute top-8 bottom-[-2rem] w-0.5 bg-slate-300" />}
-							{/* Number circle */}
 							<View className="h-8 w-8 items-center justify-center rounded-full mt-2 border border-slate-300 bg-white z-10">
 								<Text className="text-[#090909]">{index + 1}</Text>
 							</View>
 						</View>
 
-						{/* Activity content */}
 						<View className="flex-1 min-w-[12rem] rounded-lg border border-slate-200 p-4">
 							<View className="flex-row justify-between items-start">
 								<View className="flex-1">
@@ -133,7 +127,6 @@ export const ActivityStepper = ({ activities, tripId, tripDates }: TActivityStep
 				))}
 			</View>
 
-			{/* Context Menu Modal */}
 			<Modal
 				visible={menuState.isVisible}
 				transparent
@@ -180,7 +173,6 @@ export const ActivityStepper = ({ activities, tripId, tripDates }: TActivityStep
 				</Pressable>
 			</Modal>
 
-			{/* Edit Activity Modal */}
 			<ActivityFormModal
 				isVisible={!!editingActivity}
 				onClose={() => setEditingActivity(null)}

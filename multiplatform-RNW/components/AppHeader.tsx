@@ -1,4 +1,3 @@
-// app/components/AppHeader.tsx
 import { View, Pressable, Text, StyleSheet, Platform } from 'react-native';
 import { LogoIcon } from '@/assets/icons/LogoIcon';
 import { Avatar } from '@/components/Avatar';

@@ -86,7 +86,6 @@ export const TripsSection = ({ onCreateTripClick }: TTripsSection) => {
 };
 
 const styles = StyleSheet.create({
-    // Base styles for both platforms
     sectionContainer: {
         flexDirection: 'column',
         flex: 1,
@@ -106,7 +105,6 @@ const styles = StyleSheet.create({
         minWidth: '50%',
     },
 
-    // Web-specific styles
     sectionContainerWeb: {
         alignItems: 'center',
     },
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     buttonSpacerWeb: {
-        width: 155, // Approximate width of the button to maintain center alignment
+        width: 155, 
     },
     tripTitleWeb: {
         fontSize: 32,
@@ -126,7 +124,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
-    // Modified and new web-specific styles
     tripContainerMobileWeb: {
         justifyContent: 'space-between',
     },

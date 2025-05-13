@@ -1,4 +1,3 @@
-// packages/shared/src/components/DateTimePicker.web.tsx
 import { Text, View } from 'react-native';
 import { colors, fontSizes, radius, spacing } from '../../theme';
 import { createStyles } from '../../utils/createStyles';

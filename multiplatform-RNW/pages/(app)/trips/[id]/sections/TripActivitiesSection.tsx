@@ -23,7 +23,6 @@ export const TripActivitiesSection = ({
 }: TTripActivitiesSectionProps) => {
     return (
         <View style={styles.container}>
-            {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.title}>Activities</Text>
                 <Button 
@@ -34,7 +33,6 @@ export const TripActivitiesSection = ({
                 />
             </View>
 
-            {/* Content */}
             {activities.length > 0 ? (
                 <ActivityStepper 
                     activities={activities} 

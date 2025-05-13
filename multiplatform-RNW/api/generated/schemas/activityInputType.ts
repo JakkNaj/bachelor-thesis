@@ -9,7 +9,6 @@
 export type ActivityInputType = typeof ActivityInputType[keyof typeof ActivityInputType];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ActivityInputType = {
   TRANSPORT: 'TRANSPORT',
   FLIGHT: 'FLIGHT',

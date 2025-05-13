@@ -37,7 +37,6 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 	const getErrorMessage = (error: unknown) => {
 		if (!error) return null;
 
-		// Handle API error response format
 		if (typeof error === "object" && error !== null) {
 			const apiError = error as { response?: { data?: { message: string; invalidActivities?: Array<{ title: string }> } } };
 
@@ -53,7 +52,6 @@ export const TripForm = ({ initialData, onSubmit, isSubmitting, submitError }: T
 			}
 		}
 
-		// Fallback error message
 		return error instanceof Error ? error.message : "An unexpected error occurred";
 	};
 

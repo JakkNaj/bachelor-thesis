@@ -17,14 +17,12 @@ export const Stepper = ({ index, isFirst, isLast, children }: TStepperProps) => 
 				!isFirst && styles.withTopPadding,
 			]}
 		>
-			{/* Number circle container */}
 			<html.div style={styles.numberContainer}>
 				<html.div style={styles.numberCircle()}>
 					<html.span style={styles.numberText()}>{index + 1}</html.span>
 				</html.div>
 			</html.div>
 
-			{/* Content */}
 			{children}
 		</html.div>
 	);

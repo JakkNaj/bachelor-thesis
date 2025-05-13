@@ -118,7 +118,6 @@ export const TripDetail = () => {
 	return (
 		<ScrollView style={styles.scrollView}>
 			<View style={styles.content}>
-				{/* Trip Details */}
 				<View style={styles.tripDetails}>
 					<View style={styles.header}>
 						<View style={styles.titleContainer}>
@@ -134,7 +133,6 @@ export const TripDetail = () => {
 					{trip.data.description && <Text style={styles.description}>{trip.data.description}</Text>}
 				</View>
 
-				{/* Activities Section */}
 				<View style={styles.activitiesSection}>
 					<View style={styles.activitiesHeader}>
 						<Text style={styles.activitiesTitle}>Activities</Text>
@@ -181,7 +179,6 @@ export const TripDetail = () => {
 				</View>
 			</View>
 
-			{/* Context Menu Modal */}
 			<Modal
 				visible={menuState.isVisible}
 				transparent
@@ -230,7 +227,6 @@ export const TripDetail = () => {
 				</Pressable>
 			</Modal>
 
-			{/* Edit Trip Modal */}
 			<TripFormModal
 				isVisible={isEditModalVisible}
 				onClose={() => setIsEditModalVisible(false)}
@@ -240,7 +236,6 @@ export const TripDetail = () => {
 				initialData={trip.data}
 			/>
 
-			{/* Add Activity Modal */}
 			<ActivityFormModal
 				isVisible={isAddActivityModalVisible}
 				onClose={() => setIsAddActivityModalVisible(false)}

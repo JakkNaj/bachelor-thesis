@@ -109,7 +109,6 @@ export const TripDetail = () => {
 	return (
 		<ScrollView className="flex-1 bg-white pt-2">
 			<View className="p-4 flex flex-col gap-6">
-				{/* Trip Details */}
 				<View className="flex flex-col gap-2">
 					<View className="flex-row justify-between items-start">
 						<View className="flex-1">
@@ -123,7 +122,6 @@ export const TripDetail = () => {
 					{trip.description && <Text className="text-lg text-slate-600">{trip.description}</Text>}
 				</View>
 
-				{/* Activities Section */}
 				<View className="flex flex-col gap-4">
 					<View className="flex-row justify-between items-center">
 						<Text className="text-2xl font-bold text-slate-900">Activities</Text>
@@ -154,7 +152,6 @@ export const TripDetail = () => {
 				</View>
 			</View>
 
-			{/* Context Menu Modal */}
 			<Modal
 				visible={menuState.isVisible}
 				transparent
@@ -198,7 +195,6 @@ export const TripDetail = () => {
 				</Pressable>
 			</Modal>
 
-			{/* Edit Trip Modal */}
 			<TripFormModal
 				isVisible={isEditModalVisible}
 				onClose={() => setIsEditModalVisible(false)}
@@ -208,7 +204,6 @@ export const TripDetail = () => {
 				initialData={trip}
 			/>
 
-			{/* Add Activity Modal */}
 			<ActivityFormModal
 				isVisible={isAddActivityModalVisible}
 				onClose={() => setIsAddActivityModalVisible(false)}

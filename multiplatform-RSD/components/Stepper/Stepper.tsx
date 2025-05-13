@@ -20,19 +20,14 @@ export const Stepper = ({ index, isFirst, isLast, children }: TStepperProps) => 
                     !isFirst && styles.withTopPadding,
                 ]}
             >
-                {/* Line container */}
                 <html.div style={styles.lineContainer}>
-                    {/* Top line (hidden for first item) */}
                     {!isFirst && <html.div style={styles.topLine()} />}
-                    {/* Bottom line (hidden for last item) */}
                     {!isLast && <html.div style={styles.bottomLine()} />}
-                    {/* Number circle */}
                     <html.div style={styles.numberCircle()}>
                         <html.span style={styles.numberText()}>{index + 1}</html.span>
                     </html.div>
                 </html.div>
     
-                {/* Content */}
                 {children}
             </html.div>
         );

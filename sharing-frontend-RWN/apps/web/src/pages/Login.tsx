@@ -39,7 +39,6 @@ export const Login = () => {
 	const { mutate: login, isPending } = usePostApiAuthLogin({
 		mutation: {
 			onSuccess: response => {
-				// The API returns an AxiosResponse with data property containing AuthResponse
 				const authData = response.data;
 				setAuth(authData);
 				navigate(redirectPath, { replace: true });
@@ -150,7 +149,7 @@ const LoginContainer = styled.div`
 
 const LoginCard = styled.div`
 	width: 100%;
-	max-width: 28rem; /* 448px */
+	max-width: 28rem;
 	background-color: ${colors.white};
 	padding: ${spacing[8]}px;
 	border-radius: ${radius.xl}px;

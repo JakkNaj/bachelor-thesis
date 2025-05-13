@@ -67,7 +67,6 @@ export const TripListSection = ({ isLoading, filteredTrips, handleTripDetail, on
 };
 
 const styles = StyleSheet.create({
-    // Base styles for both platforms
     scrollView: {
         flex: 1,
     },
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-    // Web-specific styles
     tripsListContainerWeb: {
         maxWidth: 980,
         width: '100%',

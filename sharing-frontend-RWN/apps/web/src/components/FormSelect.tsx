@@ -13,10 +13,8 @@ type TFormSelectProps = {
 export const FormSelect = ({ id, items, error, register }: TFormSelectProps) => {
 	const [value, setValue] = useState('');
 
-	// Handle the onChange event from react-hook-form
 	const handleChange = (newValue: string) => {
 		setValue(newValue);
-		// Create a synthetic event object that react-hook-form expects
 		register.onChange({
 			target: { value: newValue, name: register.name },
 		});

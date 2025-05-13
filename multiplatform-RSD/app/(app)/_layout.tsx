@@ -12,12 +12,10 @@ export const AppLayout = () => {
 	const { data: userProfile } = useGetApiUsersProfile();
 	const { isAuthenticated, isLoading } = useAuth();
 
-	// If still loading, don't render anything yet
 	if (isLoading) {
 		return null;
 	}
 
-	// If not authenticated, redirect to login
 	if (!isAuthenticated) {
 		return <Redirect href="/(auth)/login" />;
 	}

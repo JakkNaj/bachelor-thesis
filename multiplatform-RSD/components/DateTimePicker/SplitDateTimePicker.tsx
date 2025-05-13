@@ -146,7 +146,6 @@ export const SplitDateTimePicker = ({
 	);
 };
 
-// STYLESHEET API v RN can be used only because the DateTimePicker will be rendered only on mobile (native)
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: 16, // 1rem

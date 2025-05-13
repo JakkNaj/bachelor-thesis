@@ -31,14 +31,12 @@ class AuthService {
 
   async logout(): Promise<void> {
     if (Platform.OS === 'web') {
-      // Call the logout endpoint to clear the HTTP-only cookie
       await apiClient({
         url: '/api/auth/logout',
         method: 'POST',
       });
     }
     
-    // Always remove local storage data
     await this.removeAuth();
   }
 
@@ -52,7 +50,6 @@ class AuthService {
       }
     }
     
-    // For mobile platforms, check the stored token and user
     const token = await getAuthToken();
     const user = await authStorage.getUser();
     return !!token && !!user;

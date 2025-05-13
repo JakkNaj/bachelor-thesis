@@ -23,10 +23,8 @@ export const App = () => {
 			<BrowserRouter>
 				<MainLayout>
 					<Routes>
-						{/* Public routes */}
 						<Route path="/login" element={<Login />} />
 
-						{/* Protected routes */}
 						<Route
 							path="/"
 							element={
@@ -44,7 +42,6 @@ export const App = () => {
 							}
 						/>
 
-						{/* 404 route - public */}
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</MainLayout>

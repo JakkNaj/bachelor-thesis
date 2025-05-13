@@ -11,17 +11,14 @@ export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		withCredentials: true, // Important: This allows cookies to be sent with cross-origin requests
+		withCredentials: true, 
 		...config,
 	});
 
-	// Add response interceptor to handle errors
 	instance.interceptors.response.use(
 		(response) => response,
 		(error: AxiosError) => {
-			// Handle 401 Unauthorized errors
 			if (error.response?.status === 401) {
-				// Only redirect if not on login page
 				const currentPath = window.location.pathname;
 				if (currentPath !== "/login") {
 					window.location.href = "/login";

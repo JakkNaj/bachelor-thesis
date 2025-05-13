@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 5 * 60 * 1000, // 5 minutes
+			staleTime: 5 * 60 * 1000, 
 		}
 	}
 });
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
-		height: Platform.OS === 'web' ? '100vh' as unknown as number : '100%', // cannot use '100vh' in stylesheet
+		height: Platform.OS === 'web' ? '100vh' as unknown as number : '100%',
 		width: '100%',
 	},
 });
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
 export const RootLayout = () => {
 	useEffect(() => {
 		if (Platform.OS === 'web') {
-			// Add preconnect for Google Fonts
 			const link = document.createElement('link');
 			link.rel = 'preconnect';
 			link.href = 'https://fonts.gstatic.com';

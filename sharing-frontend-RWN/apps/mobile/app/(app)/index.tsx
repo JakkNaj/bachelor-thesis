@@ -48,7 +48,6 @@ export const AppIndex = () => {
 
 	return (
 		<View style={styles.container}>
-			{/* Hero Section */}
 			<View style={styles.heroSection}>
 				{showHero && (
 					<View style={styles.heroContainer}>
@@ -72,7 +71,6 @@ export const AppIndex = () => {
 					</View>
 				)}
 
-				{/* Your Trips Header */}
 				<View style={[styles.tripsHeaderContainer, !showHero && styles.tripsHeaderWithoutHero]}>
 					<View style={styles.tripsHeader}>
 						<Text style={styles.tripsTitle}>Your Trips</Text>
@@ -86,11 +84,9 @@ export const AppIndex = () => {
 					</View>
 				</View>
 
-				{/* Trip Filters */}
 				<TripFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 			</View>
 
-			{/* Scrollable Trips List */}
 			<ScrollView style={styles.tripsList} contentContainerStyle={styles.tripsGrid}>
 				<View style={{ gap: spacing[4] }}>
 					{isLoading ? (
@@ -124,7 +120,6 @@ export const AppIndex = () => {
 				</View>
 			</ScrollView>
 
-			{/* Trip Form Modal */}
 			<TripFormModal
 				isVisible={isModalVisible}
 				onClose={() => setIsModalVisible(false)}

@@ -13,7 +13,6 @@ export const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { signIn, isAuthenticated } = useAuth();
 
-  // Redirect to app if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       router.navigate('/(app)');

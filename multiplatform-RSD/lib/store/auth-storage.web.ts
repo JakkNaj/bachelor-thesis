@@ -60,6 +60,5 @@ class WebAuthStorage {
     }
 }
 
-// Export the same interface as native storage
 export const authStorage = new WebAuthStorage();
 export default authStorage;

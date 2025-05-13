@@ -21,7 +21,6 @@ export const apiClient = async <T>({ url, method, headers = {}, data, signal, su
     ...headers,
   });
 
-  // add Authorization header for mobile
   if (Platform.OS !== 'web') {
     const token = await authService.getToken();
     if (token) {
@@ -38,7 +37,6 @@ export const apiClient = async <T>({ url, method, headers = {}, data, signal, su
       credentials: Platform.OS === 'web' ? 'include' : 'omit',
     });
 
-    // For profile check endpoint, return null on 401 without throwing
     if (!response.ok) {
       if (suppressError && response.status === 401) {
         return null as T;

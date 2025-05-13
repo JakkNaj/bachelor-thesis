@@ -9,7 +9,6 @@ export const Select = ({
 	closeOnSelect = true,
 	id,
 }: TSelectProps) => {
-	// Web implementation will be added later
 	return (
 		<div>
 			<select

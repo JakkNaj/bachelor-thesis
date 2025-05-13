@@ -9,17 +9,14 @@ export default function Root({ children }: PropsWithChildren) {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         
-        {/* Primary Meta Tags */}
         <title>Multiplatform RNW</title>
         <meta name="title" content="Multiplatform RNW" />
         <meta name="description" content="A cross-platform application built with React Native Web" />
         
-        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Multiplatform RNW" />
         <meta property="og:description" content="A cross-platform application built with React Native Web" />
         
-        {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content="Multiplatform RNW" />
         <meta property="twitter:description" content="A cross-platform application built with React Native Web" />

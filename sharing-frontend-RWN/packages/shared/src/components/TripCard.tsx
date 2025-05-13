@@ -27,7 +27,6 @@ export const TripCard = ({
 }: TTripCardProps) => {
 	const styles = useStyles();
 
-	// Function to get two random activities
 	const getRandomActivities = (activities: Activity[]) => {
 		const shuffled = [...activities].sort(() => 0.5 - Math.random());
 		return shuffled.slice(0, 2);

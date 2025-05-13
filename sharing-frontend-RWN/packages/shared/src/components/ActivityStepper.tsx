@@ -135,7 +135,6 @@ export const ActivityStepper = ({
 
 	return (
 		<View>
-			{/* Activities list */}
 			<View>
 				{sortedActivities.map((activity, index) => (
 					<View
@@ -178,7 +177,6 @@ export const ActivityStepper = ({
 					</View>
 				))}
 			</View>
-			{/* Context Menu Modal */}
 			<Modal
 				visible={menuState.isVisible}
 				transparent
@@ -230,7 +228,6 @@ export const ActivityStepper = ({
 					</View>
 				</Pressable>
 			</Modal>
-			{/* Edit Activity Form */}
 			{renderActivityForm({
 				isVisible: !!editingActivity,
 				onClose: () => setEditingActivity(null),

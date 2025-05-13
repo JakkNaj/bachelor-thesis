@@ -93,7 +93,6 @@ export const ActivityStepper = ({
 
 	return (
 		<html.div style={[styles.container, Platform.OS === 'web' && webStyles.container]}>
-			{/* Activities list */}
 			<html.div style={[styles.activitiesList, Platform.OS === 'web' && webStyles.activitiesList]}>
 				{sortedActivities.map((activity, index) => (
 					<Stepper
@@ -124,7 +123,6 @@ export const ActivityStepper = ({
 				))}
 			</html.div>
 			
-			{/* Edit Activity Form Modal */}
 			<FormModal
 				isVisible={isModalVisible}
 				onClose={handleCloseModal}

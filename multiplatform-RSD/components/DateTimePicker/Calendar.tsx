@@ -72,14 +72,12 @@ export const Calendar = ({
 		const weeks: Date[][] = [];
 		let currentWeek: Date[] = [];
 
-		// Add days from previous month
 		const prevMonth = month - 1;
 		const daysInPrevMonth = getDaysInMonth(year, prevMonth);
 		for (let i = 0; i < firstDayOfMonth; i++) {
 			currentWeek.push(new Date(year, prevMonth, daysInPrevMonth - firstDayOfMonth + i + 1));
 		}
 
-		// Add days from current month
 		for (let day = 1; day <= daysInMonth; day++) {
 			currentWeek.push(new Date(year, month, day));
 
@@ -89,7 +87,6 @@ export const Calendar = ({
 			}
 		}
 
-		// Add days from next month if needed
 		if (currentWeek.length > 0) {
 			const nextMonth = month + 1;
 			let nextMonthDay = 1;
@@ -170,7 +167,6 @@ export const Calendar = ({
 	);
 };
 
-// STYLESHEET API v RN can be used only because the Calendar will be rendered only on mobile (native)
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.white,

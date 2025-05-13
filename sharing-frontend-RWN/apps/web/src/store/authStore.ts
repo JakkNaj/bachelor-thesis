@@ -24,8 +24,6 @@ export const useAuthStore = create<TAuthStore>(set => ({
 
 	setAuth: (authResponse: AuthResponse) => {
 		if (authResponse.user) {
-			// Only update the auth state and user info
-			// The token is handled by the server and axios interceptors
 			set({
 				status: EAuthStatus.AUTHENTICATED,
 				user: authResponse.user,
@@ -59,15 +57,12 @@ export const useAuthStore = create<TAuthStore>(set => ({
 	},
 
 	checkAuth: () => {
-		// Set status to loading while checking
 		set({
 			status: EAuthStatus.LOADING,
 		});
 
-		// Verify authentication with the server
 		getApiUsersProfile()
 			.then(response => {
-				// If the request succeeds, the user is authenticated
 				set({
 					status: EAuthStatus.AUTHENTICATED,
 					user: response.data,
@@ -75,7 +70,6 @@ export const useAuthStore = create<TAuthStore>(set => ({
 			})
 			.catch(error => {
 				console.error('Auth check error:', error);
-				// If the request fails, the user is not authenticated
 				set({
 					status: EAuthStatus.UNAUTHENTICATED,
 					user: null,

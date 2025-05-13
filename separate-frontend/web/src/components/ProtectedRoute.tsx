@@ -20,7 +20,6 @@ export const ProtectedRoute = ({ children }: TProtectedRouteProps) => {
 	}
 
 	if (status === EAuthStatus.UNAUTHENTICATED) {
-		// Redirect to login page but save the location they were trying to access
 		return <Navigate to="/login" state={{ from: location }} replace />;
 	}
 

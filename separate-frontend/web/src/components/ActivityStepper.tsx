@@ -33,10 +33,8 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates, trip
 
 	const handleDelete = (activity: Activity) => {
 		if (confirm("Are you sure you want to delete this activity? This action cannot be undone.")) {
-			// Set the deleting state for UI feedback
 			setDeletingActivityId(activity.id);
 
-			// Call the delete function with the activity ID directly
 			deleteActivity(activity.id, () => {
 				setDeletingActivityId(undefined);
 				onActivityUpdated();
@@ -55,7 +53,6 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates, trip
 
 	return (
 		<div className="relative">
-			{/* Activities list */}
 			<div className="relative">
 				{sortedActivities.map((activity, index) => (
 					<div
@@ -71,14 +68,12 @@ export const ActivityStepper = ({ activities, onActivityUpdated, tripDates, trip
 							first:after:hidden last:before:hidden
 						`}
 					>
-						{/* Number circle */}
 						<div className="relative z-10">
 							<div className="flex h-8 w-8 items-center justify-center rounded-full text-[#090909] mt-2 border border-slate-300 bg-white">
 								{index + 1}
 							</div>
 						</div>
 
-						{/* Activity content */}
 						<div className="flex-1 rounded-lg border border-slate-200 p-4">
 							<div className="flex justify-between items-start">
 								<div>

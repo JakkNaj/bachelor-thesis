@@ -51,7 +51,6 @@ export const TripActivitiesSection = ({ activities, tripId, tripDates }: TTripAc
 
     return (
         <html.div style={styles.container}>
-            {/* Header */}
             <html.div style={styles.header}>
                 <html.h2 style={styles.title()}>Activities</html.h2>
                 <Button 
@@ -65,7 +64,6 @@ export const TripActivitiesSection = ({ activities, tripId, tripDates }: TTripAc
                 )}
             </html.div>
 
-            {/* Content */}
             {activities.length > 0 ? (
                 <ActivityStepper 
                     activities={activities} 
@@ -86,7 +84,6 @@ export const TripActivitiesSection = ({ activities, tripId, tripDates }: TTripAc
                 </html.div>
             )}
 
-            {/* Activity Form Modal */}
             <FormModal
                 isVisible={isAddActivityModalVisible}
                 onClose={handleCloseModal}

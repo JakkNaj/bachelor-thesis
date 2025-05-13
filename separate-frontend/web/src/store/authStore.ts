@@ -37,7 +37,6 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 
 	logout: async () => {
 		try {
-			// Call the logout API endpoint
 			await customInstance({
 				url: "/api/auth/logout",
 				method: "POST",
@@ -53,7 +52,6 @@ export const useAuthStore = create<TAuthStore>((set) => ({
 	},
 
 	checkAuth: () => {
-		// Fetch user profile to check if authenticated
 		customInstance<UserResponse>({
 			url: "/api/users/profile",
 			method: "GET",

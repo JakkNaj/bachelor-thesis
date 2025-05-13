@@ -19,7 +19,6 @@ const styles = css.create({
 export default function RootLayout() {
 	useEffect(() => {
 		if (Platform.OS === 'web') {
-			// Add preconnect for Google Fonts
 			const link = document.createElement('link');
 			link.rel = 'preconnect';
 			link.href = 'https://fonts.gstatic.com';

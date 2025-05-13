@@ -30,7 +30,6 @@ export const SignupPage = () => {
   const [error, setError] = useState<string | null>(null);
   const { signIn, isAuthenticated } = useAuth();
 
-  // Redirect to app if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       router.replace('/(app)');
